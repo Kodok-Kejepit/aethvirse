@@ -14,9 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        targetPlatform:
-          - StandaloneWindows64
-          - Android
+        include:
+          - targetPlatform: StandaloneWindows64
+            image: windows-mono
+          - targetPlatform: Android
+            image: android
     steps:
       - name: Free disk space (Android)
         if: matrix.targetPlatform == 'Android'
@@ -45,6 +47,8 @@ jobs:
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
           buildName: AETHVIRSE
+          # unity-builder v4 looks for image revision 3, which does not exist for Unity 6000.3.29f1.
+          customImage: unityci/editor:ubuntu-6000.3.29f1-${{ matrix.image }}-4
 
       - uses: actions/upload-artifact@v4
         with:
