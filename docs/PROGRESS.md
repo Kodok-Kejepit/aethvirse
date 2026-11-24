@@ -7,7 +7,7 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
-## M2 — Combat core (branch `m2-combat`) — in progress
+## M2 — Combat core (branch `m2-combat`) — done 2026-11-24, approved by owner
 
 ### Done
 - **Combat core** (unit tested): damage formula, 9 elements, combo rank D→SSS, health pool, attack tokens,
