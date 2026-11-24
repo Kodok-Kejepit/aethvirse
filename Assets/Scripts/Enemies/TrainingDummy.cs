@@ -29,6 +29,7 @@ namespace Aethvirse.Enemies
         bool _lastCrit;
 
         public bool IsLockable => isActiveAndEnabled;
+        public string DisplayName => "Training Dummy";
         public Vector3 LockPoint => transform.position + Vector3.up * lockHeight;
 
         void Awake()

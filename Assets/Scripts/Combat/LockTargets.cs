@@ -7,6 +7,7 @@ namespace Aethvirse.Combat
     public interface ILockable
     {
         bool IsLockable { get; }
+        string DisplayName { get; }
         Vector3 LockPoint { get; }
         Transform transform { get; }
     }

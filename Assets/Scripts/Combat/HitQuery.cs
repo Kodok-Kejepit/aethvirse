@@ -12,8 +12,13 @@ namespace Aethvirse.Combat
         static readonly Collider[] Buffer = new Collider[64];
         readonly HashSet<Damageable> _alreadyHit = new HashSet<Damageable>();
         readonly GameObject _owner;
+        readonly Team _team;
 
-        public HitQuery(GameObject owner) => _owner = owner;
+        public HitQuery(GameObject owner, Team team)
+        {
+            _owner = owner;
+            _team = team;
+        }
 
         public void Begin() => _alreadyHit.Clear();
 
@@ -25,7 +30,7 @@ namespace Aethvirse.Combat
             for (int i = 0; i < count; i++)
             {
                 Damageable target = Buffer[i].GetComponentInParent<Damageable>();
-                if (target == null || target.gameObject == _owner || target.IsDead || !_alreadyHit.Add(target)) continue;
+                if (target == null || target.gameObject == _owner || target.Team == _team || target.IsDead || !_alreadyHit.Add(target)) continue;
                 onNewTarget(target);
             }
         }

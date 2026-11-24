@@ -60,7 +60,7 @@ namespace Aethvirse.Player
         void Awake()
         {
             _input = GameInput.Instance;
-            _hits = new HitQuery(gameObject);
+            _hits = new HitQuery(gameObject, Team.Player);
             Tracker = new ComboTracker(comboTimeout);
             ResetWeaponPose();
         }

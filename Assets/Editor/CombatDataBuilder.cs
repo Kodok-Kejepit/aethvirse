@@ -2,18 +2,22 @@
 // hitbox offsets are flipped to Unity's +Z forward. Assets are updated in place, so references keep working.
 using System.IO;
 using Aethvirse.Combat;
+using Aethvirse.Enemies;
 using UnityEditor;
 using UnityEngine;
 
 public static class CombatDataBuilder
 {
     const string GreatswordDir = "Assets/Data/Combat/Greatsword";
+    const string EnemyDir = "Assets/Data/Enemies";
 
     [MenuItem("AETHVIRSE/Build Combat Data")]
     public static void Build()
     {
         Directory.CreateDirectory(GreatswordDir);
         BuildGreatsword();
+        Directory.CreateDirectory(EnemyDir);
+        BuildAshHound();
         AssetDatabase.SaveAssets();
         Debug.Log("AETHVIRSE: combat data built");
     }
@@ -46,6 +50,40 @@ public static class CombatDataBuilder
         combo.heavyStart = overhead;
         combo.chainGrace = 0.35f;
         EditorUtility.SetDirty(combo);
+    }
+
+    /// <summary>Ash Hound (Godot data/enemies/ash_hound.tres): fast, short windup, hits that shove you.</summary>
+    static void BuildAshHound()
+    {
+        var e = LoadOrCreate<EnemyData>($"{EnemyDir}/AshHound.asset");
+        e.id = "ash_hound";
+        e.displayName = "Ash Hound";
+        e.level = 3;
+        // Flat numbers until level scaling arrives with stats (M3): ~8 light hits to kill, ~25 bites to kill you.
+        e.maxHealth = 140;
+        e.stats = new CombatStats { attack = 16f, defense = 4f, critChance = 0.05f, critDamage = 1.5f };
+        e.poise = 25f;
+        e.bodyColor = new Color(0.45f, 0.40f, 0.38f);
+        e.walkSpeed = 1.6f;
+        e.chaseSpeed = 5f;
+        e.aggroRadius = 12f;
+        e.leashRadius = 26f;
+        e.patrolRadius = 4f;
+        e.attackRange = 2f;
+        e.attackWindup = 0.55f;
+        e.attackActive = 0.15f;
+        e.attackRecovery = 0.6f;
+        e.attackCooldown = 0.9f;
+        e.attackMultiplier = 1f;
+        e.attackStagger = 20f;
+        e.attackKnockback = 6f;
+        e.attackLaunch = 0f;
+        e.attackLungeSpeed = 5f;
+        e.attackHitboxSize = new Vector3(1.8f, 1.4f, 1.6f);
+        e.attackHitboxOffset = new Vector3(0f, 1f, 1f);
+        e.telegraphRadius = 1.6f;
+        e.respawnDelay = 6f;
+        EditorUtility.SetDirty(e);
     }
 
     static AttackData Attack(string id, string name, float mult, bool heavy, float startup, float active, float recovery,

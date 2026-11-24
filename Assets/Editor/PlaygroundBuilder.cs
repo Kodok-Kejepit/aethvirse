@@ -45,6 +45,8 @@ public static class PlaygroundBuilder
         Wire(body, "movement", LoadOrCreateMovementData());
         BuildPlayerCombat(body, rig, blade, markerMat);
         BuildDummies(dummyMat);
+        BuildEnemies();
+        BuildHud(body);
 
         var overlay = new GameObject("DebugOverlay").AddComponent<DebugOverlay>();
         Wire(overlay, "player", body);
@@ -197,7 +199,7 @@ public static class PlaygroundBuilder
         Transform visual = root.transform.Find("Visual");
 
         var damageable = root.AddComponent<Damageable>();
-        damageable.Configure(300, new CombatStats { attack = 24f, defense = 6f, critChance = 0.15f, critDamage = 1.6f });
+        damageable.Configure(300, new CombatStats { attack = 24f, defense = 6f, critChance = 0.15f, critDamage = 1.6f }, side: Team.Player);
 
         // Graybox greatsword held at the right side; PlayerCombat swings the pivot per attack.
         var pivot = new GameObject("WeaponPivot").transform;
@@ -226,6 +228,84 @@ public static class PlaygroundBuilder
         Wire(body, "combat", combat);
         Wire(body, "lockOn", lockOn);
         Wire(body, "damageable", damageable);
+    }
+
+    const string AshHoundPath = "Assets/Data/Enemies/AshHound.asset";
+
+    /// <summary>Three Ash Hounds in an arena north-east of the spawn (respawn 6 s after death).</summary>
+    static void BuildEnemies()
+    {
+        var data = AssetDatabase.LoadAssetAtPath<EnemyData>(AshHoundPath);
+        if (data == null) throw new System.InvalidOperationException($"Missing {AshHoundPath}: run AETHVIRSE > Build Combat Data first");
+        Material bodyMat = MakeMaterial("AshHound", data.bodyColor);
+        Material eyeMat = MakeMaterial("EnemyEye", new Color(1f, 0.3f, 0.2f));
+        Material telegraphMat = MakeMaterial("Telegraph", new Color(0.9f, 0.1f, 0.1f));
+        Material barBack = MakeMaterial("BarBack", new Color(0.08f, 0.08f, 0.1f));
+        Material barFill = MakeMaterial("BarFill", new Color(0.9f, 0.2f, 0.2f));
+
+        var parent = new GameObject("Enemies").transform;
+        Vector3[] spots = { new Vector3(26f, 0f, 26f), new Vector3(31f, 0f, 23f), new Vector3(29f, 0f, 30f) };
+        Box(parent, "ArenaMarker", new Vector3(29f, 0.01f, 26f), new Vector3(14f, 0.02f, 14f), MakeMaterial("Arena", new Color(0.36f, 0.33f, 0.33f)));
+        for (int i = 0; i < spots.Length; i++)
+        {
+            var root = new GameObject($"AshHound_{i}");
+            root.transform.SetParent(parent, false);
+            root.transform.position = spots[i];
+            var cc = root.AddComponent<CharacterController>();
+            cc.height = 1.2f;
+            cc.radius = 0.45f;
+            cc.center = new Vector3(0f, 0.6f, 0f);
+            cc.stepOffset = 0.3f;
+            root.AddComponent<Damageable>();
+
+            var visual = new GameObject("Visual").transform;
+            visual.SetParent(root.transform, false);
+            visual.rotation = Quaternion.Euler(0f, 225f, 0f);
+            GameObject bodyGo = NoCollider(Primitive(PrimitiveType.Cube, "Body", visual, new Vector3(0f, 0.6f, 0f), new Vector3(0.7f, 0.55f, 1.2f), bodyMat));
+            NoCollider(Primitive(PrimitiveType.Cube, "Head", visual, new Vector3(0f, 0.85f, 0.7f), new Vector3(0.45f, 0.4f, 0.45f), bodyMat));
+            NoCollider(Primitive(PrimitiveType.Cube, "EyeL", visual, new Vector3(-0.12f, 0.92f, 0.93f), new Vector3(0.08f, 0.06f, 0.02f), eyeMat));
+            NoCollider(Primitive(PrimitiveType.Cube, "EyeR", visual, new Vector3(0.12f, 0.92f, 0.93f), new Vector3(0.08f, 0.06f, 0.02f), eyeMat));
+            for (int leg = 0; leg < 4; leg++)
+            {
+                float lx = leg % 2 == 0 ? -0.25f : 0.25f;
+                float lz = leg < 2 ? 0.4f : -0.4f;
+                NoCollider(Primitive(PrimitiveType.Cube, $"Leg{leg}", visual, new Vector3(lx, 0.17f, lz), new Vector3(0.14f, 0.34f, 0.14f), bodyMat));
+            }
+
+            GameObject telegraph = NoCollider(Primitive(PrimitiveType.Cylinder, "Telegraph", root.transform, Vector3.zero, Vector3.one, telegraphMat));
+            telegraph.SetActive(false);
+
+            var bar = new GameObject("HealthBar").transform;
+            bar.SetParent(root.transform, false);
+            bar.localPosition = new Vector3(0f, 1.7f, 0f);
+            NoCollider(Primitive(PrimitiveType.Cube, "Back", bar, new Vector3(0f, 0f, 0.005f), new Vector3(1.04f, 0.14f, 0.01f), barBack));
+            GameObject fill = NoCollider(Primitive(PrimitiveType.Cube, "Fill", bar, Vector3.zero, new Vector3(1f, 0.1f, 0.01f), barFill));
+            var healthBar = bar.gameObject.AddComponent<WorldHealthBar>();
+            Wire(healthBar, "fill", fill.transform);
+
+            var enemy = root.AddComponent<Enemy>();
+            Wire(enemy, "data", data);
+            Wire(enemy, "visual", visual);
+            Wire(enemy, "bodyRenderer", bodyGo.GetComponent<Renderer>());
+            Wire(enemy, "telegraph", telegraph.transform);
+            Wire(enemy, "healthBar", healthBar);
+        }
+    }
+
+    static void BuildHud(PlayerController body)
+    {
+        var hud = new GameObject("PlayerHud").AddComponent<PlayerHud>();
+        Wire(hud, "player", body);
+        Wire(hud, "combat", body.GetComponent<PlayerCombat>());
+        Wire(hud, "lockOn", body.GetComponent<LockOnTargeter>());
+        Wire(hud, "health", body.GetComponent<Damageable>());
+    }
+
+    static GameObject NoCollider(GameObject go)
+    {
+        var col = go.GetComponent<Collider>();
+        if (col != null) Object.DestroyImmediate(col);
+        return go;
     }
 
     static void BuildDummies(Material mat)

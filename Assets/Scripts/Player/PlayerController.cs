@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Aethvirse.Player
 {
-    public enum PlayerState { Idle, Move, Air, Dodge, Attack }
+    public enum PlayerState { Idle, Move, Air, Dodge, Attack, Hurt, Dead }
 
     /// <summary>
     /// Third-person player body (port of the Godot Player + Idle/Move/Air/Dodge states):
     /// camera-relative walk/run/sprint, buffered + coyote jump with variable height, and a dash
-    /// with i-frames (once in mid-air) whose late part can be cancelled. Attacks: PlayerController.Attack.cs.
+    /// with i-frames (once in mid-air) whose late part can be cancelled. Attacks: PlayerController.Attack.cs;
+    /// getting hit and dying: PlayerController.Health.cs.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     public sealed partial class PlayerController : MonoBehaviour
@@ -46,6 +47,7 @@ namespace Aethvirse.Player
         Vector3 _dodgeDirection;
         bool _dodgeAirborne;
 
+        float _stateElapsed;
         float _safeTimer;
         Vector3 _lastSafePosition;
 
@@ -85,6 +87,7 @@ namespace Aethvirse.Player
             if (damageable == null) damageable = GetComponent<Damageable>();
             if (combat != null) combat.SetFrame(visual);
             if (damageable != null && combat != null) damageable.Health.Dodged += _ => combat.OnDodgedHit();
+            SetupHealth();
         }
 
         void Update()
@@ -93,6 +96,7 @@ namespace Aethvirse.Player
             ReadInput();
             TickTimers(dt);
             stamina.Tick(dt);
+            _stateElapsed += dt;
             switch (State)
             {
                 case PlayerState.Idle: UpdateGround(dt, moving: false); break;
@@ -100,6 +104,8 @@ namespace Aethvirse.Player
                 case PlayerState.Air: UpdateAir(dt); break;
                 case PlayerState.Dodge: UpdateDodge(dt); break;
                 case PlayerState.Attack: UpdateAttack(dt); break;
+                case PlayerState.Hurt: UpdateHurt(dt); break;
+                case PlayerState.Dead: UpdateDead(dt); break;
             }
             TrackSafeGround(dt);
             if (cameraRig != null) cameraRig.FovBoost = IsSprinting;
@@ -209,6 +215,7 @@ namespace Aethvirse.Player
             ExitState(State);
             PlayerState previous = State;
             State = next;
+            _stateElapsed = 0f;
             EnterState(next, previous);
         }
 
@@ -241,6 +248,12 @@ namespace Aethvirse.Player
                     break;
                 case PlayerState.Attack:
                     StartAttack();
+                    break;
+                case PlayerState.Hurt:
+                    EnterHurt();
+                    break;
+                case PlayerState.Dead:
+                    EnterDead();
                     break;
             }
         }
@@ -327,11 +340,12 @@ namespace Aethvirse.Player
             }
         }
 
-        /// <summary>Fell out of the world: back to the last safe ground. (HP cost comes with the health system in M2.)</summary>
+        /// <summary>Fell out of the world: back to the last safe ground, small HP cost.</summary>
         public void RecoverFromFall()
         {
             Teleport(_lastSafePosition + Vector3.up * 0.5f);
-            SetState(PlayerState.Idle);
+            ApplyFallDamage();
+            if (State != PlayerState.Dead) SetState(PlayerState.Idle);
         }
 
         public void Teleport(Vector3 position)

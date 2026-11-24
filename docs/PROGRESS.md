@@ -7,6 +7,28 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## M2 — Combat core (branch `m2-combat`) — in progress
+
+### Done
+- **Combat core** (unit tested): damage formula, 9 elements, combo rank D→SSS, health pool, attack tokens,
+  lock-on scoring. Greatsword combo graph as assets (`AETHVIRSE > Build Combat Data`, numbers from Godot).
+- **Player attacks:** 5-hit light chain + 5 heavy branches, lunge, steering while attacking, cancels into
+  dodge / jump / next attack, camera-forward aim with soft assist (28°, 9 m), hit-stop, damage numbers,
+  heavy-hit camera shake (Cinemachine impulse), perfect dodge → slow motion + guaranteed crit counter.
+- **Lock-on:** best target near the view, switch with mouse wheel / stick flick, camera frames player + target.
+- **Training dummies** (3, next to the spawn): immortal, wobble + flash, last hit and DPS.
+- **Ash Hound** (3 in the arena north-east, 6 s respawn): patrol → chase → windup with a red ground
+  telegraph → bite with lunge → cooldown; max 2 attackers at once; staggered by enough poise damage;
+  leash back home (heals); dies and respawns. HP bar after the first hit.
+- **Player health:** HP 300, hit reactions (stagger ≥ 15 interrupts unless in a heavy attack; dash breaks
+  out of it), death → respawn at the spawn after 2 s, fall damage 10%.
+- **HUD (graybox):** HP and stamina bars, combo counter + rank, lock-on target name, PERFECT DODGE callout.
+
+### How to test
+1. Dummies: J/K combos (`L L L L L`, `L L H` …), watch DPS and the combo counter; Tab to lock on.
+2. Arena (north-east, beyond the pillars): fight 3 Ash Hounds. Dash just as the red circle fills → PERFECT DODGE.
+3. Let them hit you: stagger, dash out of it; die → back at the spawn.
+
 ## M1 — Core movement (branch `m1-core-movement`) — done 2026-11-24, approved by owner (PC + phone)
 
 ### Done
