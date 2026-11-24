@@ -67,6 +67,10 @@ namespace Aethvirse.Player
         }
         public bool DodgeCancelOpen { get; private set; }
         public StaminaPool Stamina => stamina;
+        /// <summary>From stats (AGI, buffs). 1 = base.</summary>
+        public float SpeedMultiplier { get; set; } = 1f;
+        /// <summary>From stats (AGI, passives). Scales normal attacks, not skills.</summary>
+        public float AttackSpeed { get; set; } = 1f;
         public Vector3 Velocity => _velocity;
         public float HorizontalSpeed => new Vector2(_velocity.x, _velocity.z).magnitude;
         public Vector3 Facing => visual.forward;
@@ -117,6 +121,8 @@ namespace Aethvirse.Player
             float yaw = cameraRig != null ? cameraRig.Yaw : 0f;
             InputDirection = MovementMath.CameraRelative(raw, yaw);
             InputMagnitude = InputDirection.magnitude;
+            // With the gamepad skill modifier (LB) held, the face buttons cast skills instead.
+            if (_input.SkillModifier.IsPressed()) return;
             if (_input.Jump.WasPressedThisFrame()) _jumpBuffer = movement.inputBuffer;
             if (_input.Dodge.WasPressedThisFrame()) _dodgeBuffer = movement.inputBuffer;
         }
@@ -135,7 +141,7 @@ namespace Aethvirse.Player
         {
             // Sprint = hold while moving; unlimited (stamina is only spent on dashes).
             IsSprinting = moving && HasMoveInput && _input.Sprint.IsPressed();
-            float speed = moving ? MovementMath.GroundSpeed(InputMagnitude, movement, IsSprinting) : 0f;
+            float speed = moving ? MovementMath.GroundSpeed(InputMagnitude, movement, IsSprinting) * SpeedMultiplier : 0f;
             ApplyHorizontal(speed, dt, 1f);
             ApplyGravity(dt);
             if (moving) FaceDirection(InputDirection, dt);

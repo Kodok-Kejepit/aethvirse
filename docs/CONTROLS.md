@@ -14,7 +14,11 @@ All gameplay input goes through Input System actions defined in `Assets/Scripts/
 | Heavy attack | K · right mouse while the mouse is captured | Y / △ | Round button (//) | M2 |
 | Lock-on | Tab · middle mouse | R3 | Small button top right (L) | M2 |
 | Next / previous target | Mouse wheel down / up | Flick the right stick while locked | — | M2 |
+| Skills 1–4 | 1–4 (also Q, R, F, G) | Hold LB + X / Y / B / A | 4 round skill buttons (initials, cooldown sweep) | M3 |
+| Ultimate | T | LT + RT together | Gold-ringed button | M3 |
+| Status (stats, skills, slots) | C | Select / Back | "C" button top right | M3 |
 | Debug overlay | F3 | — | — | M1 |
+| Test cheats | F6 = level up · F7 = full HP/MP, no cooldowns | — | — | M3 |
 
 Desktop testing of the touch UI: `tools/play.sh -- -touch-ui` (mouse clicks act as touches).
 
@@ -22,3 +26,6 @@ Combos (greatsword): `L L L L L` chain · `H` Overhead Smash · `L H` Rising Cle
 `L L L H` Ground Slam · `L L L L H` Piercing Thrust. Dodge cancels attacks after their cancel point; a dodge
 that makes an attack miss in its first 0.15 s is a **Perfect Dodge** → slow motion, and the next hit is a
 guaranteed crit with +50% damage.
+
+Skill combos (Paladin): Iron Charge → Rending Slash = **Breaker** (guaranteed crit) · War Cry → Earthsplitter =
+**Fury Quake** (+50%) · Flame Edge → Earthsplitter = **Molten Rift** (+30%, extra stagger).

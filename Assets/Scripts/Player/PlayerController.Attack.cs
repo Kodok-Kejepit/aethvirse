@@ -23,6 +23,18 @@ namespace Aethvirse.Player
 
         bool ConsumeAttack() => combat != null && combat.ConsumeAttack();
 
+        /// <summary>True when a skill may start now: free states, the late part of a dash, or during a normal attack.</summary>
+        public bool CanCastSkill => State switch
+        {
+            PlayerState.Idle or PlayerState.Move or PlayerState.Air => true,
+            PlayerState.Dodge => DodgeCancelOpen,
+            PlayerState.Attack => combat != null && combat.CanCancelIntoSkill,
+            _ => false,
+        };
+
+        /// <summary>Starts the attack queued by SkillCaster (restarts the Attack state if already attacking).</summary>
+        public void StartQueuedSkill() => SetState(PlayerState.Attack);
+
         void StartAttack()
         {
             _attack = combat.BeginAttack();
@@ -45,11 +57,12 @@ namespace Aethvirse.Player
                 SetState(PlayerState.Idle);
                 return;
             }
-            _attackElapsed += dt;
+            // Attack speed (AGI) scales normal attacks; skills keep their authored timing.
+            _attackElapsed += combat.CurrentSkill == null ? dt * AttackSpeed : dt;
             float strikeEnd = a.startup + a.active;
             float lunge = _attackElapsed < strikeEnd ? a.lungeSpeed * (1f - _attackElapsed / strikeEnd) : 0f;
             // You can keep walking while attacking (less with heavies).
-            Vector3 steer = InputDirection * (movement.runSpeed * (a.isHeavy ? HeavySteer : AttackSteer));
+            Vector3 steer = InputDirection * (movement.runSpeed * SpeedMultiplier * (a.isHeavy ? HeavySteer : AttackSteer));
             _velocity.x = _attackDirection.x * lunge + steer.x;
             _velocity.z = _attackDirection.z * lunge + steer.z;
             ApplyGravity(dt);

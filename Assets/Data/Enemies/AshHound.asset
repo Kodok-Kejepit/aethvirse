@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Enemies.EnemyData
   id: ash_hound
   displayName: Ash Hound
-  level: 3
+  level: 2
   maxHealth: 140
   stats:
     attack: 16
@@ -24,6 +24,11 @@ MonoBehaviour:
     element: 0
   poise: 25
   bodyColor: {r: 0.45, g: 0.4, b: 0.38, a: 1}
+  scaleByLevel: 1
+  tier: 0
+  hpScale: 0.8
+  attackScale: 1.15
+  xpReward: 20
   walkSpeed: 1.6
   chaseSpeed: 5
   aggroRadius: 12

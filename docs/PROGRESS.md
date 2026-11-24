@@ -7,6 +7,31 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## M3 — Stats & skills (branch `m3-stats-skills`) — in progress
+
+### Done
+- **Stats** (unit tested against the Balancing sheet): XP curve `round(100 × L^1.8)`, 5 stat points + 1 skill point
+  per level, STR/AGI/INT/VIT/SEN → HP, MP, ATK, DEF, crit, crit damage, attack speed, move speed, CDR, MP regen.
+  Starter weapon = the sheet's average weapon for the level (items come in M6).
+- **Enemy scaling** by level and tier (normal / elite / boss) from a reference hero; enemies give XP on death
+  (more while the combo flame is hot). Ash Hound is level 2 (~5 kills to reach level 2).
+- **Paladin** (id `vanguard`, data from Godot): 6 actives + ultimate + 3 passives, unlocking at levels 1–10,
+  3 skill combos. `AETHVIRSE > Build Class Data`.
+- **Skill caster:** keys / gamepad / touch, MP, cooldowns with CDR, skill combos, buffs; damaging skills run
+  through the attack state (they cut normal attacks short and come out of a late dash).
+- **Every skill looks different:** Iron Charge afterimages, Rending Slash blue arc, Flame Edge burning blade +
+  fire arc + embers, Earthsplitter shockwave + rock spikes, War Cry roar rings + red aura while the buff lasts,
+  Titan's Verdict golden sky pillar + giant ring.
+- **HUD:** level + XP, HP, MP, stamina, skill bar with cooldowns; LEVEL UP / skill combo / +XP callouts.
+- **Status window (C):** spend stat and skill points, put skills on slots 1–4.
+- Test cheats: F6 level up, F7 full HP/MP and no cooldowns.
+
+### How to test
+1. Fight the Ash Hounds (arena north-east) → XP; level up → LEVEL UP, 5 stat points (C to spend).
+2. Skills 1/2 (Iron Charge, Rending Slash) from the start; F6 a few times for Earthsplitter (Lv 3), War Cry (Lv 5),
+   Flame Edge (Lv 8, put it on a slot in C), Titan's Verdict (Lv 10, T).
+3. Combos: 1 then 2 quickly = BREAKER!; War Cry then Earthsplitter = FURY QUAKE!.
+
 ## M2 — Combat core (branch `m2-combat`) — done 2026-11-24, approved by owner
 
 ### Done

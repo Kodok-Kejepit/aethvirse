@@ -1,0 +1,133 @@
+using Aethvirse.Input;
+using Aethvirse.Skills;
+using Aethvirse.Stats;
+using UnityEngine;
+
+namespace Aethvirse.Core
+{
+    /// <summary>
+    /// Graybox status window (C / gamepad Select / touch "C"): spend stat points (+ on STR … SEN),
+    /// level skills with skill points and put actives on slots 1–4. The Codex UI replaces it in M4.
+    /// </summary>
+    public sealed class StatusPanel : MonoBehaviour
+    {
+        [SerializeField] PlayerStats stats;
+
+        static StatusPanel _instance;
+        bool _open;
+        CursorLockMode _cursorBefore;
+        Vector2 _scroll;
+        GUIStyle _title, _text, _button;
+
+        public static bool IsOpen => _instance != null && _instance._open;
+
+        /// <summary>Touch button / other UI.</summary>
+        public static void Toggle()
+        {
+            if (_instance != null) _instance.SetOpen(!_instance._open);
+        }
+
+        void Awake() => _instance = this;
+
+        void Update()
+        {
+            if (GameInput.Instance.StatusPanel.WasPressedThisFrame()) SetOpen(!_open);
+            if (_open && GameInput.Instance.ReleaseCursor.WasPressedThisFrame()) SetOpen(false);
+        }
+
+        void SetOpen(bool open)
+        {
+            if (open == _open) return;
+            _open = open;
+            // Clicking + buttons needs a free cursor; restore capture afterwards.
+            if (open)
+            {
+                _cursorBefore = Cursor.lockState;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else if (_cursorBefore == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+
+        void OnGUI()
+        {
+            if (!_open || stats == null) return;
+            float s = Screen.height / 1080f;
+            _title ??= new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold };
+            _text ??= new GUIStyle(GUI.skin.label);
+            _button ??= new GUIStyle(GUI.skin.button);
+            _title.fontSize = Mathf.RoundToInt(30 * s);
+            _text.fontSize = Mathf.RoundToInt(22 * s);
+            _button.fontSize = Mathf.RoundToInt(22 * s);
+
+            float w = 980 * s, h = 860 * s;
+            var area = new Rect((Screen.width - w) * 0.5f, (Screen.height - h) * 0.5f, w, h);
+            GUI.color = new Color(0.02f, 0.06f, 0.14f, 0.92f);
+            GUI.DrawTexture(area, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            GUILayout.BeginArea(new Rect(area.x + 24 * s, area.y + 16 * s, w - 48 * s, h - 32 * s));
+            _scroll = GUILayout.BeginScrollView(_scroll);
+
+            Progression p = stats.Progression;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"{stats.Class.displayName}   Lv {p.level}", _title);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("Close (C)", _button, GUILayout.Width(170 * s), GUILayout.Height(48 * s))) SetOpen(false);
+            GUILayout.EndHorizontal();
+            GUILayout.Label($"XP {p.xp} / {p.XpToNext}      Stat points: {p.freePoints}      Skill points: {p.skillPoints}", _text);
+            GUILayout.Space(10 * s);
+
+            DerivedStats d = stats.Derived;
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical(GUILayout.Width(w * 0.45f));
+            foreach (Stat stat in StatBlock.All)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"{stat}  {Mathf.RoundToInt(stats.Primary[stat])}", _text, GUILayout.Width(220 * s));
+                GUI.enabled = p.freePoints > 0;
+                if (GUILayout.Button("+", _button, GUILayout.Width(64 * s), GUILayout.Height(44 * s))) stats.Allocate(stat);
+                GUI.enabled = true;
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+            GUILayout.Label($"HP {d.maxHp}    MP {d.maxMp}", _text);
+            GUILayout.Label($"ATK {d.attack:0}    DEF {d.defense:0}", _text);
+            GUILayout.Label($"CRIT {d.critChance * 100f:0.0}%  ×{d.critDamage:0.00}", _text);
+            GUILayout.Label($"ASPD {d.attackSpeed:0.00}    MSPD {d.moveSpeed:0.00}    CDR {d.cooldownReduction * 100f:0}%", _text);
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(14 * s);
+            GUILayout.Label("Skills", _title);
+            foreach (SkillData skill in stats.Class.skills)
+            {
+                int level = stats.SkillLevel(skill.id);
+                GUILayout.BeginHorizontal();
+                string state = level > 0 ? $"Lv {level}" : $"unlocks at Lv {skill.unlockLevel}";
+                string tag = skill.IsPassive ? "passive" : skill.isUltimate ? "ULT" : $"{skill.mpCost} MP · {skill.cooldown:0}s";
+                GUI.color = level > 0 ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+                GUILayout.Label($"{skill.displayName}  ({tag})  {state}", _text, GUILayout.Width(560 * s));
+                GUI.color = Color.white;
+                GUI.enabled = level > 0 && level < skill.maxLevel && p.skillPoints > 0;
+                if (GUILayout.Button("+", _button, GUILayout.Width(56 * s), GUILayout.Height(40 * s))) stats.LevelUpSkill(skill.id);
+                GUI.enabled = level > 0 && !skill.IsPassive && !skill.isUltimate;
+                for (int slot = 0; slot < PlayerStats.UltimateSlot; slot++)
+                {
+                    bool here = stats.Slots[slot] == skill.id;
+                    if (GUILayout.Toggle(here, (slot + 1).ToString(), _button, GUILayout.Width(44 * s), GUILayout.Height(40 * s)) && !here)
+                        stats.AssignSlot(skill.id, slot);
+                }
+                GUI.enabled = true;
+                GUILayout.EndHorizontal();
+                GUILayout.Label("   " + skill.description, _text);
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
+        }
+    }
+}

@@ -58,7 +58,12 @@ public static class CombatDataBuilder
         var e = LoadOrCreate<EnemyData>($"{EnemyDir}/AshHound.asset");
         e.id = "ash_hound";
         e.displayName = "Ash Hound";
-        e.level = 3;
+        e.level = 2;
+        e.scaleByLevel = true;
+        e.tier = Aethvirse.Stats.EnemyTier.Normal;
+        // Godot: a bit fragile, bites harder.
+        e.hpScale = 0.8f;
+        e.attackScale = 1.15f;
         // Flat numbers until level scaling arrives with stats (M3): ~8 light hits to kill, ~25 bites to kill you.
         e.maxHealth = 140;
         e.stats = new CombatStats { attack = 16f, defense = 4f, critChance = 0.05f, critDamage = 1.5f };

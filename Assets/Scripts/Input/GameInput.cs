@@ -33,6 +33,14 @@ namespace Aethvirse.Input
         public readonly InputAction LockOn;
         public readonly InputAction LockNext;
         public readonly InputAction LockPrev;
+        /// <summary>Skill slots 1–4 (index 0–3) and the ultimate.</summary>
+        public readonly InputAction[] Skills = new InputAction[4];
+        public readonly InputAction Ultimate;
+        /// <summary>Gamepad: hold LB and press X / Y / B / A for skills 1–4 (the face buttons then do not attack/jump/dodge).</summary>
+        public readonly InputAction SkillModifier;
+        public readonly InputAction TriggerLeft;
+        public readonly InputAction TriggerRight;
+        public readonly InputAction StatusPanel;
 
         GameInput()
         {
@@ -79,6 +87,19 @@ namespace Aethvirse.Input
             LockOn.AddBinding("<Gamepad>/rightStickPress");
             LockNext = Player.AddAction("LockNext", InputActionType.Button, "<Mouse>/scroll/down");
             LockPrev = Player.AddAction("LockPrev", InputActionType.Button, "<Mouse>/scroll/up");
+
+            string[][] skillKeys = { new[] { "1", "q" }, new[] { "2", "r" }, new[] { "3", "f" }, new[] { "4", "g" } };
+            for (int i = 0; i < Skills.Length; i++)
+            {
+                Skills[i] = Player.AddAction($"Skill{i + 1}", InputActionType.Button, $"<Keyboard>/{skillKeys[i][0]}");
+                Skills[i].AddBinding($"<Keyboard>/{skillKeys[i][1]}");
+            }
+            Ultimate = Player.AddAction("Ultimate", InputActionType.Button, "<Keyboard>/t");
+            SkillModifier = Player.AddAction("SkillModifier", InputActionType.Button, "<Gamepad>/leftShoulder");
+            TriggerLeft = Player.AddAction("TriggerLeft", InputActionType.Value, "<Gamepad>/leftTrigger", expectedControlLayout: "Axis");
+            TriggerRight = Player.AddAction("TriggerRight", InputActionType.Value, "<Gamepad>/rightTrigger", expectedControlLayout: "Axis");
+            StatusPanel = Player.AddAction("StatusPanel", InputActionType.Button, "<Keyboard>/c");
+            StatusPanel.AddBinding("<Gamepad>/select");
 
             Player.Enable();
         }
