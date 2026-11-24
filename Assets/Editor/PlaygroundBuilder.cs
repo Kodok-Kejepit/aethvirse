@@ -5,6 +5,10 @@ using Aethvirse.Cameras;
 using Aethvirse.Combat;
 using Aethvirse.Enemies;
 using Aethvirse.Fx;
+using Aethvirse.Interaction;
+using Aethvirse.Items;
+using Aethvirse.UI;
+using Aethvirse.World;
 using Aethvirse.Skills;
 using Aethvirse.Stats;
 using Aethvirse.Core;
@@ -43,7 +47,7 @@ public static class PlaygroundBuilder
         Material dummyMat = MakeMaterial("Dummy", new Color(0.72f, 0.55f, 0.36f));
         Material markerMat = MakeMaterial("LockMarker", new Color(1f, 0.25f, 0.25f));
 
-        BuildLight();
+        Light sun = BuildLight();
         BuildCourse(ground, block, ramp);
         PlayerController body = BuildPlayer(player, accent, out Transform cameraTarget);
         PlayerCameraRig rig = BuildCamera(cameraTarget);
@@ -54,6 +58,8 @@ public static class PlaygroundBuilder
         BuildDummies(dummyMat);
         BuildEnemies();
         BuildHud(body);
+        BuildServices(body, sun);
+        BuildWorldObjects();
 
         var overlay = new GameObject("DebugOverlay").AddComponent<DebugOverlay>();
         Wire(overlay, "player", body);
@@ -65,7 +71,7 @@ public static class PlaygroundBuilder
         Debug.Log("AETHVIRSE: playground scene built");
     }
 
-    static void BuildLight()
+    static Light BuildLight()
     {
         var sun = new GameObject("Sun").AddComponent<Light>();
         sun.type = LightType.Directional;
@@ -76,6 +82,7 @@ public static class PlaygroundBuilder
         RenderSettings.ambientSkyColor = new Color(0.55f, 0.62f, 0.75f);
         RenderSettings.ambientEquatorColor = new Color(0.40f, 0.42f, 0.45f);
         RenderSettings.ambientGroundColor = new Color(0.22f, 0.22f, 0.24f);
+        return sun;
     }
 
     static void BuildCourse(Material ground, Material block, Material ramp)
@@ -334,7 +341,16 @@ public static class PlaygroundBuilder
         if (classData == null || tuning == null)
             throw new System.InvalidOperationException("Missing class data: run AETHVIRSE > Build Class Data first");
 
+        var inventory = root.AddComponent<PlayerInventory>();
+        Wire(inventory, "database", AssetDatabase.LoadAssetAtPath<ItemDatabase>(ItemDataBuilder.DatabasePath));
+        Wire(inventory, "rules", AssetDatabase.LoadAssetAtPath<LootRules>(ItemDataBuilder.RulesPath));
+        var invSo = new SerializedObject(inventory);
+        SetList(invSo.FindProperty("recipes"), ItemDataBuilder.Recipes());
+        SetList(invSo.FindProperty("quartermasterStock"), ItemDataBuilder.QuartermasterStock());
+        invSo.ApplyModifiedPropertiesWithoutUndo();
+
         var stats = root.AddComponent<PlayerStats>();
+        Wire(stats, "inventory", inventory);
         Wire(stats, "classData", classData);
         Wire(stats, "tuning", tuning);
         Wire(stats, "player", body);
@@ -485,6 +501,36 @@ public static class PlaygroundBuilder
         return go;
     }
 
+    /// <summary>Copies a list of plain serializable values into a serialized array property (via JSON).</summary>
+    static void SetList<T>(SerializedProperty prop, System.Collections.Generic.List<T> values)
+    {
+        prop.arraySize = values.Count;
+        for (int i = 0; i < values.Count; i++)
+        {
+            SerializedProperty el = prop.GetArrayElementAtIndex(i);
+            object v = values[i];
+            foreach (System.Reflection.FieldInfo f in typeof(T).GetFields())
+            {
+                SerializedProperty fp = el.FindPropertyRelative(f.Name);
+                if (fp == null) continue;
+                object value = f.GetValue(v);
+                switch (value)
+                {
+                    case string str: fp.stringValue = str; break;
+                    case int n: fp.intValue = n; break;
+                    case System.Collections.Generic.List<string> ls:
+                        fp.arraySize = ls.Count;
+                        for (int k = 0; k < ls.Count; k++) fp.GetArrayElementAtIndex(k).stringValue = ls[k];
+                        break;
+                    case System.Collections.Generic.List<int> li:
+                        fp.arraySize = li.Count;
+                        for (int k = 0; k < li.Count; k++) fp.GetArrayElementAtIndex(k).intValue = li[k];
+                        break;
+                }
+            }
+        }
+    }
+
     static void Wire(Object target, string field, Object value)
     {
         var so = new SerializedObject(target);
@@ -494,12 +540,53 @@ public static class PlaygroundBuilder
         so.ApplyModifiedPropertiesWithoutUndo();
     }
 
-    static void RegisterScenes()
+    static void RegisterScenes() => TitleSceneBuilder.RegisterScenes();
+
+    /// <summary>Day/night + weather, pause menu, Codex hooks, interaction detector.</summary>
+    static void BuildServices(PlayerController body, Light sun)
     {
-        EditorBuildSettings.scenes = new[]
-        {
-            new EditorBuildSettingsScene("Assets/Scenes/Boot.unity", true),
-            new EditorBuildSettingsScene(ScenePath, true),
-        };
+        var env = new GameObject("Environment").AddComponent<EnvironmentController>();
+        Wire(env, "sun", sun);
+        var weather = new GameObject("RegionWeather").AddComponent<RegionWeather>();
+        new GameObject("PauseMenu").AddComponent<PauseMenu>();
+        new GameObject("InventoryPanel").AddComponent<InventoryPanel>();
+        new GameObject("CodexHooks").AddComponent<CodexHooks>();
+        var detector = body.gameObject.AddComponent<InteractionDetector>();
+        Wire(detector, "facing", body.transform.Find("Visual"));
+        Wire(Object.FindFirstObjectByType<PlayerHud>(), "interaction", detector);
+    }
+
+    /// <summary>Sample interactables next to the spawn: save crystal, notice board, rest bench.</summary>
+    static void BuildWorldObjects()
+    {
+        var parent = new GameObject("WorldObjects").transform;
+        Material crystal = MakeMaterial("SaveCrystal", new Color(0.4f, 0.85f, 1f));
+        Material wood = MakeMaterial("Wood", new Color(0.5f, 0.36f, 0.22f));
+
+        GameObject c = Primitive(PrimitiveType.Cube, "SaveCrystal", parent, new Vector3(-3f, 1f, 2f), new Vector3(0.6f, 1.6f, 0.6f), crystal);
+        c.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
+        Interactable ci = c.AddComponent<Interactable>();
+        ci.Prompt = "Touch the crystal (save)";
+        c.AddComponent<SaveCrystal>();
+
+        GameObject board = Primitive(PrimitiveType.Cube, "NoticeBoard", parent, new Vector3(-5.5f, 1.2f, -1f), new Vector3(1.6f, 1.2f, 0.12f), wood);
+        board.transform.rotation = Quaternion.Euler(0f, 70f, 0f);
+        Interactable bi = board.AddComponent<Interactable>();
+        bi.Prompt = "Read the notice";
+        var notice = board.AddComponent<NoticeBoard>();
+        var so = new SerializedObject(notice);
+        so.FindProperty("text").stringValue = "Movement test ground. Dummies east, Ash Hounds north-east.";
+        so.ApplyModifiedPropertiesWithoutUndo();
+
+        Material npc = MakeMaterial("Npc", new Color(0.35f, 0.55f, 0.4f));
+        GameObject qm = Primitive(PrimitiveType.Capsule, "Quartermaster", parent, new Vector3(-7f, 1f, 1.5f), Vector3.one, npc);
+        Interactable qi = qm.AddComponent<Interactable>();
+        qi.Prompt = "Talk to the Quartermaster (shop)";
+        qm.AddComponent<ShopKeeper>();
+
+        GameObject bench = Primitive(PrimitiveType.Cube, "RestBench", parent, new Vector3(-5f, 0.25f, 3.5f), new Vector3(1.8f, 0.5f, 0.6f), wood);
+        Interactable ri = bench.AddComponent<Interactable>();
+        ri.Prompt = "Rest until morning";
+        bench.AddComponent<RestSpot>();
     }
 }

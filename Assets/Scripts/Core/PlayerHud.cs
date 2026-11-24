@@ -19,6 +19,7 @@ namespace Aethvirse.Core
         [SerializeField] Damageable health;
         [SerializeField] PlayerStats stats;
         [SerializeField] SkillCaster caster;
+        [SerializeField] Interaction.InteractionDetector interaction;
 
         static readonly string[] SlotKeys = { "1", "2", "3", "4", "T" };
         string _bigText;
@@ -123,6 +124,22 @@ namespace Aethvirse.Core
                     player.Stamina.Exhausted ? new Color(0.6f, 0.5f, 0.2f) : new Color(0.95f, 0.8f, 0.25f), null);
 
             if (stats != null && caster != null && !Aethvirse.Input.Touch.TouchControls.IsActive) DrawSkillBar(s);
+
+            // Top right: day, time, weather.
+            World.GameSession session = World.GameSession.Instance;
+            _small.alignment = TextAnchor.MiddleRight;
+            GUI.Label(new Rect(Screen.width - 420 * s, 12 * s, 400 * s, 28 * s),
+                $"Day {session.Clock.Day}  ·  {session.Clock.Format()}  ·  {session.Weather.current}", _small);
+            _small.alignment = TextAnchor.MiddleLeft;
+
+            // Interaction prompt above the skill bar.
+            if (interaction != null && interaction.Current != null)
+            {
+                _center.fontSize = Mathf.RoundToInt(26 * s);
+                _center.normal.textColor = Color.white;
+                string key = Aethvirse.Input.Touch.TouchControls.IsActive ? "" : "[E] ";
+                GUI.Label(new Rect(0, Screen.height - 150 * s, Screen.width, 40 * s), key + interaction.Current.Prompt, _center);
+            }
 
             if (_bigTime > 0f)
             {

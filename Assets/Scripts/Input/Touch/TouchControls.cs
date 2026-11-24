@@ -81,6 +81,19 @@ namespace Aethvirse.Input.Touch
             }
             RectTransform statusButton = BuildTapButton(safe, "Status", "C", new Vector2(-260f, -110f), 110f, Core.StatusPanel.Toggle);
             statusButton.anchorMin = statusButton.anchorMax = Vector2.one;
+            RectTransform bagButton = BuildTapButton(safe, "Bag", "I", new Vector2(-540f, -110f), 110f, UI.InventoryPanel.Toggle);
+            bagButton.anchorMin = bagButton.anchorMax = Vector2.one;
+            RectTransform pauseButton = BuildTapButton(safe, "Pause", "II", new Vector2(-400f, -110f), 110f, UI.PauseMenu.Toggle);
+            pauseButton.anchorMin = pauseButton.anchorMax = Vector2.one;
+
+            // Contextual: only shows while something usable is near.
+            var detector = FindFirstObjectByType<Interaction.InteractionDetector>();
+            if (detector != null)
+            {
+                RectTransform use = BuildTapButton(safe, "Interact", "E", new Vector2(-420f, 760f), 150f, detector.UseCurrent);
+                use.anchorMin = use.anchorMax = new Vector2(1f, 0f);
+                use.gameObject.AddComponent<ShowWhen>().Condition = () => detector.Current != null;
+            }
         }
 
         static void EnsureEventSystem()

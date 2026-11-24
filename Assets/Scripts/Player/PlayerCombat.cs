@@ -69,6 +69,7 @@ namespace Aethvirse.Player
         {
             _input = GameInput.Instance;
             _hits = new HitQuery(gameObject, Team.Player);
+            _self = GetComponent<Damageable>();
             Tracker = new ComboTracker(comboTimeout);
             ResetWeaponPose();
         }
@@ -99,6 +100,9 @@ namespace Aethvirse.Player
         public bool HasAttackInput => _lightBuffer > 0f || _heavyBuffer > 0f;
 
         public void SetStats(CombatStats newStats) => stats = newStats;
+        /// <summary>Share of damage healed back (set by PlayerStats from gear).</summary>
+        public float Lifesteal { get; set; }
+        Damageable _self;
 
         /// <summary>A damaging skill becomes the next attack (SkillCaster).</summary>
         public void QueueSkill(Skills.SkillData skill, int level, Skills.SkillComboData skillCombo)
@@ -189,6 +193,7 @@ namespace Aethvirse.Player
             info.knockback = push.normalized * a.knockback;
 
             if (!target.Receive(info)) return;
+            if (Lifesteal > 0f && _self != null) _self.Health.Heal(Mathf.Max(1, Mathf.RoundToInt(info.amount * Lifesteal)));
             if (counter) _counterTimer = 0f;
             Tracker.RegisterHit(Now);
             ComboChanged?.Invoke(Tracker.Count, Tracker.Rank(Now));

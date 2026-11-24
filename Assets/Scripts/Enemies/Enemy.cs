@@ -80,6 +80,7 @@ namespace Aethvirse.Enemies
         }
 
         int _xp;
+        int _gold;
 
         /// <summary>Scaled numbers for the level and tier (Godot EnemyScaling), or the flat data.</summary>
         void ConfigureStats()
@@ -87,6 +88,7 @@ namespace Aethvirse.Enemies
             CombatStats stats = data.stats.Clone();
             int maxHp = data.maxHealth;
             _xp = data.xpReward;
+            _gold = data.goldReward;
             if (data.scaleByLevel && scalingClass != null && tuning != null)
             {
                 EnemyScaling.Result r = EnemyScaling.Compute(data.level, data.tier, scalingClass, tuning);
@@ -94,6 +96,7 @@ namespace Aethvirse.Enemies
                 stats.attack = r.attack * data.attackScale;
                 stats.defense = r.defense;
                 _xp = r.xp;
+                _gold = r.gold;
             }
             _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
@@ -297,9 +300,21 @@ namespace Aethvirse.Enemies
 
         void OnDied()
         {
-            EnemyEvents.RaiseKilled(_xp);
+            EnemyEvents.RaiseKilled(data, _xp);
+            DropLoot();
             if (State == EnemyState.Attack) SetState(EnemyState.Chase);
             SetState(EnemyState.Dead);
+        }
+
+        /// <summary>Gold and items fall where it died (Items.ItemActions.RollDrops).</summary>
+        void DropLoot()
+        {
+            var inv = Items.PlayerInventory.Current;
+            if (inv == null || !data.dropsLoot) return;
+            Vector3 at = transform.position;
+            if (_gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = _gold });
+            foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(data.level, data.tier, inv.Database, inv.Rules, _rng))
+                Items.WorldPickup.Spawn(at, drop);
         }
 
         void Respawn()

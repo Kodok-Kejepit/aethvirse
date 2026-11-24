@@ -17,8 +17,12 @@ All gameplay input goes through Input System actions defined in `Assets/Scripts/
 | Skills 1–4 | 1–4 (also Q, R, F, G) | Hold LB + X / Y / B / A | 4 round skill buttons (initials, cooldown sweep) | M3 |
 | Ultimate | T | LT + RT together | Gold-ringed button | M3 |
 | Status (stats, skills, slots) | C | Select / Back | "C" button top right | M3 |
+| Interact | E | D-pad up | Contextual button (appears near something usable) | P1-4 |
+| Inventory (bag, shops, craft) | I | — | "I" button top right | P1-5 |
+| Quick potion | H | D-pad down | — (Bag → Use) | P1-5 |
+| Pause (save / load / title) | P · Esc when the cursor is free | Start | ⏸ button top right | P1-4 |
 | Debug overlay | F3 | — | — | M1 |
-| Test cheats | F6 = level up · F7 = full HP/MP, no cooldowns | — | — | M3 |
+| Test cheats | F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather | — | — | M3 |
 
 Desktop testing of the touch UI: `tools/play.sh -- -touch-ui` (mouse clicks act as touches).
 
