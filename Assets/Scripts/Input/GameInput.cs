@@ -24,6 +24,15 @@ namespace Aethvirse.Input
         public readonly InputAction Sprint;
         public readonly InputAction Dodge;
         public readonly InputAction ReleaseCursor;
+        /// <summary>Keys / gamepad / touch. Always active.</summary>
+        public readonly InputAction LightAttack;
+        public readonly InputAction HeavyAttack;
+        /// <summary>Mouse buttons attack only while the cursor is captured (a free click captures it first).</summary>
+        public readonly InputAction LightAttackMouse;
+        public readonly InputAction HeavyAttackMouse;
+        public readonly InputAction LockOn;
+        public readonly InputAction LockNext;
+        public readonly InputAction LockPrev;
 
         GameInput()
         {
@@ -57,6 +66,19 @@ namespace Aethvirse.Input
             Dodge.AddBinding("<Gamepad>/buttonEast");
 
             ReleaseCursor = Player.AddAction("ReleaseCursor", InputActionType.Button, "<Keyboard>/escape");
+
+            LightAttack = Player.AddAction("LightAttack", InputActionType.Button, "<Keyboard>/j");
+            LightAttack.AddBinding("<Gamepad>/buttonWest");
+            HeavyAttack = Player.AddAction("HeavyAttack", InputActionType.Button, "<Keyboard>/k");
+            HeavyAttack.AddBinding("<Gamepad>/buttonNorth");
+            LightAttackMouse = Player.AddAction("LightAttackMouse", InputActionType.Button, "<Mouse>/leftButton");
+            HeavyAttackMouse = Player.AddAction("HeavyAttackMouse", InputActionType.Button, "<Mouse>/rightButton");
+
+            LockOn = Player.AddAction("LockOn", InputActionType.Button, "<Keyboard>/tab");
+            LockOn.AddBinding("<Mouse>/middleButton");
+            LockOn.AddBinding("<Gamepad>/rightStickPress");
+            LockNext = Player.AddAction("LockNext", InputActionType.Button, "<Mouse>/scroll/down");
+            LockPrev = Player.AddAction("LockPrev", InputActionType.Button, "<Mouse>/scroll/up");
 
             Player.Enable();
         }

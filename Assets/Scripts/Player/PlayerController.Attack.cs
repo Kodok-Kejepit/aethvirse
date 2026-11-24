@@ -1,0 +1,117 @@
+using Aethvirse.Combat;
+using UnityEngine;
+
+namespace Aethvirse.Player
+{
+    // Attack state (port of the Godot AttackState): runs one AttackData — lunge during startup,
+    // hitbox during active, recovery. Chains into the next attack from buffered input after the
+    // combo window; a dodge cancels after dodgeCancel.
+    public sealed partial class PlayerController
+    {
+        // Share of run speed you keep steering while attacking (light / heavy).
+        const float AttackSteer = 0.45f;
+        const float HeavySteer = 0.2f;
+        // Soft aim assist: an enemy inside this cone / range of the aim pulls the attack to it.
+        const float AimAssistDegrees = 28f;
+        const float AimAssistRange = 9f;
+
+        AttackData _attack;
+        float _attackElapsed;
+        Vector3 _attackDirection;
+
+        public AttackData CurrentAttack => _attack;
+
+        bool ConsumeAttack() => combat != null && combat.ConsumeAttack();
+
+        void StartAttack()
+        {
+            _attack = combat.BeginAttack();
+            _attackElapsed = 0f;
+            IsSprinting = false;
+            _attackDirection = SnapFacing(AimDirection());
+        }
+
+        void ExitAttack()
+        {
+            if (combat != null) combat.EndAttack();
+            _attack = null;
+        }
+
+        void UpdateAttack(float dt)
+        {
+            AttackData a = _attack;
+            if (a == null)
+            {
+                SetState(PlayerState.Idle);
+                return;
+            }
+            _attackElapsed += dt;
+            float strikeEnd = a.startup + a.active;
+            float lunge = _attackElapsed < strikeEnd ? a.lungeSpeed * (1f - _attackElapsed / strikeEnd) : 0f;
+            // You can keep walking while attacking (less with heavies).
+            Vector3 steer = InputDirection * (movement.runSpeed * (a.isHeavy ? HeavySteer : AttackSteer));
+            _velocity.x = _attackDirection.x * lunge + steer.x;
+            _velocity.z = _attackDirection.z * lunge + steer.z;
+            ApplyGravity(dt);
+            Move(dt);
+
+            if (_attackElapsed >= a.startup && _attackElapsed < strikeEnd) combat.SweepHitbox();
+            combat.UpdateSwing(a, _attackElapsed / strikeEnd);
+
+            if (_attackElapsed >= a.dodgeCancel && ConsumeDodge()) { SetState(PlayerState.Dodge); return; }
+            if (_attackElapsed >= a.comboWindow && Grounded && ConsumeJump()) { StartJump(); SetState(PlayerState.Air); return; }
+            if (_attackElapsed >= a.comboWindow && ConsumeAttack()) { SetState(PlayerState.Attack); return; }
+            if (_attackElapsed >= a.Total)
+                SetState(!Grounded ? PlayerState.Air : HasMoveInput ? PlayerState.Move : PlayerState.Idle);
+        }
+
+        /// <summary>Where attacks go: the camera's view (flattened), pulled toward a nearby enemy.</summary>
+        Vector3 AimDirection()
+        {
+            Vector3 dir = cameraRig != null ? cameraRig.transform.forward : Facing;
+            dir.y = 0f;
+            if (dir.sqrMagnitude < MinDirectionSqr) dir = Facing;
+            return Assist(dir.normalized);
+        }
+
+        Vector3 Assist(Vector3 dir)
+        {
+            ILockable best = null;
+            float bestScore = float.PositiveInfinity;
+            float cosLimit = Mathf.Cos(AimAssistDegrees * Mathf.Deg2Rad);
+            foreach (ILockable e in LockTargets.All)
+            {
+                if (e == null || (e is Object o && o == null) || !e.IsLockable) continue;
+                Vector3 to = e.transform.position - transform.position;
+                to.y = 0f;
+                float d = to.magnitude;
+                if (d < 0.1f || d > AimAssistRange) continue;
+                float c = Vector3.Dot(to / d, dir);
+                if (c < cosLimit) continue;
+                float score = d * (2f - c);
+                if (score < bestScore)
+                {
+                    bestScore = score;
+                    best = e;
+                }
+            }
+            if (best == null) return dir;
+            Vector3 aim = best.transform.position - transform.position;
+            aim.y = 0f;
+            return aim.normalized;
+        }
+
+        /// <summary>Faces the lock-on target if any, else <paramref name="fallback"/> (instantly).</summary>
+        Vector3 SnapFacing(Vector3 fallback)
+        {
+            Vector3 direction = fallback;
+            ILockable target = lockOn != null ? lockOn.Target : null;
+            if (target != null && !(target is Object o && o == null)) direction = target.transform.position - transform.position;
+            direction.y = 0f;
+            if (direction.sqrMagnitude < MinDirectionSqr) direction = Facing;
+            direction.Normalize();
+            visual.rotation = Quaternion.Euler(0f, MovementMath.YawForDirection(direction), 0f);
+            return direction;
+        }
+    }
+}
