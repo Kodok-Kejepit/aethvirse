@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: r7_throne
+  m_EditorClassIdentifier: Aethvirse:Aethvirse.World:RegionData
+  id: r7_throne
+  displayName: Hollow Throne
+  blurb: An empty throne at the end of the known map.
+  scene: R7_Throne
+  levelMin: 300
+  levelMax: 350
+  requiredRank: 5
+  hidden: 0
+  palette: {r: 0.2, g: 0.18, b: 0.22, a: 1}
+  weather:
+    entries:
+    - kind: 0
+      weight: 4
+    - kind: 2
+      weight: 1.5
+    - kind: 3
+      weight: 1.5
+    minDuration: 60
+    maxDuration: 240
+  waystones:
+  - id: r7_throne_gate
+    displayName: "Hollow Throne \u2014 Entry"
+    position: {x: 6, y: 0, z: -100}
+  - id: r7_throne_town
+    displayName: "Hollow Throne \u2014 Town"
+    position: {x: -50, y: 0, z: -30}
+  - id: r7_throne_landmark
+    displayName: "Hollow Throne \u2014 Landmark"
+    position: {x: 0, y: 0, z: 55}
+  gateSpots:
+  - {x: 70, y: 0, z: -70}
+  - {x: -80, y: 0, z: 40}
+  - {x: 85, y: 0, z: 70}
+  - {x: -30, y: 0, z: 95}
+  enemies:
+  - hollow_echo
+  - gravewarden
+  neighbours:
+  - r6_fracture

@@ -25,7 +25,7 @@ public static class TitleSceneBuilder
 
     public static void RegisterScenes()
     {
-        EditorBuildSettings.scenes = new[]
+        var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene>
         {
             new EditorBuildSettingsScene(BootPath, true),
             new EditorBuildSettingsScene(TitlePath, true),
@@ -33,5 +33,9 @@ public static class TitleSceneBuilder
             new EditorBuildSettingsScene(PlaygroundPath, true),
             new EditorBuildSettingsScene(AcademyBuilder.PenaltyPath, true),
         };
+        foreach (string path in RegionBuilder.SceneNames())
+            if (System.IO.File.Exists(path)) scenes.Add(new EditorBuildSettingsScene(path, true));
+        if (System.IO.File.Exists(RegionBuilder.GatePath)) scenes.Add(new EditorBuildSettingsScene(RegionBuilder.GatePath, true));
+        EditorBuildSettings.scenes = scenes.ToArray();
     }
 }

@@ -45,6 +45,8 @@ namespace Aethvirse.World
         /// <summary>The class chosen at New Game (ClassData.id).</summary>
         public string ClassId { get; set; } = "vanguard";
         public int AcademyPoints { get; set; }
+        /// <summary>Dynamic Gates in every region (saved).</summary>
+        public Aethvirse.Gates.WorldGates Gates { get; set; } = new Aethvirse.Gates.WorldGates();
         public int CodexPoints { get; set; }
         /// <summary>A missed daily quest waits to be paid for in the Penalty Zone.</summary>
         public bool PenaltyPending { get; set; }
@@ -120,6 +122,7 @@ namespace Aethvirse.World
             Region = "";
             AcademyPoints = 0;
             CodexPoints = 0;
+            Gates = new Aethvirse.Gates.WorldGates();
             PenaltyPending = false;
             ReturnScene = "";
         }

@@ -74,7 +74,7 @@ public static class AcademyBuilder
         GameObject expedition = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "ExpeditionGate", world, new Vector3(0f, 2f, -44f), new Vector3(4f, 0.15f, 4f), gate);
         expedition.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
         expedition.AddComponent<Interactable>().Prompt = "Expedition Gate: Ashfall Outskirts";
-        SetPortal(expedition.AddComponent<Portal>(), "Playground", false, null);
+        SetPortal(expedition.AddComponent<Portal>(), "R1_Ashfall", false, null);
 
         EditorSceneManager.SaveScene(scene, AcademyPath);
     }

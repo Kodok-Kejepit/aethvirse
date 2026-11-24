@@ -13,8 +13,8 @@ e.g. the combo-flame style, come then).
 | P1-5 | Items, inventory, equipment, loot, shop, crafting | done (v0.5) |
 | P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | done |
 | P1-7 | Four classes with many skills each | done |
-| P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | |
-| P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | |
+| P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | done (streaming: per-region scenes for now) |
+| P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | done |
 | P1-10 | Jobs, hidden jobs, shadow army | |
 | P1-11 | Secrets, Mystery Journal, puzzles | |
 | P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
@@ -26,6 +26,25 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-8 / P1-9 — World, Gates and dungeons (branch `p1-8-world`)
+
+### Done
+- **World atlas:** galaxy → planet → region (Resources/WorldAtlas). Planet Aethvirse: regions I–VII (Ashfall Outskirts
+  Lv 1–50 … Hollow Throne Lv 300–350) + the hidden [ ??? ]; slots for the next planet and galaxy (story Part 2 / 3).
+- **Seven region scenes** (graybox, `AETHVIRSE > Build World`): walled town, village, landmark, rocks, 8 monster camps
+  (level rises with distance from the entry), 3 waystones, 4 Gate spots, roads to the previous / next region
+  (misty until the academy rank is high enough), Ashfall's back road to the academy. Each region has its own
+  palette, weather table and two monster types (14 new enemy types: size, speed, power, knockback / throws).
+- **Waystones + fast travel** across regions (attune by walking past).
+- **Dynamic Gates:** every 2 game hours a region may open a Gate (rank E–S, sometimes a Red or Double Gate; max 2);
+  left for a game day it **breaks** — a wave pours out; beat it and the Gate collapses with a reward.
+- **Gate dungeons** (seeded, abstract): five map shapes (winding, spiral, ring, fork, hub), five room shapes (rect, cross,
+  L, round, pillared) as platforms over a pit with bridges; 5–15 rooms by rank; monsters wake per room; treasure room;
+  **boss** with phases at 70 / 40 / 15 % (enrage, adds); **Red Gate**: no exit until the boss falls, stronger monsters,
+  triple gold; **Double Gate**: a cracked wall hides a secret room with a sealed chest. Clearing pays gold, academy
+  points, boss loot and counts for daily quests.
+- Saves v4 keep the open Gates. Tests: dungeon reachability / determinism / sizes, Gate timing, atlas consistency.
 
 ## P1-7 — Four classes (branch `p1-7-classes`)
 

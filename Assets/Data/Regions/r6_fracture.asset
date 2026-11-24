@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: r6_fracture
+  m_EditorClassIdentifier: Aethvirse:Aethvirse.World:RegionData
+  id: r6_fracture
+  displayName: The Fracture
+  blurb: Broken land. The world split here once.
+  scene: R6_Fracture
+  levelMin: 250
+  levelMax: 300
+  requiredRank: 5
+  hidden: 0
+  palette: {r: 0.35, g: 0.3, b: 0.45, a: 1}
+  weather:
+    entries:
+    - kind: 0
+      weight: 4
+    - kind: 3
+      weight: 1.5
+    - kind: 2
+      weight: 1.5
+    minDuration: 60
+    maxDuration: 240
+  waystones:
+  - id: r6_fracture_gate
+    displayName: "The Fracture \u2014 Entry"
+    position: {x: 6, y: 0, z: -100}
+  - id: r6_fracture_town
+    displayName: "The Fracture \u2014 Town"
+    position: {x: -50, y: 0, z: -30}
+  - id: r6_fracture_landmark
+    displayName: "The Fracture \u2014 Landmark"
+    position: {x: 0, y: 0, z: 55}
+  gateSpots:
+  - {x: 70, y: 0, z: -70}
+  - {x: -80, y: 0, z: 40}
+  - {x: 85, y: 0, z: 70}
+  - {x: -30, y: 0, z: 95}
+  enemies:
+  - void_hollow
+  - rift_stalker
+  neighbours:
+  - r5_archive
+  - r7_throne

@@ -103,6 +103,42 @@ namespace Aethvirse.Enemies
             _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
 
+        /// <summary>Turns this body into another enemy type (catalog spawns): stats, colour, size.</summary>
+        public void SetData(EnemyData newData)
+        {
+            data = newData;
+            visual.localScale = Vector3.one * data.size;
+            if (bodyRenderer != null)
+            {
+                _block.SetColor(BaseColorId, data.bodyColor);
+                bodyRenderer.SetPropertyBlock(_block);
+            }
+            ConfigureStats();
+        }
+
+        float _speedMult = 1f;
+        float _cooldownMult = 1f;
+
+        /// <summary>Gate bosses: more HP and damage, bigger body.</summary>
+        public void MakeBoss(float hpMult, float atkMult, float sizeMult)
+        {
+            _damageable.Health.SetMax(Mathf.RoundToInt(_damageable.Health.maxHealth * hpMult), refill: true);
+            _damageable.Stats.attack *= atkMult;
+            visual.localScale *= sizeMult;
+            _body.radius *= sizeMult;
+            _body.height *= sizeMult;
+            _body.center *= sizeMult;
+        }
+
+        /// <summary>Boss phases: faster and attacking more often.</summary>
+        public void Enrage(float speedMult, float cooldownMult)
+        {
+            _speedMult *= speedMult;
+            _cooldownMult *= cooldownMult;
+        }
+
+        public float HealthRatio => _damageable.Health.Ratio;
+
         int _levelOverride;
         float _aggroOverride;
 
@@ -190,7 +226,7 @@ namespace Aethvirse.Enemies
                 Stop(dt);
                 Face(target.position, dt);
             }
-            else MoveToward(target.position, data.chaseSpeed, dt);
+            else MoveToward(target.position, data.chaseSpeed * _speedMult, dt);
             Move(dt);
         }
 
@@ -257,7 +293,7 @@ namespace Aethvirse.Enemies
             {
                 ShowTelegraph(0f);
                 AttackTokens.Release(this);
-                _cooldown = data.attackCooldown;
+                _cooldown = data.attackCooldown * _cooldownMult;
             }
             if (State == EnemyState.Hurt) visual.localRotation = Quaternion.Euler(0f, visual.localEulerAngles.y, 0f);
             State = next;

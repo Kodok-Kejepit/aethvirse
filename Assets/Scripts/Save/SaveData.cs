@@ -13,8 +13,8 @@ namespace Aethvirse.Save
     [Serializable]
     public sealed class SaveData
     {
-        /// <summary>1 = first Unity save; 2 = + inventory; 3 = + quests, academy rank, Codex points.</summary>
-        public const int CurrentVersion = 3;
+        /// <summary>1 = first Unity save; 2 = + inventory; 3 = + quests, academy rank, Codex points; 4 = + world Gates.</summary>
+        public const int CurrentVersion = 4;
 
         /// <summary>0 in a fresh object, so JSON without a version (not a save) is refused; set on write.</summary>
         public int version;
@@ -51,6 +51,7 @@ namespace Aethvirse.Save
             public int codexPoints;
             public bool penaltyPending;
             public Quests.QuestLog quests = new Quests.QuestLog();
+            public Gates.WorldGates gates = new Gates.WorldGates();
         }
 
         public PlayerSection player = new PlayerSection();

@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe4b04a9d8d4d9aebe41a1810100653, type: 3}
+  m_Name: WorldAtlas
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.World.WorldAtlas
+  galaxies:
+  - id: home
+    displayName: The Known Sky
+    planets:
+    - id: aethvirse
+      displayName: Aethvirse
+      regions:
+      - {fileID: 11400000, guid: 807366aa3595301819261d7199d1a741, type: 2}
+      - {fileID: 11400000, guid: 96e00604ca037a3d397b3f7e20317430, type: 2}
+      - {fileID: 11400000, guid: 854991f224f49c84e9cdbec6f9d2c486, type: 2}
+      - {fileID: 11400000, guid: 9ec5ab740c42aa543bd545a8728449e3, type: 2}
+      - {fileID: 11400000, guid: c82ccd6719a7476f68e69c5c3f3482d0, type: 2}
+      - {fileID: 11400000, guid: 2013928dba615a716b68afa40287ede6, type: 2}
+      - {fileID: 11400000, guid: cbb5a26c418ff1ef597da36b045afaad, type: 2}
+      - {fileID: 11400000, guid: 23e33d960afd08fe18155a7d1063df51, type: 2}
+      unlockFlag: 
+    - id: planet_2
+      displayName: '[ unknown world ]'
+      regions: []
+      unlockFlag: last_seal_opened
+    unlockFlag: 
+  - id: galaxy_2
+    displayName: '[ unknown galaxy ]'
+    planets: []
+    unlockFlag: galaxy_2_opened
