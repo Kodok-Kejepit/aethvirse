@@ -24,11 +24,21 @@ public static class ProjectSetup
             label.transform.position = Vector3.zero;
             EditorSceneManager.SaveScene(scene, BootScene);
         }
-        EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(BootScene, true) };
+        // Boot stays first; other registered scenes are kept.
+        var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene> { new EditorBuildSettingsScene(BootScene, true) };
+        foreach (var existing in EditorBuildSettings.scenes)
+            if (existing.path != BootScene) scenes.Add(existing);
+        EditorBuildSettings.scenes = scenes.ToArray();
         PlayerSettings.companyName = "Kodok-Kejepit";
         PlayerSettings.productName = "AETHVIRSE";
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Android, "com.kodokkejepit.aethvirse");
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Standalone, "com.kodokkejepit.aethvirse");
+        // Phones play in landscape only (either side up); never portrait.
+        PlayerSettings.defaultInterfaceOrientation = UIOrientation.AutoRotation;
+        PlayerSettings.allowedAutorotateToPortrait = false;
+        PlayerSettings.allowedAutorotateToPortraitUpsideDown = false;
+        PlayerSettings.allowedAutorotateToLandscapeLeft = true;
+        PlayerSettings.allowedAutorotateToLandscapeRight = true;
         PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel34;
         PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
         PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);

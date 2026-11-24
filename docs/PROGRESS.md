@@ -1,0 +1,48 @@
+# Progress (Unity)
+
+The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what each system should do.
+
+## M0 — Setup (2026-11-22 → 11-24)
+- Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
+- Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
+- CI runs the EditMode tests before building.
+
+## M1 — Core movement (branch `m1-core-movement`) — done 2026-11-24, approved by owner (PC + phone)
+
+### Done
+- **Player** (`PlayerController`, CharacterController): camera-relative walk / run / sprint with eased
+  acceleration, buffered + coyote jump with variable height (release early = lower), dash with
+  i-frames and stamina (one air dash per jump; late part cancels into jump / dash), fall recovery
+  to the last safe ground. Same tuning numbers as Godot (`Assets/Data/Player/DefaultMovement.asset`).
+- **Camera** (`PlayerCameraRig` + Cinemachine OrbitalFollow / RotationComposer / Deoccluder): orbit with
+  mouse or right stick, wall collision, wider FOV while sprinting.
+- **Playground scene** (built by `AETHVIRSE > Build Playground Scene`): steps 0.2–2.5 m, ramps 20° / 40° /
+  55°, jump gaps 2 / 4 / 6 m, wall + pillars + low tunnel for the camera, an 8 m tower with a ramp.
+  Boot loads it automatically.
+- F3 overlay: FPS, state, speed, stamina, position (dark backing, readable over the sky).
+- Camera without a mouse: arrow keys (eased) and drag-to-look; CI also builds native Linux.
+- 19 EditMode tests (movement math, stamina).
+
+### How to test
+On the Kali laptop: `tools/play.sh` (or menu "AETHVIRSE (Unity)") downloads the newest successful CI
+build for Linux and starts it — nothing is built locally. `tools/play.sh m1-core-movement` picks a branch.
+Windows: the run's Artifacts. Note: under Wine the captured mouse sends no movement on Hyprland — use the
+native Linux build.
+1. Click to capture the mouse, or hold a touchpad button and drag, or use the arrow keys. Walk/run/sprint around; push the stick lightly on a gamepad to walk.
+2. Steps: 0.2 / 0.35 m walk up, 0.5+ need a jump; 1.5 m needs a full jump, 2.5 m is out of reach.
+3. Ramps: 20° and 40° walkable, 55° not.
+4. Gaps: 2 m run-jump, 4 m sprint-jump, 6 m sprint-jump + air dash (Ctrl in the air).
+5. Camera: back into the wall / pillars / tunnel — the camera must not go through walls.
+6. Fall recovery: walk off the edge of the 120 m ground; you land back on the last safe spot.
+7. Climb the tower ramp and jump down 8 m (no fall damage yet; health comes in M2).
+
+- **Touch controls** (phones, or `-touch-ui` on PC): floating joystick on the left 45%, camera drag on the
+  rest, Jump and Dash buttons (holding Dash after the dash keeps sprinting), safe-area aware. They feed a
+  virtual gamepad, so gameplay code has no touch special cases.
+
+- Phones are landscape only (left or right side up).
+
+### Not yet / next
+- Hero model + animations (the body is a capsule with a visor that shows facing).
+- Camera options (sensitivity, invert Y, distance) are fields on `PlayerCameraRig`; the Settings menu comes later.
+- Camera shake and lock-on come with combat (M2).
