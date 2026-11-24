@@ -32,3 +32,12 @@ Technical decisions for the Unity version of AETHVIRSE. The Godot prototype's de
 - Frame pacing: VSync on PC, 60 fps cap on Android (`FramePacing`). A frame-rate option comes with Settings.
 - Rule for later systems: anything the camera follows must move in `Update`, or be a Rigidbody with
   interpolation on; never move a followed object in `FixedUpdate` without interpolation.
+
+## Combo heat instead of letter ranks (owner, 2026-11-24)
+- Owner: letter ranks (D … SSS) feel out of place; use a combo flame that grows instead.
+- Tiers (same hit thresholds as the master prompt's ranks): Spark 1 · Ember 5 · Flame 10 · Blaze 20 ·
+  Inferno 35 · Phoenix 60. The HUD shows a three-layer procedural flame that grows, recolours (Phoenix
+  turns blue-white), flickers and pulses per hit; XP/drop bonuses per tier stay as planned.
+- Owner also asked that every attack in a combo moves differently: graybox swings now have their own
+  kinds (right/left slash, chop, rising, diagonal, spin, double spin, slam, thrust); real animation clips
+  replace them with the hero model.

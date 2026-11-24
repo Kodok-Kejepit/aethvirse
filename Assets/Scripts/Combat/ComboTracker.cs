@@ -2,14 +2,18 @@ using UnityEngine;
 
 namespace Aethvirse.Combat
 {
-    public enum ComboRank { None, D, C, B, A, S, SSS }
+    /// <summary>
+    /// Combo heat (owner, 2026-11-24: fire tiers instead of letter ranks D…SSS): the flame grows
+    /// Spark → Ember → Flame → Blaze → Inferno → Phoenix with the hit count.
+    /// </summary>
+    public enum ComboRank { None, Spark, Ember, Flame, Blaze, Inferno, Phoenix }
 
-    /// <summary>Hit counter + style rank D → C → B → A → S → SSS (§6). Pure: time is passed in by the caller.</summary>
+    /// <summary>Hit counter + combo heat tier (§6). Pure: time is passed in by the caller.</summary>
     public sealed class ComboTracker
     {
         static readonly (ComboRank rank, int hits)[] Thresholds =
         {
-            (ComboRank.D, 1), (ComboRank.C, 5), (ComboRank.B, 10), (ComboRank.A, 20), (ComboRank.S, 35), (ComboRank.SSS, 60),
+            (ComboRank.Spark, 1), (ComboRank.Ember, 5), (ComboRank.Flame, 10), (ComboRank.Blaze, 20), (ComboRank.Inferno, 35), (ComboRank.Phoenix, 60),
         };
 
         public readonly float timeout;
@@ -47,9 +51,12 @@ namespace Aethvirse.Combat
         }
 
         /// <summary>XP/drop bonus per rank, applied by reward systems later.</summary>
+        /// <summary>Size of the HUD flame for a tier: 0 (none) … 1 (Phoenix).</summary>
+        public static float Heat(ComboRank rank) => (int)rank / (float)(int)ComboRank.Phoenix;
+
         public static float Bonus(ComboRank rank) => rank switch
         {
-            ComboRank.C => 1.05f, ComboRank.B => 1.1f, ComboRank.A => 1.2f, ComboRank.S => 1.35f, ComboRank.SSS => 1.5f, _ => 1f,
+            ComboRank.Ember => 1.05f, ComboRank.Flame => 1.1f, ComboRank.Blaze => 1.2f, ComboRank.Inferno => 1.35f, ComboRank.Phoenix => 1.5f, _ => 1f,
         };
     }
 }

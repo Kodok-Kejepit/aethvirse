@@ -22,7 +22,9 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
   leash back home (heals); dies and respawns. HP bar after the first hit.
 - **Player health:** HP 300, hit reactions (stagger ≥ 15 interrupts unless in a heavy attack; dash breaks
   out of it), death → respawn at the spawn after 2 s, fall damage 10%.
-- **HUD (graybox):** HP and stamina bars, combo counter + rank, lock-on target name, PERFECT DODGE callout.
+- **HUD (graybox):** HP and stamina bars, lock-on target name, PERFECT DODGE callout.
+- **Combo flame** (owner request, replaces D…SSS): Spark → Ember → Flame → Blaze → Inferno → Phoenix, the flame
+  grows and recolours with the hit count. Each attack in the chain swings differently.
 
 ### How to test
 1. Dummies: J/K combos (`L L L L L`, `L L H` …), watch DPS and the combo counter; Tab to lock on.

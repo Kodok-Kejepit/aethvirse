@@ -175,14 +175,30 @@ namespace Aethvirse.Player
             weaponPivot.localPosition = Vector3.zero;
             switch (a.swing)
             {
-                case SwingKind.Horizontal:
+                case SwingKind.Horizontal: // right → left
                     weaponPivot.localRotation = Quaternion.Euler(0f, Mathf.Lerp(100f, -100f, k), 0f);
                     break;
-                case SwingKind.Vertical:
+                case SwingKind.Backhand: // left → right
+                    weaponPivot.localRotation = Quaternion.Euler(0f, Mathf.Lerp(-100f, 100f, k), 0f);
+                    break;
+                case SwingKind.Vertical: // overhead chop
                     weaponPivot.localRotation = Quaternion.Euler(Mathf.Lerp(-80f, 70f, k), 0f, 0f);
+                    break;
+                case SwingKind.Rising: // low → high
+                    weaponPivot.localRotation = Quaternion.Euler(Mathf.Lerp(70f, -85f, k), 0f, 0f);
+                    break;
+                case SwingKind.Diagonal: // upper right → lower left
+                    weaponPivot.localRotation = Quaternion.Euler(Mathf.Lerp(-60f, 60f, k), Mathf.Lerp(80f, -80f, k), 0f);
                     break;
                 case SwingKind.Spin:
                     weaponPivot.localRotation = Quaternion.Euler(0f, Mathf.Lerp(0f, -360f, k), 0f);
+                    break;
+                case SwingKind.DoubleSpin:
+                    weaponPivot.localRotation = Quaternion.Euler(0f, Mathf.Lerp(0f, -720f, k), 0f);
+                    break;
+                case SwingKind.Slam: // high, then driven into the ground
+                    weaponPivot.localRotation = Quaternion.Euler(Mathf.Lerp(-90f, 100f, k * k), 0f, 0f);
+                    weaponPivot.localPosition = new Vector3(0f, Mathf.Lerp(0.2f, -0.5f, k * k), 0f);
                     break;
                 case SwingKind.Thrust:
                     weaponPivot.localRotation = Quaternion.identity;

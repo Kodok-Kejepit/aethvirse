@@ -26,15 +26,15 @@ public static class CombatDataBuilder
     {
         // id, name, mult, heavy, startup, active, recovery, comboWindow, dodgeCancel, size, offset(+Z fwd), knockback, stagger, hitStop, lunge, swing
         AttackData l1 = Attack("light_1", "Slash I", 0.9f, false, 0.08f, 0.10f, 0.22f, 0.16f, 0.12f, new Vector3(2.4f, 1.4f, 1.9f), new Vector3(0, 1f, 1.1f), 1.5f, 8f, 0.04f, 3.5f, SwingKind.Horizontal);
-        AttackData l2 = Attack("light_2", "Slash II", 1.0f, false, 0.08f, 0.10f, 0.22f, 0.16f, 0.12f, new Vector3(2.4f, 1.4f, 1.9f), new Vector3(0, 1f, 1.1f), 1.5f, 8f, 0.04f, 3.5f, SwingKind.Horizontal);
+        AttackData l2 = Attack("light_2", "Slash II", 1.0f, false, 0.08f, 0.10f, 0.22f, 0.16f, 0.12f, new Vector3(2.4f, 1.4f, 1.9f), new Vector3(0, 1f, 1.1f), 1.5f, 8f, 0.04f, 3.5f, SwingKind.Backhand);
         AttackData l3 = Attack("light_3", "Slash III", 1.1f, false, 0.10f, 0.10f, 0.25f, 0.18f, 0.14f, new Vector3(2.6f, 1.4f, 2.0f), new Vector3(0, 1f, 1.2f), 2f, 10f, 0.05f, 4f, SwingKind.Vertical);
-        AttackData l4 = Attack("light_4", "Slash IV", 1.2f, false, 0.10f, 0.12f, 0.25f, 0.20f, 0.15f, new Vector3(2.6f, 1.4f, 2.0f), new Vector3(0, 1f, 1.2f), 2f, 10f, 0.05f, 4f, SwingKind.Horizontal);
+        AttackData l4 = Attack("light_4", "Slash IV", 1.2f, false, 0.10f, 0.12f, 0.25f, 0.20f, 0.15f, new Vector3(2.6f, 1.4f, 2.0f), new Vector3(0, 1f, 1.2f), 2f, 10f, 0.05f, 4f, SwingKind.Diagonal);
         AttackData l5 = Attack("light_5", "Cyclone Finisher", 1.8f, false, 0.16f, 0.18f, 0.40f, 0.40f, 0.25f, new Vector3(4.2f, 1.6f, 4.2f), new Vector3(0, 1f, 0f), 6f, 30f, 0.08f, 2f, SwingKind.Spin);
 
         AttackData overhead = Attack("overhead_smash", "Overhead Smash", 2.0f, true, 0.30f, 0.12f, 0.45f, 0.40f, 0.32f, new Vector3(2.0f, 2.0f, 2.4f), new Vector3(0, 1f, 1.4f), 4.5f, 35f, 0.09f, 2.5f, SwingKind.Vertical);
-        AttackData rising = Attack("rising_cleave", "Rising Cleave", 1.6f, true, 0.20f, 0.12f, 0.40f, 0.35f, 0.25f, new Vector3(2.2f, 2.2f, 2.2f), new Vector3(0, 1.2f, 1.2f), 3.5f, 25f, 0.07f, 3f, SwingKind.Vertical);
-        AttackData whirl = Attack("whirlwind", "Whirlwind", 1.4f, true, 0.18f, 0.30f, 0.40f, 0.45f, 0.30f, new Vector3(4.6f, 1.6f, 4.6f), new Vector3(0, 1f, 0f), 4f, 20f, 0.06f, 1f, SwingKind.Spin);
-        AttackData slam = Attack("ground_slam", "Ground Slam", 2.4f, true, 0.32f, 0.14f, 0.50f, 0.50f, 0.38f, new Vector3(3.6f, 1.8f, 3.6f), new Vector3(0, 0.6f, 1.0f), 6f, 45f, 0.11f, 2f, SwingKind.Vertical);
+        AttackData rising = Attack("rising_cleave", "Rising Cleave", 1.6f, true, 0.20f, 0.12f, 0.40f, 0.35f, 0.25f, new Vector3(2.2f, 2.2f, 2.2f), new Vector3(0, 1.2f, 1.2f), 3.5f, 25f, 0.07f, 3f, SwingKind.Rising);
+        AttackData whirl = Attack("whirlwind", "Whirlwind", 1.4f, true, 0.18f, 0.30f, 0.40f, 0.45f, 0.30f, new Vector3(4.6f, 1.6f, 4.6f), new Vector3(0, 1f, 0f), 4f, 20f, 0.06f, 1f, SwingKind.DoubleSpin);
+        AttackData slam = Attack("ground_slam", "Ground Slam", 2.4f, true, 0.32f, 0.14f, 0.50f, 0.50f, 0.38f, new Vector3(3.6f, 1.8f, 3.6f), new Vector3(0, 0.6f, 1.0f), 6f, 45f, 0.11f, 2f, SwingKind.Slam);
         AttackData thrust = Attack("piercing_thrust", "Piercing Thrust", 2.0f, true, 0.22f, 0.12f, 0.40f, 0.38f, 0.28f, new Vector3(1.2f, 1.2f, 4.0f), new Vector3(0, 1f, 2.2f), 5f, 30f, 0.08f, 6f, SwingKind.Thrust);
 
         // Combo graph: L L L L L chain; H after the n-th light gives a different finisher.

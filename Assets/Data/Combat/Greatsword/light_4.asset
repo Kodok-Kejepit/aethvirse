@@ -28,6 +28,6 @@ MonoBehaviour:
   stagger: 10
   hitStop: 0.05
   lungeSpeed: 4
-  swing: 0
+  swing: 6
   nextLight: {fileID: 11400000, guid: 1a9400b4ead07288eb3609ac6c29c9e3, type: 2}
   nextHeavy: {fileID: 11400000, guid: 65af2d37bd72e581bb5f1240686638ef, type: 2}

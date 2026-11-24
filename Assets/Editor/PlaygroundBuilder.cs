@@ -299,6 +299,9 @@ public static class PlaygroundBuilder
         Wire(hud, "combat", body.GetComponent<PlayerCombat>());
         Wire(hud, "lockOn", body.GetComponent<LockOnTargeter>());
         Wire(hud, "health", body.GetComponent<Damageable>());
+
+        var flame = new GameObject("ComboFlame").AddComponent<ComboFlameHud>();
+        Wire(flame, "combat", body.GetComponent<PlayerCombat>());
     }
 
     static GameObject NoCollider(GameObject go)

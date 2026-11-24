@@ -40,6 +40,18 @@ namespace Aethvirse.Tests
         public void Branches(string inputs, string id) => Assert.That(Chain(inputs).id, Is.EqualTo(id));
 
         [Test]
+        public void LightChain_NeverRepeatsAMoveBackToBack()
+        {
+            AttackData previous = null;
+            foreach (string inputs in new[] { "L", "LL", "LLL", "LLLL", "LLLLL" })
+            {
+                AttackData a = Chain(inputs);
+                if (previous != null) Assert.That(a.swing, Is.Not.EqualTo(previous.swing), $"{previous.id} → {a.id}");
+                previous = a;
+            }
+        }
+
+        [Test]
         public void AllAttacks_HaveSaneTimings()
         {
             foreach (string inputs in AllChains)

@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace Aethvirse.Combat
 {
-    public enum SwingKind { Horizontal, Vertical, Spin, Thrust }
+    /// <summary>How the weapon moves (graybox; real clips come with the hero model). Append only: assets store the number.</summary>
+    public enum SwingKind { Horizontal, Vertical, Spin, Thrust, Backhand, Rising, Diagonal, DoubleSpin, Slam }
 
     /// <summary>One attack in a combo graph. Timings are seconds from the start of the attack.</summary>
     [CreateAssetMenu(menuName = "AETHVIRSE/Combat/Attack", fileName = "Attack")]
