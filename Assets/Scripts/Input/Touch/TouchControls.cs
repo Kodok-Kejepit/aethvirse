@@ -9,7 +9,8 @@ namespace Aethvirse.Input.Touch
 {
     /// <summary>
     /// Touch layout (port of the Godot mobile controls): floating joystick on the left 45% of the
-    /// screen, camera drag on the rest, Jump and Dash buttons bottom right. Dash also holds Sprint,
+    /// screen, camera drag on the rest, Attack / Heavy / Dash / Jump bottom right and Lock-on top right.
+    /// Dash also holds Sprint,
     /// so keeping the thumb on it after a dash keeps sprinting. Built in code at runtime; shown on
     /// phones, or on PC with the <c>-touch-ui</c> command-line flag (for testing).
     /// </summary>
@@ -61,8 +62,13 @@ namespace Aethvirse.Input.Touch
             // Order matters: later siblings are on top and get the touch first.
             BuildLookArea(safe, rig);
             BuildJoystick(safe);
-            BuildButton(safe, "Jump", "^", new Vector2(-150f, 150f), 190f, "<Gamepad>/buttonSouth");
-            BuildButton(safe, "Dash", "»", new Vector2(-360f, 110f), 150f, "<Gamepad>/buttonEast", "<Gamepad>/leftStickPress");
+            // Thumb arc around the big attack button (bottom right).
+            BuildButton(safe, "Attack", "/", new Vector2(-190f, 190f), 230f, "<Gamepad>/buttonWest");
+            BuildButton(safe, "Heavy", "//", new Vector2(-440f, 120f), 150f, "<Gamepad>/buttonNorth");
+            BuildButton(safe, "Dash", "»", new Vector2(-420f, 330f), 150f, "<Gamepad>/buttonEast", "<Gamepad>/leftStickPress");
+            BuildButton(safe, "Jump", "^", new Vector2(-200f, 450f), 150f, "<Gamepad>/buttonSouth");
+            RectTransform lockButton = BuildButton(safe, "LockOn", "L", new Vector2(-110f, -110f), 120f, "<Gamepad>/rightStickPress");
+            lockButton.anchorMin = lockButton.anchorMax = Vector2.one;
         }
 
         static void EnsureEventSystem()
@@ -98,7 +104,7 @@ namespace Aethvirse.Input.Touch
             zone.gameObject.SetActive(true);
         }
 
-        void BuildButton(RectTransform parent, string name, string label, Vector2 fromBottomRight, float size, params string[] paths)
+        RectTransform BuildButton(RectTransform parent, string name, string label, Vector2 fromBottomRight, float size, params string[] paths)
         {
             RectTransform button = Circle(name, parent, TouchSprites.Disc, size, Color.white);
             button.anchorMin = button.anchorMax = new Vector2(1f, 0f);
@@ -116,6 +122,7 @@ namespace Aethvirse.Input.Touch
                 control.SetGraphic(i == 0 ? image : null);
             }
             button.gameObject.SetActive(true);
+            return button;
         }
 
         // --- UI helpers -------------------------------------------------------------------------

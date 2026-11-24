@@ -1,3 +1,4 @@
+using Aethvirse.Combat;
 using Aethvirse.Input;
 using Aethvirse.Input.Touch;
 using Aethvirse.Player;
@@ -28,6 +29,10 @@ namespace Aethvirse.Cameras
         [SerializeField] float baseFov = 70f;
         [SerializeField] float sprintFov = 78f;
         [SerializeField] float fovSmoothing = 6f;
+        [Header("Lock-on")]
+        [SerializeField] float lockTurnSpeed = 8f;
+        [Tooltip("Camera elevation (degrees) while locked on.")]
+        [SerializeField] float lockElevation = 18f;
 
         CinemachineCamera _camera;
         CinemachineOrbitalFollow _orbit;
@@ -36,6 +41,10 @@ namespace Aethvirse.Cameras
 
         /// <summary>Set by the player while sprinting.</summary>
         public bool FovBoost { get; set; }
+
+        /// <summary>Set by the LockOnTargeter. While set, the camera turns to frame player + target.</summary>
+        public ILockable LockTarget { get; set; }
+        bool Locked => LockTarget != null && !(LockTarget is Object o && o == null);
 
         /// <summary>World yaw the camera looks along, in degrees (0 = +Z).</summary>
         public float Yaw => _orbit.HorizontalAxis.Value;
@@ -73,17 +82,39 @@ namespace Aethvirse.Cameras
             // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.
             // Drag (button held) also turns the camera without capturing the cursor: touchpads and
             // pointer-lock that does not work (e.g. under Wine) still get camera control.
-            Vector2 look = Vector2.zero;
-            if (!touch && (Cursor.lockState == CursorLockMode.Locked || _input.LookDrag.IsPressed()))
-                look += _input.LookPointer.ReadValue<Vector2>() * MouseDegreesPerPixel;
-            // Keys jump from 0 to 1 instantly; a short ease keeps the turn from starting with a snap.
-            _rate = Vector2.Lerp(_rate, _input.LookStick.ReadValue<Vector2>(), MovementMath.SmoothWeight(rateEase, Time.deltaTime));
-            if (_rate.sqrMagnitude < 0.00001f) _rate = Vector2.zero;
-            look += _rate * (stickDegreesPerSecond * Time.deltaTime);
-            if (look != Vector2.zero) RotateBy(look * sensitivity);
+            // Real time, not game time: the camera keeps its pace through hit-stop and slow motion.
+            float dt = Time.unscaledDeltaTime;
+            if (Locked) TrackLockTarget(dt);
+            else
+            {
+                Vector2 look = Vector2.zero;
+                if (!touch && (Cursor.lockState == CursorLockMode.Locked || _input.LookDrag.IsPressed()))
+                    look += _input.LookPointer.ReadValue<Vector2>() * MouseDegreesPerPixel;
+                // Keys jump from 0 to 1 instantly; a short ease keeps the turn from starting with a snap.
+                _rate = Vector2.Lerp(_rate, _input.LookStick.ReadValue<Vector2>(), MovementMath.SmoothWeight(rateEase, dt));
+                if (_rate.sqrMagnitude < 0.00001f) _rate = Vector2.zero;
+                look += _rate * (stickDegreesPerSecond * dt);
+                if (look != Vector2.zero) RotateBy(look * sensitivity);
+            }
 
             float fovTarget = FovBoost ? sprintFov : baseFov;
-            _camera.Lens.FieldOfView = Mathf.Lerp(_camera.Lens.FieldOfView, fovTarget, MovementMath.SmoothWeight(fovSmoothing, Time.deltaTime));
+            _camera.Lens.FieldOfView = Mathf.Lerp(_camera.Lens.FieldOfView, fovTarget, MovementMath.SmoothWeight(fovSmoothing, dt));
+        }
+
+        /// <summary>Turns toward the locked target (seen from the player) and settles at the lock elevation.</summary>
+        void TrackLockTarget(float dt)
+        {
+            Transform follow = _camera.Target.TrackingTarget;
+            if (follow == null) return;
+            Vector3 to = LockTarget.LockPoint - follow.position;
+            to.y = 0f;
+            if (to.sqrMagnitude < 0.01f) return;
+            float w = MovementMath.SmoothWeight(lockTurnSpeed, dt);
+            ref InputAxis h = ref _orbit.HorizontalAxis;
+            ref InputAxis v = ref _orbit.VerticalAxis;
+            h.Value = h.ClampValue(Mathf.LerpAngle(h.Value, MovementMath.YawForDirection(to), w));
+            v.Value = v.ClampValue(Mathf.Lerp(v.Value, lockElevation, w));
+            _rate = Vector2.zero;
         }
 
         /// <summary>x turns right, y looks up (degrees).</summary>

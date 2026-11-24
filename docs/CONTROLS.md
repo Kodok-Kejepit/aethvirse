@@ -10,6 +10,15 @@ All gameplay input goes through Input System actions defined in `Assets/Scripts/
 | Jump | Space (hold = higher) | A / ✕ | Big round button (^) | M1 |
 | Sprint | Left Shift (hold while moving, unlimited) | L3 (hold) | Dash button — keep holding after the dash | M1 |
 | Dodge | Left Ctrl — dash with i-frames, costs stamina, once in mid-air; its late part can chain into a jump or another dash | B / ○ | Round button (») | M1 |
+| Light attack | J · left mouse while the mouse is captured | X / □ | Big round button (/) | M2 |
+| Heavy attack | K · right mouse while the mouse is captured | Y / △ | Round button (//) | M2 |
+| Lock-on | Tab · middle mouse | R3 | Small button top right (L) | M2 |
+| Next / previous target | Mouse wheel down / up | Flick the right stick while locked | — | M2 |
 | Debug overlay | F3 | — | — | M1 |
 
 Desktop testing of the touch UI: `tools/play.sh -- -touch-ui` (mouse clicks act as touches).
+
+Combos (greatsword): `L L L L L` chain · `H` Overhead Smash · `L H` Rising Cleave · `L L H` Whirlwind ·
+`L L L H` Ground Slam · `L L L L H` Piercing Thrust. Dodge cancels attacks after their cancel point; a dodge
+that makes an attack miss in its first 0.15 s is a **Perfect Dodge** → slow motion, and the next hit is a
+guaranteed crit with +50% damage.
