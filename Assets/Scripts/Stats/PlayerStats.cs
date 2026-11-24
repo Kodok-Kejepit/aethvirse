@@ -44,11 +44,70 @@ namespace Aethvirse.Stats
 
         static float Now => Time.time;
 
+        /// <summary>The player's stats in the loaded scene (saves, cheats, UI).</summary>
+        public static PlayerStats Current { get; private set; }
+
         void Awake()
         {
+            Current = this;
             Progression = new Progression(tuning);
             EnsureSkillsUnlocked();
             Recompute(refill: true);
+        }
+
+        void Start()
+        {
+            // A loaded save waits for the player to exist.
+            Save.SaveData pending = Save.SaveManager.TakePending();
+            if (pending != null) Restore(pending.player);
+            World.GameSession.Instance.WorldRunning = true;
+        }
+
+        void OnDestroy()
+        {
+            if (Current == this) Current = null;
+            if (World.GameSession.Exists) World.GameSession.Instance.WorldRunning = false;
+        }
+
+        /// <summary>Writes the player's part of a save.</summary>
+        public void Capture(Save.SaveData.PlayerSection p)
+        {
+            p.classId = classData.id;
+            p.progression = Progression;
+            p.skillIds.Clear();
+            p.skillLevels.Clear();
+            foreach (var kv in _skillLevels)
+            {
+                p.skillIds.Add(kv.Key);
+                p.skillLevels.Add(kv.Value);
+            }
+            p.slots = (string[])Slots.Clone();
+            if (player != null)
+            {
+                p.position = player.transform.position;
+                p.hasPosition = true;
+            }
+            p.health = damageable != null ? damageable.Health.Ratio : 1f;
+            p.mana = Mana.Ratio;
+        }
+
+        /// <summary>Applies the player's part of a save (after the scene loaded).</summary>
+        public void Restore(Save.SaveData.PlayerSection p)
+        {
+            if (p.progression != null)
+            {
+                Progression = p.progression;
+                Progression.Tuning = tuning;
+            }
+            _skillLevels.Clear();
+            for (int i = 0; i < p.skillIds.Count && i < p.skillLevels.Count; i++) _skillLevels[p.skillIds[i]] = p.skillLevels[i];
+            for (int i = 0; i < SlotCount; i++) Slots[i] = p.slots != null && i < p.slots.Length ? p.slots[i] : null;
+            EnsureSkillsUnlocked();
+            Recompute(refill: true);
+            if (damageable != null && p.health < 1f)
+                damageable.Health.SetCurrent(Mathf.Max(1, Mathf.RoundToInt(damageable.Health.maxHealth * p.health)));
+            Mana.SetRatio(p.mana);
+            if (player != null && p.hasPosition) player.Teleport(p.position);
         }
 
         void OnEnable() => Enemies.EnemyEvents.Killed += OnEnemyKilled;

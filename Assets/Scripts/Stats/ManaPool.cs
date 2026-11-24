@@ -19,6 +19,7 @@ namespace Aethvirse.Stats
         }
 
         public void Refill() => Current = maxMana;
+        public void SetRatio(float ratio) => Current = maxMana * Mathf.Clamp01(ratio);
         public bool CanPay(float cost) => Current >= cost;
 
         public bool TryPay(float cost)

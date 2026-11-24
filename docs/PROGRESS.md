@@ -9,7 +9,7 @@ e.g. the combo-flame style, come then).
 | # | Phase 1 milestone | Status |
 |---|---|---|
 | M1–M3 | Movement, combat, stats & skills | done |
-| P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | next |
+| P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | done |
 | P1-5 | Items, inventory, equipment, loot, shop, crafting | |
 | P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | |
 | P1-7 | Four classes with many skills each | |
@@ -26,6 +26,23 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-4 — Core services (branch `p1-4-core-services`)
+
+### Done
+- **Game session** (lives across scenes): world clock (24 real min = 1 game day), weather per region table
+  (clear / rain / fog / storm / snow / sandstorm / ashfall), world flags + counters, gold, play time.
+- **Save / load:** 3 manual slots + autosave (every 5 min and at save crystals), versioned JSON, gzip, SHA-256
+  checksum, atomic write with a .bak; corrupted / truncated / foreign / future files are refused. Saves the
+  player (level, XP, points, skills, slots, position, HP/MP) and the world (clock, weather, flags, gold, region).
+- **Title screen:** Continue (latest save), New Game, Load. Boot → Title → Playground.
+- **Pause menu** (P / Start / ⏸ / Esc with a free cursor): resume, save, load, title, quit; time stops.
+- **Codex notifications:** slide-in cards with a procedural "ding"; level up, new skill, autosave, new day,
+  weather and world objects talk through it.
+- **Interaction:** E / D-pad up / touch contextual button on the nearest usable thing in front. Samples by the
+  spawn: Save Crystal (save + heal), notice board (Codex text), rest bench (sleep until 08:00).
+- **Day / night + weather (graybox):** the sun follows the clock, light dims at night, fog by weather.
+- HUD: day, time, weather (top right), interaction prompt. Cheats F8 (+1 h), F9 (next weather).
 
 ## M3 — Stats & skills (branch `m3-stats-skills`) — done 2026-11-24
 

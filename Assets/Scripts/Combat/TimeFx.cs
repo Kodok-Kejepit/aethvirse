@@ -12,6 +12,19 @@ namespace Aethvirse.Combat
         public const float HitStopScale = 0.02f;
 
         static TimeFx _instance;
+        static bool _paused;
+
+        /// <summary>Menus freeze the game completely; effects resume afterwards.</summary>
+        public static bool Paused
+        {
+            get => _paused;
+            set
+            {
+                _paused = value;
+                if (_instance != null) _instance.Refresh();
+                else Time.timeScale = value ? 0f : 1f;
+            }
+        }
         readonly List<(float scale, float endsAt)> _effects = new List<(float, float)>();
 
         public static void HitStop(float seconds) => Apply(HitStopScale, seconds);
@@ -33,6 +46,7 @@ namespace Aethvirse.Combat
         public static void ResetAll()
         {
             if (_instance != null) _instance._effects.Clear();
+            _paused = false;
             Time.timeScale = 1f;
         }
 
@@ -47,7 +61,7 @@ namespace Aethvirse.Combat
         {
             float scale = 1f;
             foreach (var e in _effects) scale = Mathf.Min(scale, e.scale);
-            Time.timeScale = scale;
+            Time.timeScale = _paused ? 0f : scale;
         }
 
         void OnDestroy() => Time.timeScale = 1f;

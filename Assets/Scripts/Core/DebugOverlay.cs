@@ -33,6 +33,17 @@ namespace Aethvirse.Core
         {
             if (_stats != null && kb.f6Key.wasPressedThisFrame)
                 _stats.AddXp(Progression.XpNeeded(_stats.Progression.level, _stats.Tuning) - _stats.Progression.xp);
+            if (kb.f8Key.wasPressedThisFrame)
+            {
+                var clock = World.GameSession.Instance.Clock;
+                World.GameSession.Instance.SetTime((clock.Hour + 1) % 24, clock.Minute);
+            }
+            if (kb.f9Key.wasPressedThisFrame)
+            {
+                var session = World.GameSession.Instance;
+                var next = (World.WeatherKind)(((int)session.Weather.current + 1) % System.Enum.GetValues(typeof(World.WeatherKind)).Length);
+                session.SetWeather(next, lockIt: true);
+            }
             if (kb.f7Key.wasPressedThisFrame)
             {
                 if (_stats != null) _stats.Recompute(refill: true);
@@ -70,7 +81,7 @@ namespace Aethvirse.Core
                 text += $"\n{player.DebugState}\npos {p.x:0.0} {p.y:0.0} {p.z:0.0}";
             }
             text += "\nF3 hide · camera: mouse / drag / arrow keys · click = capture, Esc = release";
-            text += "\nTest: F6 = level up · F7 = full HP/MP, no cooldowns · C = status";
+            text += "\nTest: F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather · C status · P pause";
             var area = new Rect(8, 8, 640, 128);
             // Dark backing so the text stays readable over a bright sky.
             GUI.color = new Color(0f, 0f, 0f, 0.55f);

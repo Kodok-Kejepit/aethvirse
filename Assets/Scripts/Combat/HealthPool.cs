@@ -57,6 +57,13 @@ namespace Aethvirse.Combat
             Changed?.Invoke(Current, maxHealth);
         }
 
+        /// <summary>Sets HP directly (loading a save).</summary>
+        public void SetCurrent(int value)
+        {
+            Current = Mathf.Clamp(value, 0, maxHealth);
+            Changed?.Invoke(Current, maxHealth);
+        }
+
         public void Heal(int amount)
         {
             if (IsDead || amount <= 0) return;

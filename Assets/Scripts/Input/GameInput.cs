@@ -41,6 +41,8 @@ namespace Aethvirse.Input
         public readonly InputAction TriggerLeft;
         public readonly InputAction TriggerRight;
         public readonly InputAction StatusPanel;
+        public readonly InputAction Interact;
+        public readonly InputAction Pause;
 
         GameInput()
         {
@@ -100,6 +102,10 @@ namespace Aethvirse.Input
             TriggerRight = Player.AddAction("TriggerRight", InputActionType.Value, "<Gamepad>/rightTrigger", expectedControlLayout: "Axis");
             StatusPanel = Player.AddAction("StatusPanel", InputActionType.Button, "<Keyboard>/c");
             StatusPanel.AddBinding("<Gamepad>/select");
+            Interact = Player.AddAction("Interact", InputActionType.Button, "<Keyboard>/e");
+            Interact.AddBinding("<Gamepad>/dpad/up");
+            Pause = Player.AddAction("Pause", InputActionType.Button, "<Keyboard>/p");
+            Pause.AddBinding("<Gamepad>/start");
 
             Player.Enable();
         }
