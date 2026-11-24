@@ -23,7 +23,10 @@ jobs:
           restore-keys: |
             Library-test-
 
-      - uses: game-ci/unity-test-runner@v4
+      # v4.3.2, not v4: v4.4.0 delegates to the game-ci CLI, which loads the .ulf directly and
+      # Unity 6 rejects it ("TimeStamp validation failed"). v4.3.2 activates with email/password/serial
+      # like unity-builder does.
+      - uses: game-ci/unity-test-runner@v4.3.2
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
