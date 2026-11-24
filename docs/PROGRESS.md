@@ -17,7 +17,7 @@ e.g. the combo-flame style, come then).
 | P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | done |
 | P1-10 | Jobs, hidden jobs, shadow army | done |
 | P1-11 | Secrets, Mystery Journal, puzzles | done (35 secrets; target 120+) |
-| P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
+| P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | done (first world; later worlds = data slots) |
 | P1-13 | Audio, localization (ID/EN), settings, quality presets | |
 
 The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what each system should do.
@@ -26,6 +26,15 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-12 — Endgame of the first world (branch `p1-12-endgame`)
+
+### Done
+- **Hollow Throne:** The Unwritten wakes near the empty throne (boss ×60 HP, phases); its fall writes ending A / B
+  (20+ shadows) / C (30+ secrets) and points to [ ??? ].
+- **[ ??? ]:** a white ring where the small gate opened in Ashfall, only at 03:xx and only with the three keys (the
+  Frostveil, Archive and Fracture journal pages full). Inside: the last page; reading it opens the next world on the
+  atlas (flag `last_seal_opened`); the planet / galaxy slots are ready for Part 2 / 3 content.
 
 ## P1-11 — Secrets and the Mystery Journal (branch `p1-11-secrets`)
 

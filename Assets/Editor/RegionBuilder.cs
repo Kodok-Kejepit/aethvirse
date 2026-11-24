@@ -81,6 +81,7 @@ public static class RegionBuilder
         AssetDatabase.SaveAssets();
         for (int i = 0; i < Regions.Length; i++) if (!Regions[i].hidden) BuildScene(Regions[i], regions[i], i);
         BuildGateScene();
+        BuildUnknownScene();
         RegisterScenes();
         AssetDatabase.SaveAssets();
         Debug.Log($"AETHVIRSE: world built ({regions.Count} regions)");
@@ -116,6 +117,7 @@ public static class RegionBuilder
         catalog.enemies.Add(E("rift_stalker", "Rift Stalker", new Color(0.5f, 0.3f, 0.7f), 0.95f, 0.9f, 1.5f, 7f, 0.4f, 0.8f, 5f, 0f, 2f, 22f));
         catalog.enemies.Add(E("hollow_echo", "Hollow Echo", new Color(0.7f, 0.7f, 0.75f), 1.1f, 1.2f, 1.5f, 5f, 0.5f, 1f, 6f, 0f, 2.2f, 30f));
         catalog.enemies.Add(E("gravewarden", "Gravewarden", new Color(0.25f, 0.22f, 0.2f), 1.7f, 2.4f, 1.6f, 2.8f, 1f, 1.6f, 11f, 6f, 2.8f, 80f));
+        catalog.enemies.Add(E("the_unwritten", "The Unwritten", new Color(0.05f, 0.05f, 0.05f), 1.4f, 3f, 1.8f, 5f, 0.5f, 0.9f, 12f, 8f, 3f, 200f));
         EditorUtility.SetDirty(catalog);
     }
 
@@ -266,6 +268,23 @@ public static class RegionBuilder
             so.ApplyModifiedPropertiesWithoutUndo();
         }
         new GameObject("WorldGates").AddComponent<WorldGatesDriver>();
+        if (d.id == "r7_throne")
+        {
+            PlaygroundBuilder.Box(world, "Throne", new Vector3(0f, 1.5f, 66f), new Vector3(4f, 3f, 4f), dark);
+            var boss = new GameObject("ThroneBoss").AddComponent<Aethvirse.Endgame.ThroneBoss>();
+            boss.transform.position = new Vector3(0f, 0.2f, 58f);
+        }
+        if (d.id == "r1_ashfall")
+        {
+            // Where the small gate opened eight years ago: the white ring of 03:xx.
+            GameObject ring = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "WhiteRing", world, new Vector3(-6f, 2.5f, 64f), new Vector3(3.5f, 0.1f, 3.5f), PlaygroundBuilder.MakeMaterial("WhiteRing", Color.white));
+            ring.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            var gateGo = new GameObject("HollowGate");
+            gateGo.transform.position = new Vector3(-6f, 0f, 64f);
+            gateGo.AddComponent<Interactable>();
+            var hg = gateGo.AddComponent<Aethvirse.Endgame.HollowGate>();
+            PlaygroundBuilder.Wire(hg, "ring", ring);
+        }
 
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/{d.scene}.unity");
     }
@@ -284,6 +303,25 @@ public static class RegionBuilder
         PlaygroundBuilder.Wire(run, "secretMat", PlaygroundBuilder.MakeMaterial("GateSecret", new Color(0.5f, 0.3f, 0.7f)));
         PlaygroundBuilder.Wire(run, "portalMat", PlaygroundBuilder.MakeMaterial("ExpeditionGate", new Color(0.4f, 0.75f, 1f)));
         EditorSceneManager.SaveScene(scene, GatePath);
+    }
+
+    public const string UnknownPath = "Assets/Scenes/Regions/R0_Unknown.unity";
+
+    /// <summary>[ ??? ]: a white void with one page to read and the way back.</summary>
+    static void BuildUnknownScene()
+    {
+        var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        var root = new GameObject("Unknown").transform;
+        PlaygroundBuilder.Box(root, "Floor", new Vector3(0f, -0.5f, 0f), new Vector3(60f, 1f, 60f), PlaygroundBuilder.MakeMaterial("Void", new Color(0.92f, 0.92f, 0.95f)));
+        PlaygroundBuilder.BuildPlayerRig(new Vector3(0f, 0.05f, -20f), "r0_unknown");
+        GameObject page = PlaygroundBuilder.Primitive(PrimitiveType.Cube, "LastPage", root, new Vector3(0f, 1.2f, 10f), new Vector3(1.2f, 1.6f, 0.1f), PlaygroundBuilder.MakeMaterial("Page", new Color(0.1f, 0.1f, 0.12f)));
+        page.AddComponent<Interactable>();
+        page.AddComponent<Aethvirse.Endgame.LastSeal>();
+        GameObject back = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "WayBack", root, new Vector3(0f, 2f, -26f), new Vector3(3f, 0.1f, 3f), PlaygroundBuilder.MakeMaterial("ExpeditionGate", new Color(0.4f, 0.75f, 1f)));
+        back.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        back.AddComponent<Interactable>().Prompt = "Go back";
+        AcademyBuilder.SetPortal(back.AddComponent<Portal>(), "", true, null);
+        EditorSceneManager.SaveScene(scene, UnknownPath);
     }
 
     static void Walls(Transform parent, Vector3 center, float size, Material mat)

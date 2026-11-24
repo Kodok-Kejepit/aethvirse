@@ -36,6 +36,7 @@ public static class TitleSceneBuilder
         foreach (string path in RegionBuilder.SceneNames())
             if (System.IO.File.Exists(path)) scenes.Add(new EditorBuildSettingsScene(path, true));
         if (System.IO.File.Exists(RegionBuilder.GatePath)) scenes.Add(new EditorBuildSettingsScene(RegionBuilder.GatePath, true));
+        if (System.IO.File.Exists(RegionBuilder.UnknownPath)) scenes.Add(new EditorBuildSettingsScene(RegionBuilder.UnknownPath, true));
         EditorBuildSettings.scenes = scenes.ToArray();
     }
 }
