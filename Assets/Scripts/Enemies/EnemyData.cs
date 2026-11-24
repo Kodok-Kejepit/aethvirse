@@ -16,6 +16,8 @@ namespace Aethvirse.Enemies
         [Tooltip("Stagger damage needed to interrupt it (resets after a short time without hits).")]
         public float poise = 25f;
         public Color bodyColor = new Color(0.8f, 0.25f, 0.25f);
+        [Tooltip("Body scale (elites ~1.25, bosses ~1.7).")]
+        public float size = 1f;
 
         [Header("Level scaling (Balancing sheet)")]
         [Tooltip("HP / ATK / DEF / XP come from EnemyScaling for level and tier; the numbers above are fallbacks.")]

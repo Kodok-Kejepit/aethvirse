@@ -53,6 +53,78 @@ namespace Aethvirse.Core
             }
         }
 
+        /// <summary>Job (§8): current job, jobs on offer (trial Gate, hidden jobs at once), shadow army.</summary>
+        void DrawJobs(float s)
+        {
+            GUILayout.Space(14 * s);
+            GUILayout.Label("Job: " + (stats.CurrentJob != null ? $"{stats.CurrentJob.displayName} (tier {stats.CurrentJob.tier})" : "none yet"), _title);
+            var reg = Jobs.JobRegistry.Instance;
+            if (reg != null)
+            {
+                var options = reg.Options(stats.Class.id, stats.JobId, stats.Progression.level, World.GameSession.Instance.Flags.Has);
+                if (options.Count == 0)
+                {
+                    int next = stats.CurrentJob == null ? 30 : 60;
+                    GUILayout.Label($"Next job change at Lv {next}.", _text);
+                }
+                foreach (Jobs.JobData j in options)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"{j.displayName} — {j.description}", _text, GUILayout.Width(700 * s));
+                    string label = j.hidden ? "Accept" : "Take the trial";
+                    if (GUILayout.Button(label, _button, GUILayout.Width(220 * s), GUILayout.Height(44 * s)))
+                    {
+                        if (j.hidden) stats.ChangeJob(j.id);
+                        else
+                        {
+                            World.RegionData r = World.RegionController.Current;
+                            string[] types = r != null && r.enemies.Count > 0 ? r.enemies.ToArray() : new[] { "ash_hound", "ember_husk" };
+                            Gates.GateSession.BeginTrial(j.id, j.tier, stats.Progression.level, types);
+                            SetOpen(false);
+                            Save.SceneTravel.Go(World.GateSpot.GateScene, null, rememberReturn: true);
+                            return;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
+            if (stats.Shadows.soldiers.Count > 0)
+            {
+                GUILayout.Label($"Shadow army ({stats.Shadows.soldiers.Count})", _title);
+                foreach (Jobs.ShadowArmy.Soldier sol in stats.Shadows.soldiers)
+                    GUILayout.Label($"  {sol.enemyType}  Lv {sol.level}  · {Jobs.ShadowArmy.RankNames[sol.rank]} ({sol.xp} xp)", _text);
+            }
+        }
+
+        /// <summary>Mystery Journal (§9.5): one page per region; found ✦, hinted ◇ (hint text), unknown ✕ — never answers.</summary>
+        void DrawJournal(float s)
+        {
+            var db = Secrets.SecretDatabase.Instance;
+            var atlas = World.WorldAtlas.Instance;
+            if (db == null || atlas == null) return;
+            var state = Secrets.SecretSystem.Instance.State;
+            GUILayout.Space(14 * s);
+            GUILayout.Label("Mystery Journal", _title);
+            foreach (World.RegionData r in atlas.AllRegions())
+            {
+                var (found, total) = db.Progress(r.id, state);
+                if (total == 0) continue;
+                bool visited = World.GameSession.Instance.Flags.Has(World.Waystone.Flag(r.id + "_gate")) || found > 0;
+                if (!visited) continue;
+                GUILayout.Label($"{r.displayName} — lines revealed {found}/{total}", _text);
+                var page = db.PageFor(r.id);
+                if (page != null) GUILayout.Label("   " + page.synopsis, _text);
+                foreach (Secrets.SecretData sec in db.InRegion(r.id))
+                {
+                    if (state.IsFound(sec.id)) { GUILayout.Label("   [*] " + sec.title, _text); continue; }
+                    bool any = false;
+                    for (int i = 0; i < sec.hints.Count; i++)
+                        if (state.HintSeen(sec.id, i)) { GUILayout.Label("   [?] " + sec.hints[i], _text); any = true; }
+                    if (!any) GUILayout.Label("   [ ] ???", _text);
+                }
+            }
+        }
+
         void OnGUI()
         {
             if (!_open || stats == null) return;
@@ -102,9 +174,12 @@ namespace Aethvirse.Core
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
 
+            DrawJobs(s);
+            DrawJournal(s);
+
             GUILayout.Space(14 * s);
             GUILayout.Label("Skills", _title);
-            foreach (SkillData skill in stats.Class.skills)
+            foreach (SkillData skill in stats.AllSkills())
             {
                 int level = stats.SkillLevel(skill.id);
                 GUILayout.BeginHorizontal();

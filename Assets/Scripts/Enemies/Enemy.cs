@@ -62,7 +62,22 @@ namespace Aethvirse.Enemies
         public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
         Vector3 Facing => visual.forward;
-        Transform Target => PlayerTarget.Visible;
+        /// <summary>The player, or a minion that is clearly closer (summoner / shadow armies).</summary>
+        Transform Target
+        {
+            get
+            {
+                Transform player = PlayerTarget.Visible;
+                Jobs.Minion m = Jobs.Minion.Nearest(transform.position, AggroRadius);
+                if (m == null) return player;
+                if (player == null) return m.transform;
+                return (m.transform.position - transform.position).sqrMagnitude + 4f < (player.position - transform.position).sqrMagnitude ? m.transform : player;
+            }
+        }
+
+        /// <summary>Recently fallen enemies (shadow extraction reads these).</summary>
+        public static readonly System.Collections.Generic.List<(string type, int level, Vector3 at, float time)> Fallen =
+            new System.Collections.Generic.List<(string, int, Vector3, float)>();
 
         void Awake()
         {
@@ -102,6 +117,42 @@ namespace Aethvirse.Enemies
             }
             _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
+
+        /// <summary>Turns this body into another enemy type (catalog spawns): stats, colour, size.</summary>
+        public void SetData(EnemyData newData)
+        {
+            data = newData;
+            visual.localScale = Vector3.one * data.size;
+            if (bodyRenderer != null)
+            {
+                _block.SetColor(BaseColorId, data.bodyColor);
+                bodyRenderer.SetPropertyBlock(_block);
+            }
+            ConfigureStats();
+        }
+
+        float _speedMult = 1f;
+        float _cooldownMult = 1f;
+
+        /// <summary>Gate bosses: more HP and damage, bigger body.</summary>
+        public void MakeBoss(float hpMult, float atkMult, float sizeMult)
+        {
+            _damageable.Health.SetMax(Mathf.RoundToInt(_damageable.Health.maxHealth * hpMult), refill: true);
+            _damageable.Stats.attack *= atkMult;
+            visual.localScale *= sizeMult;
+            _body.radius *= sizeMult;
+            _body.height *= sizeMult;
+            _body.center *= sizeMult;
+        }
+
+        /// <summary>Boss phases: faster and attacking more often.</summary>
+        public void Enrage(float speedMult, float cooldownMult)
+        {
+            _speedMult *= speedMult;
+            _cooldownMult *= cooldownMult;
+        }
+
+        public float HealthRatio => _damageable.Health.Ratio;
 
         int _levelOverride;
         float _aggroOverride;
@@ -190,7 +241,7 @@ namespace Aethvirse.Enemies
                 Stop(dt);
                 Face(target.position, dt);
             }
-            else MoveToward(target.position, data.chaseSpeed, dt);
+            else MoveToward(target.position, data.chaseSpeed * _speedMult, dt);
             Move(dt);
         }
 
@@ -257,7 +308,7 @@ namespace Aethvirse.Enemies
             {
                 ShowTelegraph(0f);
                 AttackTokens.Release(this);
-                _cooldown = data.attackCooldown;
+                _cooldown = data.attackCooldown * _cooldownMult;
             }
             if (State == EnemyState.Hurt) visual.localRotation = Quaternion.Euler(0f, visual.localEulerAngles.y, 0f);
             State = next;
@@ -320,6 +371,8 @@ namespace Aethvirse.Enemies
         void OnDied()
         {
             EnemyEvents.RaiseKilled(data, _xp);
+            Fallen.Add((data.id, Level, transform.position, Time.time));
+            if (Fallen.Count > 32) Fallen.RemoveAt(0);
             DropLoot();
             if (State == EnemyState.Attack) SetState(EnemyState.Chase);
             SetState(EnemyState.Dead);

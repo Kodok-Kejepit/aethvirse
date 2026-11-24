@@ -61,6 +61,17 @@ namespace Aethvirse.Cameras
             if (target != null) SnapTo(target.eulerAngles.y);
         }
 
+        void OnEnable() { Core.GameSettings.Changed += ApplySettings; ApplySettings(); }
+        void OnDisable() => Core.GameSettings.Changed -= ApplySettings;
+
+        void ApplySettings()
+        {
+            sensitivity = Core.GameSettings.Sensitivity;
+            invertY = Core.GameSettings.InvertY;
+            distance = Core.GameSettings.CameraDistance;
+            if (_orbit != null) _orbit.Radius = distance;
+        }
+
         /// <summary>Jumps behind the target facing <paramref name="yaw"/> (after a teleport: no swoop).</summary>
         public void SnapTo(float yaw)
         {
@@ -77,7 +88,7 @@ namespace Aethvirse.Cameras
         {
             // With touch controls the screen is for fingers: no cursor capture, no mouse drag.
             // The status window needs the pointer for its buttons.
-            bool touch = TouchControls.IsActive || Core.StatusPanel.IsOpen || UI.InventoryPanel.IsOpen || UI.PauseMenu.IsOpen || Dialog.DialogBox.IsOpen;
+            bool touch = TouchControls.IsActive || Core.StatusPanel.IsOpen || UI.InventoryPanel.IsOpen || UI.PauseMenu.IsOpen || Dialog.DialogBox.IsOpen || World.FastTravelMenu.IsOpen;
             if (!touch) UpdateCursor();
             // Mouse: raw pixels to degrees, 1:1 like a shooter (no smoothing, no deltaTime: the delta
             // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.

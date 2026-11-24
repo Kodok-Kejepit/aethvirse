@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: sage
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: sage
+  displayName: Sage
+  description: Knowledge that heals and wards.
+  baseClass: arcanist
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 0
+    agility: 0
+    intelligence: 5
+    vitality: 3
+    sense: 2
+  attackBonus: 0
+  defenseBonus: 0.1
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: ecf3f13ed3f6eea28ad9149da921495b, type: 2}
+  - {fileID: 11400000, guid: 7bc093b8be3ebf1b2898e92f8308dc9b, type: 2}
+  - {fileID: 11400000, guid: e928db7ce2b1fa3329ddf64e7395852d, type: 2}
+  - {fileID: 11400000, guid: cbef6fb87ba7990d98a1f79bf0b67e29, type: 2}
+  - {fileID: 11400000, guid: 2bceaa05fdd08e070bbc953a618be784, type: 2}
+  - {fileID: 11400000, guid: fd8e7154115abc0cb84c0e34de8f09e0, type: 2}
+  - {fileID: 11400000, guid: bfd9bfb223bf167fdb3509241102944c, type: 2}
+  - {fileID: 11400000, guid: 5c46b748c0fb15e9db5abeaa191c51e8, type: 2}
+  - {fileID: 11400000, guid: ac2b6bf4779a9c0d0a3ef7809f5c670a, type: 2}
+  - {fileID: 11400000, guid: 912bc557cf52c813183e521353d0d5e1, type: 2}

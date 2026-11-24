@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: beastwarden
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: beastwarden
+  displayName: Beastwarden
+  description: The wild fights beside you.
+  baseClass: ranger
+  tier: 2
+  requiredLevel: 60
+  parent: trapper
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 3
+    agility: 6
+    intelligence: 0
+    vitality: 4
+    sense: 4
+  attackBonus: 0.15
+  defenseBonus: 0.15
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: e51f51195be52f0f781a4e5a3f0a5ccb, type: 2}
+  - {fileID: 11400000, guid: b2d68d07e5bc5fdd69ac84a0baef0ce3, type: 2}
+  - {fileID: 11400000, guid: 5c641381f65808a08ad6b2fc4d7193af, type: 2}
+  - {fileID: 11400000, guid: dbbe9281ffbfe7e22aec4b8e9668ee95, type: 2}
+  - {fileID: 11400000, guid: af56e42738aad8249812cab1586008aa, type: 2}
+  - {fileID: 11400000, guid: 28a0b2ce2ebdd09fa9515d67435902e8, type: 2}
+  - {fileID: 11400000, guid: 655b7a4d25e0f39afa91436110f7a6a9, type: 2}
+  - {fileID: 11400000, guid: f5ba19a5c4673500480ef76ade46a7c2, type: 2}
+  - {fileID: 11400000, guid: c07468848e2c20b97af1973d31e32cdd, type: 2}
+  - {fileID: 11400000, guid: bb9c56c177eef6460b6b14ba10dd6eee, type: 2}

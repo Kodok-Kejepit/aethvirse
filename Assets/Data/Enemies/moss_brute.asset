@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bcd5560031fd9f195b91f7255df69a, type: 3}
+  m_Name: moss_brute
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Enemies.EnemyData
+  id: moss_brute
+  displayName: Moss Brute
+  level: 2
+  maxHealth: 140
+  stats:
+    attack: 16
+    defense: 4
+    critChance: 0.05
+    critDamage: 1.5
+    element: 0
+  poise: 60
+  bodyColor: {r: 0.25, g: 0.4, b: 0.2, a: 1}
+  size: 1.5
+  scaleByLevel: 1
+  tier: 0
+  hpScale: 2
+  attackScale: 1.3
+  xpReward: 20
+  goldReward: 5
+  dropsLoot: 1
+  walkSpeed: 1.6
+  chaseSpeed: 2.4
+  aggroRadius: 12
+  leashRadius: 26
+  patrolRadius: 4
+  attackRange: 3.1200001
+  attackWindup: 1
+  attackActive: 0.15
+  attackRecovery: 0.6
+  attackCooldown: 1.8
+  attackMultiplier: 1
+  attackStagger: 20
+  attackKnockback: 9
+  attackLaunch: 4
+  attackLungeSpeed: 5
+  attackHitboxSize: {x: 2.4299998, y: 1.8899999, z: 2.1599998}
+  attackHitboxOffset: {x: 0, y: 1, z: 1}
+  telegraphRadius: 2.4
+  respawnDelay: 6

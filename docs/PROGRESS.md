@@ -13,12 +13,12 @@ e.g. the combo-flame style, come then).
 | P1-5 | Items, inventory, equipment, loot, shop, crafting | done (v0.5) |
 | P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | done |
 | P1-7 | Four classes with many skills each | done |
-| P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | |
-| P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | |
-| P1-10 | Jobs, hidden jobs, shadow army | |
-| P1-11 | Secrets, Mystery Journal, puzzles | |
-| P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
-| P1-13 | Audio, localization (ID/EN), settings, quality presets | |
+| P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | done (streaming: per-region scenes for now) |
+| P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | done |
+| P1-10 | Jobs, hidden jobs, shadow army | done |
+| P1-11 | Secrets, Mystery Journal, puzzles | done (35 secrets; target 120+) |
+| P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | done (first world; later worlds = data slots) |
+| P1-13 | Audio, localization (ID/EN), settings, quality presets | done (graybox: placeholder SFX, menus localized) |
 
 The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what each system should do.
 
@@ -26,6 +26,74 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-13 — Settings, language, sound (branch `p1-13-settings`)
+
+### Done
+- **Settings** (Pause → Settings; saved): camera sensitivity, invert Y, camera distance, volume, graphics preset
+  Low / Medium / High / Ultra (quality level, shadow distance, LOD bias), FPS limit (VSync / 30 / 60 / 120),
+  language English / Bahasa Indonesia.
+- **Localization** table (EN / ID) used by the menus; other UI strings move into it with the Phase 2 UI.
+- **Placeholder sound** (procedural): swings, hits, dodges, kills, pickups, level-up chime, the Codex ding.
+
+## P1-12 — Endgame of the first world (branch `p1-12-endgame`)
+
+### Done
+- **Hollow Throne:** The Unwritten wakes near the empty throne (boss ×60 HP, phases); its fall writes ending A / B
+  (20+ shadows) / C (30+ secrets) and points to [ ??? ].
+- **[ ??? ]:** a white ring where the small gate opened in Ashfall, only at 03:xx and only with the three keys (the
+  Frostveil, Archive and Fracture journal pages full). Inside: the last page; reading it opens the next world on the
+  atlas (flag `last_seal_opened`); the planet / galaxy slots are ready for Part 2 / 3 content.
+
+## P1-11 — Secrets and the Mystery Journal (branch `p1-11-secrets`)
+
+### Done
+- **Secrets framework** (data-driven): category (room, sealed mission, puzzle, chest, item, lore, anomaly), at least two
+  hints each, conditions (night, weather, hour, items, flags …) or a flag that finds it, rewards. Found at their
+  **SecretSpot** (walk in or use it), by **puzzles** (ordered bells; wrong step resets), or **cracked walls** (only heavy
+  hits break them). A faint shimmer shows within your Sense range (higher SEN = further).
+- **Mystery Journal** (Status → C): one page per region with a cryptic synopsis, "lines revealed x/y", entries found
+  [*] / hinted [?] (hint text) / unknown [ ]. Hints come from notes in the world.
+- **Page full → "Every line has been written." → [ SYSTEM UPDATE ]** and the road to the next region opens (the
+  STORY rule: mist until the page is complete). The internal word "seal" never shows (test-enforced).
+- **35 secrets**: Ashfall's five come from the public prologue (the breathing drain in the rain, the bread seller who
+  waits, the small gate of eight years ago, the humming that fades, the room the ash closed off); every other
+  region has a night secret, a weather secret, a bell puzzle, a hollow wall and an offering.
+- Test cheat **F10**: find every secret of the current region (`reveal_secrets`). Saves v6 keep secrets and hints.
+
+## P1-10 — Jobs and the shadow army (branch `p1-10-jobs`)
+
+### Done
+- **21 jobs** (Godot job tree): Job Change I at Lv 30 (two per class + Summoner for any class), II at Lv 60
+  (Bastion, Warlord, Nightreaper, Illusionist, Archmage, Oracle, Deadeye, Beastwarden, Conjurer), hidden jobs through
+  flags set by sealed missions (Necromancer, Shadow Sovereign at Lv 90, Echo Warden). Jobs add stats, ATK / DEF / HP
+  multipliers, MP cost multipliers and **10 skills each** (7 actives with their own looks + 3 passives).
+- **Job trial:** Status (C) → Job → "Take the trial" opens a trial Gate; clearing it grants the job. Hidden jobs are
+  accepted at once.
+- **Summons:** Summoner familiars fight beside you; enemies switch to a minion that is clearly closer.
+- **Shadow army** (Necromancer line): "Rise, Echo" binds a recently fallen enemy; "Answer me" calls your shadows;
+  shadows earn XP from their own kills and rank up Soldier → Knight → Elite → Commander → Marshal (power ×1 … ×2.4).
+- Saves v5 keep the job and the shadow army.
+- Fixed: region data lived in the wrong file (the file-name guard test caught it), so the atlas was empty.
+
+## P1-8 / P1-9 — World, Gates and dungeons (branch `p1-8-world`)
+
+### Done
+- **World atlas:** galaxy → planet → region (Resources/WorldAtlas). Planet Aethvirse: regions I–VII (Ashfall Outskirts
+  Lv 1–50 … Hollow Throne Lv 300–350) + the hidden [ ??? ]; slots for the next planet and galaxy (story Part 2 / 3).
+- **Seven region scenes** (graybox, `AETHVIRSE > Build World`): walled town, village, landmark, rocks, 8 monster camps
+  (level rises with distance from the entry), 3 waystones, 4 Gate spots, roads to the previous / next region
+  (misty until the academy rank is high enough), Ashfall's back road to the academy. Each region has its own
+  palette, weather table and two monster types (14 new enemy types: size, speed, power, knockback / throws).
+- **Waystones + fast travel** across regions (attune by walking past).
+- **Dynamic Gates:** every 2 game hours a region may open a Gate (rank E–S, sometimes a Red or Double Gate; max 2);
+  left for a game day it **breaks** — a wave pours out; beat it and the Gate collapses with a reward.
+- **Gate dungeons** (seeded, abstract): five map shapes (winding, spiral, ring, fork, hub), five room shapes (rect, cross,
+  L, round, pillared) as platforms over a pit with bridges; 5–15 rooms by rank; monsters wake per room; treasure room;
+  **boss** with phases at 70 / 40 / 15 % (enrage, adds); **Red Gate**: no exit until the boss falls, stronger monsters,
+  triple gold; **Double Gate**: a cracked wall hides a secret room with a sealed chest. Clearing pays gold, academy
+  points, boss loot and counts for daily quests.
+- Saves v4 keep the open Gates. Tests: dungeon reachability / determinism / sizes, Gate timing, atlas consistency.
 
 ## P1-7 — Four classes (branch `p1-7-classes`)
 

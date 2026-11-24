@@ -263,6 +263,7 @@ namespace Aethvirse.Player
             ComboChanged?.Invoke(Tracker.Count, Tracker.Rank(Now));
             DamageNumbers.Spawn(target.transform.position + Vector3.up * 1.8f, info.amount, info.isCrit, info.element, false);
             TimeFx.HitStop(info.hitStop);
+            Core.Sfx.Hit();
             if (info.isHeavy && impulse != null) impulse.GenerateImpulse(heavyShake);
         }
 

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bcd5560031fd9f195b91f7255df69a, type: 3}
+  m_Name: dune_scuttler
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Enemies.EnemyData
+  id: dune_scuttler
+  displayName: Dune Scuttler
+  level: 2
+  maxHealth: 140
+  stats:
+    attack: 16
+    defense: 4
+    critChance: 0.05
+    critDamage: 1.5
+    element: 0
+  poise: 18
+  bodyColor: {r: 0.75, g: 0.55, b: 0.35, a: 1}
+  size: 0.8
+  scaleByLevel: 1
+  tier: 0
+  hpScale: 0.7
+  attackScale: 1
+  xpReward: 20
+  goldReward: 5
+  dropsLoot: 1
+  walkSpeed: 1.6
+  chaseSpeed: 6.5
+  aggroRadius: 12
+  leashRadius: 26
+  patrolRadius: 4
+  attackRange: 1.8
+  attackWindup: 0.4
+  attackActive: 0.15
+  attackRecovery: 0.6
+  attackCooldown: 0.7
+  attackMultiplier: 1
+  attackStagger: 20
+  attackKnockback: 3
+  attackLaunch: 0
+  attackLungeSpeed: 5
+  attackHitboxSize: {x: 1.8, y: 1.4, z: 1.6}
+  attackHitboxOffset: {x: 0, y: 1, z: 1}
+  telegraphRadius: 1.2800001
+  respawnDelay: 6

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: deadeye
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: deadeye
+  displayName: Deadeye
+  description: It never misses.
+  baseClass: ranger
+  tier: 2
+  requiredLevel: 60
+  parent: sharpshooter
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 2
+    agility: 8
+    intelligence: 0
+    vitality: 1
+    sense: 8
+  attackBonus: 0.3
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 2c1227abd66a352159b43c1108d35d0a, type: 2}
+  - {fileID: 11400000, guid: ceae5509631b8b3028ab7d84c31f52ad, type: 2}
+  - {fileID: 11400000, guid: 9142fd7357e0b156aa9f9aeecf2fdf53, type: 2}
+  - {fileID: 11400000, guid: 2a4d50a8440462262a1e359d40f679b4, type: 2}
+  - {fileID: 11400000, guid: 0dee31c3f2e281228b7c8a1d6776ede1, type: 2}
+  - {fileID: 11400000, guid: b86845e384d3c447ea09d7c2d18f49fb, type: 2}
+  - {fileID: 11400000, guid: ccf031151048fb3ab84efa5246ab95ac, type: 2}
+  - {fileID: 11400000, guid: 3fc36b177128c79c7a548d28e6a65e01, type: 2}
+  - {fileID: 11400000, guid: a4ec3268b3e944226851420c244f4b9a, type: 2}
+  - {fileID: 11400000, guid: c9f1d07b2952987ed95b566ad4591f65, type: 2}

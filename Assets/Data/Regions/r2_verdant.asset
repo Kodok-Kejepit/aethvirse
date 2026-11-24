@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c21cb8f7ace9e8d8b40fd042816947, type: 3}
+  m_Name: r2_verdant
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.World.RegionData
+  id: r2_verdant
+  displayName: Verdant Hollow
+  blurb: A green valley. Too quiet to trust.
+  scene: R2_Verdant
+  levelMin: 50
+  levelMax: 100
+  requiredRank: 1
+  hidden: 0
+  requiredFlag: journal_r1_ashfall_full
+  palette: {r: 0.32, g: 0.5, b: 0.3, a: 1}
+  weather:
+    entries:
+    - kind: 0
+      weight: 4
+    - kind: 1
+      weight: 1.5
+    - kind: 2
+      weight: 1.5
+    - kind: 3
+      weight: 1.5
+    minDuration: 60
+    maxDuration: 240
+  waystones:
+  - id: r2_verdant_gate
+    displayName: "Verdant Hollow \u2014 Entry"
+    position: {x: 6, y: 0, z: -100}
+  - id: r2_verdant_town
+    displayName: "Verdant Hollow \u2014 Town"
+    position: {x: -50, y: 0, z: -30}
+  - id: r2_verdant_landmark
+    displayName: "Verdant Hollow \u2014 Landmark"
+    position: {x: 0, y: 0, z: 55}
+  gateSpots:
+  - {x: 70, y: 0, z: -70}
+  - {x: -80, y: 0, z: 40}
+  - {x: 85, y: 0, z: 70}
+  - {x: -30, y: 0, z: 95}
+  enemies:
+  - thorn_stalker
+  - moss_brute
+  neighbours:
+  - r1_ashfall
+  - r3_dunes

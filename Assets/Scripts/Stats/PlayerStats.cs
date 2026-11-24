@@ -35,6 +35,49 @@ namespace Aethvirse.Stats
         public ManaPool Mana { get; } = new ManaPool();
         public string[] Slots { get; } = new string[SlotCount];
         public BuffSet Buffs => _buffs;
+        /// <summary>Bound shadow soldiers (shadow job line; saved).</summary>
+        public global::Aethvirse.Jobs.ShadowArmy Shadows { get; private set; } = new global::Aethvirse.Jobs.ShadowArmy();
+        /// <summary>Current job id ("" = still the base class) and its lineage.</summary>
+        public string JobId { get; private set; } = "";
+        public List<global::Aethvirse.Jobs.JobData> Jobs { get; private set; } = new List<global::Aethvirse.Jobs.JobData>();
+        public global::Aethvirse.Jobs.JobData CurrentJob => Jobs.Count > 0 ? Jobs[Jobs.Count - 1] : null;
+        public event Action<global::Aethvirse.Jobs.JobData> JobChanged;
+
+        /// <summary>Class skills followed by the skills of every job taken so far.</summary>
+        public List<SkillData> AllSkills()
+        {
+            var list = new List<SkillData>(classData.skills);
+            foreach (global::Aethvirse.Jobs.JobData j in Jobs) list.AddRange(j.skills);
+            return list;
+        }
+
+        public SkillData FindSkill(string id) => AllSkills().Find(s => s != null && s.id == id);
+
+        /// <summary>MP cost after the job's multiplier (summoners are mana-hungry).</summary>
+        public int MpCost(SkillData s) => Mathf.RoundToInt(s.mpCost * (CurrentJob != null ? CurrentJob.mpCostMultiplier : 1f));
+
+        /// <summary>Job Change (§8): only a job on offer right now. Learns its skills and refills.</summary>
+        public bool ChangeJob(string jobId)
+        {
+            var reg = global::Aethvirse.Jobs.JobRegistry.Instance;
+            if (reg == null) return false;
+            var offered = reg.Options(classData.id, JobId, Progression.level, World.GameSession.Instance.Flags.Has);
+            global::Aethvirse.Jobs.JobData target = offered.Find(j => j.id == jobId);
+            if (target == null) return false;
+            SetJob(target.id);
+            World.GameSession.Instance.Flags.SetFlag("job_" + target.id);
+            JobChanged?.Invoke(target);
+            return true;
+        }
+
+        void SetJob(string jobId)
+        {
+            JobId = jobId ?? "";
+            var reg = global::Aethvirse.Jobs.JobRegistry.Instance;
+            Jobs = reg != null ? reg.Lineage(JobId) : new List<global::Aethvirse.Jobs.JobData>();
+            EnsureSkillsUnlocked();
+            Recompute(refill: true);
+        }
         /// <summary>Share of damage dealt healed back (gear affixes).</summary>
         public float Lifesteal { get; private set; }
 
@@ -87,6 +130,8 @@ namespace Aethvirse.Stats
                 p.skillLevels.Add(kv.Value);
             }
             p.slots = (string[])Slots.Clone();
+            p.jobId = JobId;
+            p.shadows = Shadows;
             if (player != null)
             {
                 p.position = player.transform.position;
@@ -124,6 +169,10 @@ namespace Aethvirse.Stats
             }
             _skillLevels.Clear();
             for (int i = 0; i < p.skillIds.Count && i < p.skillLevels.Count; i++) _skillLevels[p.skillIds[i]] = p.skillLevels[i];
+            JobId = p.jobId ?? "";
+            Shadows = p.shadows ?? new global::Aethvirse.Jobs.ShadowArmy();
+            var reg = global::Aethvirse.Jobs.JobRegistry.Instance;
+            Jobs = reg != null ? reg.Lineage(JobId) : new List<global::Aethvirse.Jobs.JobData>();
             for (int i = 0; i < SlotCount; i++) Slots[i] = p.slots != null && i < p.slots.Length ? p.slots[i] : null;
             if (inventory != null && p.hasInventory) inventory.Restore(p.inventory);
             EnsureSkillsUnlocked();
@@ -159,7 +208,7 @@ namespace Aethvirse.Stats
         public int SkillLevel(string id) => _skillLevels.TryGetValue(id, out int level) ? level : 0;
 
         public SkillData SlotSkill(int slot) =>
-            slot >= 0 && slot < SlotCount && !string.IsNullOrEmpty(Slots[slot]) ? classData.FindSkill(Slots[slot]) : null;
+            slot >= 0 && slot < SlotCount && !string.IsNullOrEmpty(Slots[slot]) ? FindSkill(Slots[slot]) : null;
 
         /// <summary>Recalculates everything from progression, passives and buffs.</summary>
         public void Recompute(bool refill)
@@ -170,17 +219,21 @@ namespace Aethvirse.Stats
             if (gear) Primary = Primary.Plus(inventory.EquipmentStats());
             // Equipped weapon (none = bare hands; the starter kit equips the issued weapon).
             float weapon = gear ? inventory.WeaponAttack(level) : level * tuning.weaponAtkPerLevel;
+            foreach (global::Aethvirse.Jobs.JobData j in Jobs) Primary = Primary.Plus(j.statBonus);
             DerivedStats d = DerivedStats.Compute(level, Primary, tuning, weapon);
+            float jobAtk = 0f, jobDef = 0f, jobHp = 0f;
+            foreach (global::Aethvirse.Jobs.JobData j in Jobs) { jobAtk += j.attackBonus; jobDef += j.defenseBonus; jobHp += j.hpBonus; }
+            d.maxHp = Mathf.RoundToInt(d.maxHp * (1f + jobHp));
             if (gear)
             {
                 d.defense += inventory.EquipmentDefense();
                 d.critChance = Mathf.Min(tuning.critCap, d.critChance + inventory.EquipmentBonus(Items.StatKeys.Crit));
                 Lifesteal = inventory.EquipmentBonus(Items.StatKeys.Lifesteal);
             }
-            float atkBonus = _buffs.Total(BuffStat.Attack) + PassiveTotal(BuffStat.Attack);
+            float atkBonus = _buffs.Total(BuffStat.Attack) + PassiveTotal(BuffStat.Attack) + jobAtk;
             d.attack *= 1f + atkBonus;
             d.magicAttack *= 1f + atkBonus;
-            d.defense *= 1f + _buffs.Total(BuffStat.Defense) + PassiveTotal(BuffStat.Defense);
+            d.defense *= 1f + _buffs.Total(BuffStat.Defense) + PassiveTotal(BuffStat.Defense) + jobDef;
             d.critChance = Mathf.Min(tuning.critCap, d.critChance + _buffs.Total(BuffStat.Crit) + PassiveTotal(BuffStat.Crit));
             d.attackSpeed += _buffs.Total(BuffStat.AttackSpeed) + PassiveTotal(BuffStat.AttackSpeed);
             d.moveSpeed += _buffs.Total(BuffStat.MoveSpeed) + PassiveTotal(BuffStat.MoveSpeed);
@@ -219,6 +272,7 @@ namespace Aethvirse.Stats
                 EnsureSkillsUnlocked();
                 Recompute(refill: true);
                 LeveledUp?.Invoke(Progression.level);
+                Core.Sfx.LevelUp();
             }
             else Changed?.Invoke();
         }
@@ -232,7 +286,7 @@ namespace Aethvirse.Stats
 
         public bool LevelUpSkill(string id)
         {
-            SkillData skill = classData.FindSkill(id);
+            SkillData skill = FindSkill(id);
             int current = SkillLevel(id);
             if (skill == null || current <= 0 || current >= skill.maxLevel || Progression.skillPoints <= 0) return false;
             Progression.skillPoints--;
@@ -251,7 +305,7 @@ namespace Aethvirse.Stats
         public float PassiveTotal(BuffStat stat)
         {
             float total = 0f;
-            foreach (SkillData s in classData.skills)
+            foreach (SkillData s in AllSkills())
                 if (s.IsPassive && s.buffStat == stat && SkillLevel(s.id) > 0) total += s.BuffAt(SkillLevel(s.id));
             return total;
         }
@@ -259,7 +313,7 @@ namespace Aethvirse.Stats
         /// <summary>Learns newly unlocked skills at level 1 and puts actives on free slots.</summary>
         void EnsureSkillsUnlocked()
         {
-            foreach (SkillData s in classData.skills)
+            foreach (SkillData s in AllSkills())
             {
                 if (Progression.level < s.unlockLevel || SkillLevel(s.id) > 0) continue;
                 _skillLevels[s.id] = 1;
@@ -287,7 +341,7 @@ namespace Aethvirse.Stats
         /// <summary>Puts an active skill into slot 0–3; the ultimate slot only takes ultimates.</summary>
         public bool AssignSlot(string id, int slot)
         {
-            SkillData s = classData.FindSkill(id);
+            SkillData s = FindSkill(id);
             if (s == null || s.IsPassive || SkillLevel(id) <= 0 || slot < 0 || slot >= SlotCount) return false;
             if ((slot == UltimateSlot) != s.isUltimate) return false;
             for (int i = 0; i < SlotCount; i++) if (Slots[i] == id) Slots[i] = null;

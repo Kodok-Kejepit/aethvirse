@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: necromancer
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: necromancer
+  displayName: Necromancer
+  description: The fallen rise for you.
+  baseClass: 
+  tier: 2
+  requiredLevel: 60
+  parent: summoner
+  hidden: 1
+  requiredFlag: sealed_necromancer
+  statBonus:
+    strength: 0
+    agility: 2
+    intelligence: 8
+    vitality: 4
+    sense: 4
+  attackBonus: 0
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1.2
+  shadowArmy: 1
+  skills:
+  - {fileID: 11400000, guid: a0577c4998dd97b619d0c941c745e7fe, type: 2}
+  - {fileID: 11400000, guid: f82ff5393024656cea613e9e0b6d6b2d, type: 2}
+  - {fileID: 11400000, guid: d4cf17e5ff9670ae5a3bac9ee479812e, type: 2}
+  - {fileID: 11400000, guid: ccce770811e786e8dbf6b81113276956, type: 2}
+  - {fileID: 11400000, guid: 7b2537ad9bb813cdfae0be7864a8b7be, type: 2}
+  - {fileID: 11400000, guid: b12120b83f981da0289ebf621a3d44a4, type: 2}
+  - {fileID: 11400000, guid: 080885c583694a1e9a97565184754245, type: 2}
+  - {fileID: 11400000, guid: c9ce9dd4d10ac279eb3b0f4452b6ec19, type: 2}
+  - {fileID: 11400000, guid: ad0c1e305b4a6f3a5b3ffee1b3f13965, type: 2}
+  - {fileID: 11400000, guid: 1a9c26378a4b390fdaa60aeaaab39df9, type: 2}

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: archmage
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: archmage
+  displayName: Archmage
+  description: The elements bow.
+  baseClass: arcanist
+  tier: 2
+  requiredLevel: 60
+  parent: elementalist
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 0
+    agility: 0
+    intelligence: 14
+    vitality: 2
+    sense: 2
+  attackBonus: 0.3
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 5635d46f2f72231e5a1db3ff4d899de0, type: 2}
+  - {fileID: 11400000, guid: 33fc5150888d4c8139362a21f47804e5, type: 2}
+  - {fileID: 11400000, guid: c44c786a477f4d3c8b248f716793a280, type: 2}
+  - {fileID: 11400000, guid: e8d07515ecca5de9f96e1533a66aca9b, type: 2}
+  - {fileID: 11400000, guid: 573f7386991adc597b3e1fa9e60b7b43, type: 2}
+  - {fileID: 11400000, guid: 0d074d3af2976e41e83e0599041e940c, type: 2}
+  - {fileID: 11400000, guid: c13f8f03b68805f43af66a4fbc6ebcb2, type: 2}
+  - {fileID: 11400000, guid: 7f02874106140d952b60c50f5be8739c, type: 2}
+  - {fileID: 11400000, guid: 3eb497b7cdcc52291bc4f43f56507bdc, type: 2}
+  - {fileID: 11400000, guid: 272cba2f27d8430809d07c476db08a44, type: 2}

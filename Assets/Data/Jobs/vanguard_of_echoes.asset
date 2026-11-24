@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: vanguard_of_echoes
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: vanguard_of_echoes
+  displayName: Echo Warden
+  description: A hidden path. Echoes fight with you.
+  baseClass: 
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 1
+  requiredFlag: echo_king_answered
+  statBonus:
+    strength: 3
+    agility: 3
+    intelligence: 3
+    vitality: 3
+    sense: 3
+  attackBonus: 0.1
+  defenseBonus: 0.1
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: cc100665719d0ec5c80600052ea5ab58, type: 2}
+  - {fileID: 11400000, guid: c34ec0788e57b74b192c7833a28d8375, type: 2}
+  - {fileID: 11400000, guid: 32d40e6d36d148a4d8b70f9cd729a200, type: 2}
+  - {fileID: 11400000, guid: bd1c79fd9203ee723a67089424a0e425, type: 2}
+  - {fileID: 11400000, guid: b4b9f333eed3cc9059ddfb016bb4f31b, type: 2}
+  - {fileID: 11400000, guid: c4fc3050e0f758aa8b378c6ef95f064e, type: 2}
+  - {fileID: 11400000, guid: f95699214884c14abaa741eb6cfd3d94, type: 2}
+  - {fileID: 11400000, guid: dc8840bd599a753c09debf7757ead358, type: 2}
+  - {fileID: 11400000, guid: 2f2e83517598c86bb9ee547f6fd2a428, type: 2}
+  - {fileID: 11400000, guid: df1bdd2b37a4c6622a6d0f6014d57ade, type: 2}

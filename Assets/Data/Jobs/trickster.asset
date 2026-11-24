@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: trickster
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: trickster
+  displayName: Trickster
+  description: Now you see me.
+  baseClass: phantom
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 0
+    agility: 6
+    intelligence: 1
+    vitality: 0
+    sense: 2
+  attackBonus: 0.08
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 521d576907f6711cf88294ca25fa480e, type: 2}
+  - {fileID: 11400000, guid: ced5a74d31b8e2523918486dd5374b7d, type: 2}
+  - {fileID: 11400000, guid: 5b00bd966907e8f629a9a18c50764132, type: 2}
+  - {fileID: 11400000, guid: bfd0e3b9b14631dd4b8e4e41d13ac9aa, type: 2}
+  - {fileID: 11400000, guid: 3349648c8fcc3f963b23992540ca8128, type: 2}
+  - {fileID: 11400000, guid: 643cc45e6b7b25e3a9a85dd8df96493b, type: 2}
+  - {fileID: 11400000, guid: 95fdb940979a29e6abab2555a0584a8e, type: 2}
+  - {fileID: 11400000, guid: 949c98913b3a92c0dbbaa4696198c996, type: 2}
+  - {fileID: 11400000, guid: b5d3e4beb05688564b41718f6f56ef3e, type: 2}
+  - {fileID: 11400000, guid: f21a1ea8c702989618fd2c3ee65cdd27, type: 2}

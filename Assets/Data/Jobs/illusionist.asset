@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: illusionist
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: illusionist
+  displayName: Illusionist
+  description: Nothing you see is real.
+  baseClass: phantom
+  tier: 2
+  requiredLevel: 60
+  parent: trickster
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 0
+    agility: 10
+    intelligence: 4
+    vitality: 0
+    sense: 5
+  attackBonus: 0.18
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: eb27f3fb957bad47493e3b55ac99a7ab, type: 2}
+  - {fileID: 11400000, guid: f132a96bf79297a569c6cc5b21b9bea7, type: 2}
+  - {fileID: 11400000, guid: 859c828d3ace2e416b9da4387fc725bf, type: 2}
+  - {fileID: 11400000, guid: 6f19296dea04783b6868740c2e5025f2, type: 2}
+  - {fileID: 11400000, guid: a2868561b4ef570b7a3e10f6f9757582, type: 2}
+  - {fileID: 11400000, guid: 161e71633027402f79b7afcca5227ad7, type: 2}
+  - {fileID: 11400000, guid: e36db1e91f85016c883e4f0fb34bf7cf, type: 2}
+  - {fileID: 11400000, guid: 0fb899eddbba849888e6dffb87e9f016, type: 2}
+  - {fileID: 11400000, guid: 84058dd5299a484c09d65b12377425bd, type: 2}
+  - {fileID: 11400000, guid: 1395dae1e0bd331ecaae42b50f2740aa, type: 2}

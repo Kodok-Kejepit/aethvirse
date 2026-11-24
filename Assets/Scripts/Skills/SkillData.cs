@@ -6,7 +6,7 @@ namespace Aethvirse.Skills
 {
     /// <summary>MELEE/DASH/AOE use <see cref="SkillData.attack"/> as timeline + hitbox; BUFF is instant; PASSIVE is always on.</summary>
     /// <summary>Append only: assets store the number.</summary>
-    public enum SkillKind { Melee, Dash, Aoe, Buff, Passive, Projectile, Heal, Stealth, Trap }
+    public enum SkillKind { Melee, Dash, Aoe, Buff, Passive, Projectile, Heal, Stealth, Trap, Summon, ShadowExtract, ShadowCall }
 
     /// <summary>The look of a skill (owner: every skill must move and look different).</summary>
     /// <summary>Append only. Generic looks are tinted with the skill's icon colour.</summary>
@@ -55,7 +55,13 @@ namespace Aethvirse.Skills
         public float MultiplierAt(int level) => damageMultiplier + multiplierPerLevel * (Mathf.Max(level, 1) - 1);
         public float BuffAt(int level) => buffAmount + buffAmountPerLevel * (Mathf.Max(level, 1) - 1);
         public bool IsPassive => kind == SkillKind.Passive;
-        public bool IsInstant => kind == SkillKind.Buff || kind == SkillKind.Heal || kind == SkillKind.Stealth || kind == SkillKind.Trap;
+        public bool IsInstant => kind == SkillKind.Buff || kind == SkillKind.Heal || kind == SkillKind.Stealth || kind == SkillKind.Trap
+            || kind == SkillKind.Summon || kind == SkillKind.ShadowExtract || kind == SkillKind.ShadowCall;
+
+        [Header("Summons")]
+        [Tooltip("Summon: enemy type used as the familiar's body; ShadowCall: how many soldiers come.")]
+        public string summonType = "ash_hound";
+        public int summonCount = 1;
         public bool IsDamaging => (kind == SkillKind.Melee || kind == SkillKind.Dash || kind == SkillKind.Aoe || kind == SkillKind.Projectile) && attack != null;
     }
 }
