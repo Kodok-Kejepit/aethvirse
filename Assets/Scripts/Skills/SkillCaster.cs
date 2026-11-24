@@ -105,15 +105,66 @@ namespace Aethvirse.Skills
             int level = stats.SkillLevel(skill.id);
             if (level <= 0 || skill.IsPassive) return CastResult.Locked;
             if (CooldownRemaining(skill) > 0f) return CastResult.Cooldown;
-            if (!stats.Mana.CanPay(skill.mpCost)) return CastResult.NoMp;
+            if (!stats.Mana.CanPay(stats.MpCost(skill))) return CastResult.NoMp;
             if (player.IsDead || !player.CanCastSkill) return CastResult.Busy;
             Cast(skill, level);
             return CastResult.Ok;
         }
 
+        readonly List<Jobs.Minion> _familiars = new List<Jobs.Minion>();
+        readonly List<Jobs.Minion> _shadows = new List<Jobs.Minion>();
+
+        void Summon(SkillData skill, int level)
+        {
+            _familiars.RemoveAll(m => m == null || !m.Alive);
+            int cap = skill.summonCount + level / 4;
+            var cat = Enemies.EnemyCatalog.Instance;
+            for (int i = _familiars.Count; i < cap && cat != null; i++)
+            {
+                Vector3 at = transform.position + Quaternion.Euler(0f, i * 120f, 0f) * Vector3.forward * 2f;
+                Enemies.Enemy body = cat.Spawn(skill.summonType, at, stats.Progression.level, 0f, false);
+                if (body != null) _familiars.Add(Jobs.Minion.Convert(body, 0.35f, 1f + 0.05f * level, null));
+            }
+            UI.Codex.Notify("Come forth.", UI.CodexTone.System);
+        }
+
+        void Extract(int level)
+        {
+            const float range = 8f, window = 30f;
+            for (int i = Enemies.Enemy.Fallen.Count - 1; i >= 0; i--)
+            {
+                var f = Enemies.Enemy.Fallen[i];
+                if (Time.time - f.time > window || (f.at - transform.position).sqrMagnitude > range * range) continue;
+                Enemies.Enemy.Fallen.RemoveAt(i);
+                stats.Shadows.Bind(f.type, f.level);
+                UI.Codex.Notify("\"Rise, Echo.\"  A shadow answers.", UI.CodexTone.Anomaly);
+                return;
+            }
+            UI.Codex.Notify("No fallen shadow answers here.", UI.CodexTone.Info);
+        }
+
+        void CallShadows(SkillData skill, int level)
+        {
+            _shadows.RemoveAll(m => m == null || !m.Alive);
+            int cap = skill.summonCount + level / 3;
+            var cat = Enemies.EnemyCatalog.Instance;
+            int called = 0;
+            foreach (Jobs.ShadowArmy.Soldier s in stats.Shadows.soldiers)
+            {
+                if (_shadows.Count >= cap || cat == null) break;
+                if (_shadows.Exists(m => m.Soldier == s)) continue;
+                Vector3 at = transform.position + Quaternion.Euler(0f, _shadows.Count * 60f, 0f) * Vector3.back * 2.5f;
+                Enemies.Enemy body = cat.Spawn(s.enemyType, at, s.level, 0f, false);
+                if (body == null) continue;
+                _shadows.Add(Jobs.Minion.Convert(body, 0.4f, Jobs.ShadowArmy.RankPower[s.rank], s));
+                called++;
+            }
+            UI.Codex.Notify(called > 0 ? "\"Answer me.\"" : "Your army is empty.", UI.CodexTone.Anomaly);
+        }
+
         void Cast(SkillData skill, int level)
         {
-            stats.Mana.TryPay(skill.mpCost);
+            stats.Mana.TryPay(stats.MpCost(skill));
             _cooldowns[skill.id] = skill.cooldown * (1f - stats.Derived.cooldownReduction);
             float now = Time.time;
             SkillComboData combo = stats.Class.FindCombo(_lastSkill, now - _lastSkillTime, skill.id);
@@ -138,6 +189,15 @@ namespace Aethvirse.Skills
                     return;
                 case SkillKind.Trap:
                     combat.PlaceTrap(skill, level, transform.position);
+                    return;
+                case SkillKind.Summon:
+                    Summon(skill, level);
+                    return;
+                case SkillKind.ShadowExtract:
+                    Extract(level);
+                    return;
+                case SkillKind.ShadowCall:
+                    CallShadows(skill, level);
                     return;
             }
             if (!skill.IsDamaging) return;

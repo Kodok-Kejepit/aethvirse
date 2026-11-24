@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: warlord
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: warlord
+  displayName: Warlord
+  description: War itself, given a sword.
+  baseClass: vanguard
+  tier: 2
+  requiredLevel: 60
+  parent: berserker
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 12
+    agility: 3
+    intelligence: 0
+    vitality: 3
+    sense: 1
+  attackBonus: 0.3
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 53812f6c772a81d8db4459c46a7820e7, type: 2}
+  - {fileID: 11400000, guid: 123298ce99cfd7b28b68a7b151deb59c, type: 2}
+  - {fileID: 11400000, guid: d333c90f300d8e0ac81e0e00e60b4393, type: 2}
+  - {fileID: 11400000, guid: 66b79766494ff1a9595e7ca6278f662e, type: 2}
+  - {fileID: 11400000, guid: f9306ae5c0459067ab4202d082f3e714, type: 2}
+  - {fileID: 11400000, guid: 526f68b48bfa45ff891f70867fba1e68, type: 2}
+  - {fileID: 11400000, guid: 3886c5a94c18aba9a98e90ce34c91b97, type: 2}
+  - {fileID: 11400000, guid: f193e40ef8cd0ca9194bb8a7da7b4d27, type: 2}
+  - {fileID: 11400000, guid: e358518f8f04ac077ab66679f7e1ca6a, type: 2}
+  - {fileID: 11400000, guid: 8668554d17b9f8bfd986281219b2e98f, type: 2}

@@ -220,6 +220,8 @@ namespace Aethvirse.Gates
         {
             _cleared = true;
             Codex.Notify("[ GATE CLEARED ]", CodexTone.Reward);
+            if (!string.IsNullOrEmpty(GateSession.TrialJob) && PlayerStats.Current != null && PlayerStats.Current.ChangeJob(GateSession.TrialJob))
+                Codex.Notify($"[ JOB CHANGE ] You are now a {PlayerStats.Current.CurrentJob.displayName}.", CodexTone.Reward);
             GameEvents.RaiseGateCleared(WorldGates.RankNames[_gate.rank]);
             GameSession.Instance.AddGold(80 * (_gate.rank + 1) * (_gate.red ? 3 : 1));
             Quests.QuestSystem.Instance.AddAcademyPoints(15 + 10 * _gate.rank);

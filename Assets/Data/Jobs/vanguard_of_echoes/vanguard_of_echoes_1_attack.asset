@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: vanguard_of_echoes_1_attack
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: vanguard_of_echoes_1
+  displayName: vanguard_of_echoes_1
+  damageMultiplier: 1
+  isHeavy: 1
+  element: 8
+  startup: 0.14999999
+  active: 0.15
+  recovery: 0.35
+  comboWindow: 0.5
+  dodgeCancel: 0.225
+  hitboxSize: {x: 3.2, y: 1.6, z: 2.8}
+  hitboxOffset: {x: 0, y: 1, z: 1.5}
+  knockback: 5
+  stagger: 35
+  hitStop: 0.08
+  lungeSpeed: 3
+  swing: 1
+  ranged: 0
+  projectileCount: 5
+  projectileSpread: 40
+  projectileSpeed: 36
+  projectileRange: 32
+  projectileRadius: 0.4
+  projectilePierce: 1
+  projectileColor: {r: 0.8, g: 0.8, b: 0.9, a: 1}
+  homing: 0
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 0}

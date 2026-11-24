@@ -62,7 +62,22 @@ namespace Aethvirse.Enemies
         public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
         Vector3 Facing => visual.forward;
-        Transform Target => PlayerTarget.Visible;
+        /// <summary>The player, or a minion that is clearly closer (summoner / shadow armies).</summary>
+        Transform Target
+        {
+            get
+            {
+                Transform player = PlayerTarget.Visible;
+                Jobs.Minion m = Jobs.Minion.Nearest(transform.position, AggroRadius);
+                if (m == null) return player;
+                if (player == null) return m.transform;
+                return (m.transform.position - transform.position).sqrMagnitude + 4f < (player.position - transform.position).sqrMagnitude ? m.transform : player;
+            }
+        }
+
+        /// <summary>Recently fallen enemies (shadow extraction reads these).</summary>
+        public static readonly System.Collections.Generic.List<(string type, int level, Vector3 at, float time)> Fallen =
+            new System.Collections.Generic.List<(string, int, Vector3, float)>();
 
         void Awake()
         {
@@ -356,6 +371,8 @@ namespace Aethvirse.Enemies
         void OnDied()
         {
             EnemyEvents.RaiseKilled(data, _xp);
+            Fallen.Add((data.id, Level, transform.position, Time.time));
+            if (Fallen.Count > 32) Fallen.RemoveAt(0);
             DropLoot();
             if (State == EnemyState.Attack) SetState(EnemyState.Chase);
             SetState(EnemyState.Dead);

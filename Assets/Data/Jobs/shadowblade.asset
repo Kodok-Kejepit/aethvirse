@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: shadowblade
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: shadowblade
+  displayName: Shadowblade
+  description: A blade that strikes from the dark.
+  baseClass: phantom
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 1
+    agility: 5
+    intelligence: 0
+    vitality: 0
+    sense: 3
+  attackBonus: 0.12
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: cf625b002189ee2d48536011018e0ad6, type: 2}
+  - {fileID: 11400000, guid: eede99754fe9f9b1ea2d069d7f1f0447, type: 2}
+  - {fileID: 11400000, guid: 873a2b2fa3980f2b386bbddc8245ecd7, type: 2}
+  - {fileID: 11400000, guid: d0912e6538f9b5a349d6b10dfaa94bce, type: 2}
+  - {fileID: 11400000, guid: 267a72413843d4a929da9905882e50eb, type: 2}
+  - {fileID: 11400000, guid: 62886ed81c117d1a48aeab1042487175, type: 2}
+  - {fileID: 11400000, guid: 5f571987ab70afe55a0558293cf06de4, type: 2}
+  - {fileID: 11400000, guid: c985c2c19b0cb0915852af399b970b7e, type: 2}
+  - {fileID: 11400000, guid: 859cecfd350bc5cd984def4ded1388bb, type: 2}
+  - {fileID: 11400000, guid: a70fd58105bc2318da5f993cee84b5ab, type: 2}

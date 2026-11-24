@@ -53,6 +53,49 @@ namespace Aethvirse.Core
             }
         }
 
+        /// <summary>Job (§8): current job, jobs on offer (trial Gate, hidden jobs at once), shadow army.</summary>
+        void DrawJobs(float s)
+        {
+            GUILayout.Space(14 * s);
+            GUILayout.Label("Job: " + (stats.CurrentJob != null ? $"{stats.CurrentJob.displayName} (tier {stats.CurrentJob.tier})" : "none yet"), _title);
+            var reg = Jobs.JobRegistry.Instance;
+            if (reg != null)
+            {
+                var options = reg.Options(stats.Class.id, stats.JobId, stats.Progression.level, World.GameSession.Instance.Flags.Has);
+                if (options.Count == 0)
+                {
+                    int next = stats.CurrentJob == null ? 30 : 60;
+                    GUILayout.Label($"Next job change at Lv {next}.", _text);
+                }
+                foreach (Jobs.JobData j in options)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"{j.displayName} — {j.description}", _text, GUILayout.Width(700 * s));
+                    string label = j.hidden ? "Accept" : "Take the trial";
+                    if (GUILayout.Button(label, _button, GUILayout.Width(220 * s), GUILayout.Height(44 * s)))
+                    {
+                        if (j.hidden) stats.ChangeJob(j.id);
+                        else
+                        {
+                            World.RegionData r = World.RegionController.Current;
+                            string[] types = r != null && r.enemies.Count > 0 ? r.enemies.ToArray() : new[] { "ash_hound", "ember_husk" };
+                            Gates.GateSession.BeginTrial(j.id, j.tier, stats.Progression.level, types);
+                            SetOpen(false);
+                            Save.SceneTravel.Go(World.GateSpot.GateScene, null, rememberReturn: true);
+                            return;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
+            if (stats.Shadows.soldiers.Count > 0)
+            {
+                GUILayout.Label($"Shadow army ({stats.Shadows.soldiers.Count})", _title);
+                foreach (Jobs.ShadowArmy.Soldier sol in stats.Shadows.soldiers)
+                    GUILayout.Label($"  {sol.enemyType}  Lv {sol.level}  · {Jobs.ShadowArmy.RankNames[sol.rank]} ({sol.xp} xp)", _text);
+            }
+        }
+
         void OnGUI()
         {
             if (!_open || stats == null) return;
@@ -102,9 +145,11 @@ namespace Aethvirse.Core
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
 
+            DrawJobs(s);
+
             GUILayout.Space(14 * s);
             GUILayout.Label("Skills", _title);
-            foreach (SkillData skill in stats.Class.skills)
+            foreach (SkillData skill in stats.AllSkills())
             {
                 int level = stats.SkillLevel(skill.id);
                 GUILayout.BeginHorizontal();

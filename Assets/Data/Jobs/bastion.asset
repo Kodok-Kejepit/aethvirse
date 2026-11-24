@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: bastion
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: bastion
+  displayName: Bastion
+  description: The fortress walks.
+  baseClass: vanguard
+  tier: 2
+  requiredLevel: 60
+  parent: guardian
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 4
+    agility: 0
+    intelligence: 0
+    vitality: 12
+    sense: 2
+  attackBonus: 0
+  defenseBonus: 0.3
+  hpBonus: 0.3
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 30ab1f011850813abb9e5942657ddd5a, type: 2}
+  - {fileID: 11400000, guid: 2e859f489721de8b6b2b9ce7c75d215e, type: 2}
+  - {fileID: 11400000, guid: 06ea06b0a8b52f4e2bed2d6edb750189, type: 2}
+  - {fileID: 11400000, guid: f21efaae447b05ad08aab71bcb0b1277, type: 2}
+  - {fileID: 11400000, guid: 859e97d54f372236f94618f1031e6167, type: 2}
+  - {fileID: 11400000, guid: c216be811264c926db7da900e9b86003, type: 2}
+  - {fileID: 11400000, guid: e387908775870ed228ae6df5eff147b8, type: 2}
+  - {fileID: 11400000, guid: 6c92b24a1e6c47740a4585514b7b292b, type: 2}
+  - {fileID: 11400000, guid: 83d8b210b87eb0ab6af88540acc300c2, type: 2}
+  - {fileID: 11400000, guid: c93cd2feced741e2eb41a8456b461604, type: 2}

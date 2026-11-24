@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: shadow_sovereign
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: shadow_sovereign
+  displayName: Shadow Sovereign
+  description: Every shadow is yours to command.
+  baseClass: 
+  tier: 3
+  requiredLevel: 90
+  parent: necromancer
+  hidden: 1
+  requiredFlag: codex_umbra_read
+  statBonus:
+    strength: 6
+    agility: 6
+    intelligence: 12
+    vitality: 6
+    sense: 8
+  attackBonus: 0.3
+  defenseBonus: 0
+  hpBonus: 0.2
+  mpCostMultiplier: 1
+  shadowArmy: 1
+  skills:
+  - {fileID: 11400000, guid: 0eabb653802035f81b69c8ac7565740b, type: 2}
+  - {fileID: 11400000, guid: 225081a0588c7df41a5e3ebcd0098c20, type: 2}
+  - {fileID: 11400000, guid: 586a642d8afb32d0597fe9e9ec52d3a0, type: 2}
+  - {fileID: 11400000, guid: 775bf05f940a5a151aaab4367beb0b05, type: 2}
+  - {fileID: 11400000, guid: 2b16602cc8ff0fbefaa08379fc06e136, type: 2}
+  - {fileID: 11400000, guid: 0329644d440a895579a6d30414e889d8, type: 2}
+  - {fileID: 11400000, guid: f08f605de2c91a6f0b9f32722f9f3f1e, type: 2}
+  - {fileID: 11400000, guid: 65df01b3d278539b587e8eee2970d09a, type: 2}
+  - {fileID: 11400000, guid: d599840050adf9df8879c35195dd71fb, type: 2}
+  - {fileID: 11400000, guid: 89293849d2f634b9ebcc8397b28f7d38, type: 2}

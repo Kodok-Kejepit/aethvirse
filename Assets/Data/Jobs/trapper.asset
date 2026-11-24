@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: trapper
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: trapper
+  displayName: Trapper
+  description: The ground itself hunts.
+  baseClass: ranger
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 2
+    agility: 3
+    intelligence: 0
+    vitality: 2
+    sense: 3
+  attackBonus: 0.08
+  defenseBonus: 0.08
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 84d0474c08f3f762c8d53e631a8bd9c4, type: 2}
+  - {fileID: 11400000, guid: 709b03102758ac9b9b1300fce5830d73, type: 2}
+  - {fileID: 11400000, guid: 71026b30574fa729e92d20235691529c, type: 2}
+  - {fileID: 11400000, guid: 90880d77e4fd1a826ba1026fadeb2f20, type: 2}
+  - {fileID: 11400000, guid: 97fc6b17130be64afbf0f7dddd736229, type: 2}
+  - {fileID: 11400000, guid: 99ebc3fa1378f8f8da763beced984f40, type: 2}
+  - {fileID: 11400000, guid: 633aea65251153f3fa2cc64c1bfe94e4, type: 2}
+  - {fileID: 11400000, guid: 7112aadac105d69779f8d0a653938d58, type: 2}
+  - {fileID: 11400000, guid: aa9d0b6b94fce98daa2fe525c143cbbc, type: 2}
+  - {fileID: 11400000, guid: 49dff1d88bf35e2c1ac076c550b0f31c, type: 2}

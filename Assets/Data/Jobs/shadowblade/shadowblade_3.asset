@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: shadowblade_3
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: shadowblade_3
+  displayName: Veil Whirl
+  description: Shadowblade technique.
+  kind: 2
+  isUltimate: 0
+  iconColor: {r: 0.59, g: 0.426, b: 0.836, a: 1}
+  unlockLevel: 39
+  maxLevel: 10
+  fx: 19
+  mpCost: 34
+  cooldown: 10.5
+  attack: {fileID: 11400000, guid: f83db7cd047ae0c4a84a8b720fd67d74, type: 2}
+  damageMultiplier: 3.35
+  multiplierPerLevel: 0.2
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15
+  summonType: ash_hound
+  summonCount: 1

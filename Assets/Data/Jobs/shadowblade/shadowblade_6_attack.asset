@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: shadowblade_6_attack
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: shadowblade_6
+  displayName: shadowblade_6
+  damageMultiplier: 1
+  isHeavy: 1
+  element: 6
+  startup: 0.29999998
+  active: 0.15
+  recovery: 0.35
+  comboWindow: 0.65
+  dodgeCancel: 0.375
+  hitboxSize: {x: 3.2, y: 1.6, z: 2.8}
+  hitboxOffset: {x: 0, y: 1, z: 1.5}
+  knockback: 10
+  stagger: 60
+  hitStop: 0.08
+  lungeSpeed: 22
+  swing: 6
+  ranged: 0
+  projectileCount: 1
+  projectileSpread: 15
+  projectileSpeed: 36
+  projectileRange: 32
+  projectileRadius: 0.4
+  projectilePierce: 1
+  projectileColor: {r: 0.5, g: 0.3, b: 0.8, a: 1}
+  homing: 0
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 0}

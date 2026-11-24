@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: berserker
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: berserker
+  displayName: Berserker
+  description: Pain is fuel.
+  baseClass: vanguard
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 6
+    agility: 2
+    intelligence: 0
+    vitality: 1
+    sense: 0
+  attackBonus: 0.15
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: e0f985f1c194dbce8a81f42eb9a8277b, type: 2}
+  - {fileID: 11400000, guid: 82029279e9303e293bbc2be592c9d9fe, type: 2}
+  - {fileID: 11400000, guid: 0733fd725329cb3ce8b5e9c2ac34df68, type: 2}
+  - {fileID: 11400000, guid: 2285bf362986c43c1a20a62cc9c7dae7, type: 2}
+  - {fileID: 11400000, guid: 4dd6a1f7b465888a3a8fe76d6385f048, type: 2}
+  - {fileID: 11400000, guid: 39d2af62c6ed2269193682b4b0a0e6ca, type: 2}
+  - {fileID: 11400000, guid: 133a48d20ea2d6c9ea2b135e1e1ebbdb, type: 2}
+  - {fileID: 11400000, guid: 93836fd7fd101cfb28b739940a0743c9, type: 2}
+  - {fileID: 11400000, guid: 1d3141fb64ef97fff94536346ed1af58, type: 2}
+  - {fileID: 11400000, guid: b5c57e4adc4ed6f149c906cde06a40ad, type: 2}

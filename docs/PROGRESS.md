@@ -15,7 +15,7 @@ e.g. the combo-flame style, come then).
 | P1-7 | Four classes with many skills each | done |
 | P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | done (streaming: per-region scenes for now) |
 | P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | done |
-| P1-10 | Jobs, hidden jobs, shadow army | |
+| P1-10 | Jobs, hidden jobs, shadow army | done |
 | P1-11 | Secrets, Mystery Journal, puzzles | |
 | P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
 | P1-13 | Audio, localization (ID/EN), settings, quality presets | |
@@ -26,6 +26,21 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-10 — Jobs and the shadow army (branch `p1-10-jobs`)
+
+### Done
+- **21 jobs** (Godot job tree): Job Change I at Lv 30 (two per class + Summoner for any class), II at Lv 60
+  (Bastion, Warlord, Nightreaper, Illusionist, Archmage, Oracle, Deadeye, Beastwarden, Conjurer), hidden jobs through
+  flags set by sealed missions (Necromancer, Shadow Sovereign at Lv 90, Echo Warden). Jobs add stats, ATK / DEF / HP
+  multipliers, MP cost multipliers and **10 skills each** (7 actives with their own looks + 3 passives).
+- **Job trial:** Status (C) → Job → "Take the trial" opens a trial Gate; clearing it grants the job. Hidden jobs are
+  accepted at once.
+- **Summons:** Summoner familiars fight beside you; enemies switch to a minion that is clearly closer.
+- **Shadow army** (Necromancer line): "Rise, Echo" binds a recently fallen enemy; "Answer me" calls your shadows;
+  shadows earn XP from their own kills and rank up Soldier → Knight → Elite → Commander → Marshal (power ×1 … ×2.4).
+- Saves v5 keep the job and the shadow army.
+- Fixed: region data lived in the wrong file (the file-name guard test caught it), so the atlas was empty.
 
 ## P1-8 / P1-9 — World, Gates and dungeons (branch `p1-8-world`)
 

@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: shadow_sovereign_3
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: shadow_sovereign_3
+  displayName: Eternal Whirl
+  description: Shadow Sovereign technique.
+  kind: 2
+  isUltimate: 0
+  iconColor: {r: 0.303, g: 0.262, b: 0.385, a: 1}
+  unlockLevel: 99
+  maxLevel: 10
+  fx: 19
+  mpCost: 50
+  cooldown: 10.5
+  attack: {fileID: 11400000, guid: 469c51324d664a678a5898fca86b7b1d, type: 2}
+  damageMultiplier: 4.95
+  multiplierPerLevel: 0.3
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15
+  summonType: ash_hound
+  summonCount: 1

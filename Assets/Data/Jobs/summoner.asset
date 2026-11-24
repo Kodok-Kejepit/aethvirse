@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d81e9410be00be18fe97454fb2f822, type: 3}
+  m_Name: summoner
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Jobs.JobData
+  id: summoner
+  displayName: Summoner
+  description: Calls familiars to fight beside you (any class).
+  baseClass: 
+  tier: 1
+  requiredLevel: 30
+  parent: 
+  hidden: 0
+  requiredFlag: 
+  statBonus:
+    strength: 0
+    agility: 0
+    intelligence: 4
+    vitality: 2
+    sense: 2
+  attackBonus: 0
+  defenseBonus: 0
+  hpBonus: 0
+  mpCostMultiplier: 1.25
+  shadowArmy: 0
+  skills:
+  - {fileID: 11400000, guid: 85ec21881a68fd6e3846e6d9d10b0023, type: 2}
+  - {fileID: 11400000, guid: 56482c59f14e2bb43b61ea17a7511464, type: 2}
+  - {fileID: 11400000, guid: 66e50de9055976cac865db5c97cd3738, type: 2}
+  - {fileID: 11400000, guid: 2dd85a0aab07ff64685658204d9916e6, type: 2}
+  - {fileID: 11400000, guid: 6730aab7e20314e02bd64b92fbf2c047, type: 2}
+  - {fileID: 11400000, guid: 08f2ebd0da0b2cd7988efe509ba99ae0, type: 2}
+  - {fileID: 11400000, guid: e5e30d721640ad43391f190530dbcdd4, type: 2}
+  - {fileID: 11400000, guid: b4aa810a7cc1ebd9dbd9445f613bc7fe, type: 2}
+  - {fileID: 11400000, guid: 74b65290aa1ef357ead3df63da0e2637, type: 2}
+  - {fileID: 11400000, guid: feb4fa2c364588402bc10e621a18494f, type: 2}
