@@ -138,7 +138,11 @@ public static class PlaygroundBuilder
         cam.nearClipPlane = 0.1f;
         cam.farClipPlane = 500f;
         main.AddComponent<AudioListener>();
-        main.AddComponent<CinemachineBrain>();
+        var brain = main.AddComponent<CinemachineBrain>();
+        // The player moves in Update, so the camera follows in LateUpdate of the same frame.
+        // SmartUpdate guesses the target's update loop and can pick the wrong one (jitter).
+        brain.UpdateMethod = CinemachineBrain.UpdateMethods.LateUpdate;
+        brain.BlendUpdateMethod = CinemachineBrain.BrainUpdateMethods.LateUpdate;
 
         var go = new GameObject("PlayerCamera");
         var vcam = go.AddComponent<CinemachineCamera>();

@@ -58,6 +58,8 @@ namespace Aethvirse.Cameras
         void Update()
         {
             UpdateCursor();
+            // Mouse: raw pixels to degrees, 1:1 like a shooter (no smoothing, no deltaTime: the delta
+            // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.
             Vector2 look = Vector2.zero;
             if (Cursor.lockState == CursorLockMode.Locked)
                 look += _input.LookPointer.ReadValue<Vector2>() * MouseDegreesPerPixel;

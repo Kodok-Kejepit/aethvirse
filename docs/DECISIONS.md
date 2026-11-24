@@ -22,3 +22,13 @@ Technical decisions for the Unity version of AETHVIRSE. The Godot prototype's de
 - `com.unity.cinemachine` 3.1.8 (pulls in `com.unity.splines`). Third-person orbit camera with
   collision, lock-on framing (target group), shake (impulse) and FOV changes come from Cinemachine
   instead of a hand-written spring arm (master prompt §5).
+
+## Camera smoothness (owner, 2026-11-24)
+- Owner: the camera must be perfectly smooth, even on fast FPS-style mouse turns (the Godot camera stuttered).
+- The player moves in `Update` (CharacterController, no physics step), and the CinemachineBrain updates in
+  `LateUpdate` of the same frame, so camera and body never drift by a frame. `SmartUpdate` is off: it guesses
+  the target's loop and a wrong guess shows up as jitter.
+- Mouse look is raw 1:1 (pixels → degrees, no smoothing, no deltaTime); only the stick is a rate.
+- Frame pacing: VSync on PC, 60 fps cap on Android (`FramePacing`). A frame-rate option comes with Settings.
+- Rule for later systems: anything the camera follows must move in `Update`, or be a Rigidbody with
+  interpolation on; never move a followed object in `FixedUpdate` without interpolation.
