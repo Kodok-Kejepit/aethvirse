@@ -24,7 +24,11 @@ public static class ProjectSetup
             label.transform.position = Vector3.zero;
             EditorSceneManager.SaveScene(scene, BootScene);
         }
-        EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(BootScene, true) };
+        // Boot stays first; other registered scenes are kept.
+        var scenes = new System.Collections.Generic.List<EditorBuildSettingsScene> { new EditorBuildSettingsScene(BootScene, true) };
+        foreach (var existing in EditorBuildSettings.scenes)
+            if (existing.path != BootScene) scenes.Add(existing);
+        EditorBuildSettings.scenes = scenes.ToArray();
         PlayerSettings.companyName = "Kodok-Kejepit";
         PlayerSettings.productName = "AETHVIRSE";
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Android, "com.kodokkejepit.aethvirse");

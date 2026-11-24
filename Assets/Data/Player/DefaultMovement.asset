@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78ec3e23939efd779af6493f99da63f0, type: 3}
+  m_Name: DefaultMovement
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Player.PlayerMovementData
+  walkSpeed: 2.2
+  runSpeed: 5.5
+  sprintSpeed: 8.5
+  walkThreshold: 0.55
+  acceleration: 45
+  deceleration: 55
+  turnSpeed: 14
+  jumpHeight: 1.4
+  fallGravityMultiplier: 1.8
+  jumpCutMultiplier: 0.5
+  airControl: 0.35
+  maxFallSpeed: 40
+  coyoteTime: 0.12
+  dodgeSpeed: 13
+  dodgeEndSpeed: 4
+  dodgeDuration: 0.38
+  dodgeIFrames: 0.3
+  dodgeCancelRatio: 0.6
+  dodgeStaminaCost: 20
+  airDodgeGravityScale: 0.25
+  inputBuffer: 0.2
