@@ -76,7 +76,8 @@ namespace Aethvirse.Cameras
         void Update()
         {
             // With touch controls the screen is for fingers: no cursor capture, no mouse drag.
-            bool touch = TouchControls.IsActive;
+            // The status window needs the pointer for its buttons.
+            bool touch = TouchControls.IsActive || Core.StatusPanel.IsOpen;
             if (!touch) UpdateCursor();
             // Mouse: raw pixels to degrees, 1:1 like a shooter (no smoothing, no deltaTime: the delta
             // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.

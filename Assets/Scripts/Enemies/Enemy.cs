@@ -1,5 +1,6 @@
 using Aethvirse.Combat;
 using Aethvirse.Player;
+using Aethvirse.Stats;
 using UnityEngine;
 
 namespace Aethvirse.Enemies
@@ -30,6 +31,9 @@ namespace Aethvirse.Enemies
         [SerializeField] Renderer bodyRenderer;
         [SerializeField] Transform telegraph;
         [SerializeField] WorldHealthBar healthBar;
+        [Tooltip("Reference hero + tuning for level scaling.")]
+        [SerializeField] ClassData scalingClass;
+        [SerializeField] StatTuning tuning;
 
         CharacterController _body;
         Damageable _damageable;
@@ -62,7 +66,7 @@ namespace Aethvirse.Enemies
         {
             _body = GetComponent<CharacterController>();
             _damageable = GetComponent<Damageable>();
-            _damageable.Configure(data.maxHealth, data.stats.Clone(), side: Team.Enemy);
+            ConfigureStats();
             _damageable.Health.Damaged += OnDamaged;
             _damageable.Health.Died += OnDied;
             _damageable.Health.Changed += (current, max) => { if (healthBar != null) healthBar.Set(current, max); };
@@ -73,6 +77,25 @@ namespace Aethvirse.Enemies
             _homeRotation = visual.rotation;
             _patrolGoal = _home;
             ShowTelegraph(0f);
+        }
+
+        int _xp;
+
+        /// <summary>Scaled numbers for the level and tier (Godot EnemyScaling), or the flat data.</summary>
+        void ConfigureStats()
+        {
+            CombatStats stats = data.stats.Clone();
+            int maxHp = data.maxHealth;
+            _xp = data.xpReward;
+            if (data.scaleByLevel && scalingClass != null && tuning != null)
+            {
+                EnemyScaling.Result r = EnemyScaling.Compute(data.level, data.tier, scalingClass, tuning);
+                maxHp = Mathf.RoundToInt(r.maxHealth * data.hpScale);
+                stats.attack = r.attack * data.attackScale;
+                stats.defense = r.defense;
+                _xp = r.xp;
+            }
+            _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
 
         void OnEnable() => LockTargets.Register(this);
@@ -274,6 +297,7 @@ namespace Aethvirse.Enemies
 
         void OnDied()
         {
+            EnemyEvents.RaiseKilled(_xp);
             if (State == EnemyState.Attack) SetState(EnemyState.Chase);
             SetState(EnemyState.Dead);
         }

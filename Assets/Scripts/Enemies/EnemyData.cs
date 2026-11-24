@@ -1,4 +1,5 @@
 using Aethvirse.Combat;
+using Aethvirse.Stats;
 using UnityEngine;
 
 namespace Aethvirse.Enemies
@@ -15,6 +16,15 @@ namespace Aethvirse.Enemies
         [Tooltip("Stagger damage needed to interrupt it (resets after a short time without hits).")]
         public float poise = 25f;
         public Color bodyColor = new Color(0.8f, 0.25f, 0.25f);
+
+        [Header("Level scaling (Balancing sheet)")]
+        [Tooltip("HP / ATK / DEF / XP come from EnemyScaling for level and tier; the numbers above are fallbacks.")]
+        public bool scaleByLevel = true;
+        public EnemyTier tier = EnemyTier.Normal;
+        [Tooltip("Per-type flavour on the scaled HP / ATK (tanky, glass cannon …).")]
+        public float hpScale = 1f;
+        public float attackScale = 1f;
+        public int xpReward = 20;
 
         [Header("Movement & awareness")]
         public float walkSpeed = 1.6f;

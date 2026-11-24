@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: iron_charge
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: iron_charge
+  displayName: Iron Charge
+  description: Dash forward, ramming everything in the way.
+  kind: 1
+  isUltimate: 0
+  iconColor: {r: 0.75, g: 0.8, b: 0.9, a: 1}
+  unlockLevel: 1
+  maxLevel: 10
+  fx: 1
+  mpCost: 20
+  cooldown: 8
+  attack: {fileID: 11400000, guid: 03e00e278821b9b3697c811f68b7a4b8, type: 2}
+  damageMultiplier: 1.6
+  multiplierPerLevel: 0.1
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02

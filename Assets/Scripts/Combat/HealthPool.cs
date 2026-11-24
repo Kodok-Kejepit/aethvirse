@@ -49,6 +49,14 @@ namespace Aethvirse.Combat
             return true;
         }
 
+        /// <summary>Changes max HP (level up, gear). Refill fills it; otherwise the current HP is kept (clamped).</summary>
+        public void SetMax(int value, bool refill)
+        {
+            maxHealth = Mathf.Max(value, 1);
+            Current = refill ? maxHealth : Mathf.Min(Current, maxHealth);
+            Changed?.Invoke(Current, maxHealth);
+        }
+
         public void Heal(int amount)
         {
             if (IsDead || amount <= 0) return;

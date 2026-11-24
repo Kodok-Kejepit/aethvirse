@@ -37,6 +37,8 @@ namespace Aethvirse.Combat
             health.Reset();
         }
 
+        public void SetStats(CombatStats newStats) => stats = newStats;
+
         /// <summary>Returns true if the damage was applied.</summary>
         public bool Receive(DamageInfo info)
         {

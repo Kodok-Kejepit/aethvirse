@@ -4,6 +4,9 @@ using System.IO;
 using Aethvirse.Cameras;
 using Aethvirse.Combat;
 using Aethvirse.Enemies;
+using Aethvirse.Fx;
+using Aethvirse.Skills;
+using Aethvirse.Stats;
 using Aethvirse.Core;
 using Aethvirse.Player;
 using Unity.Cinemachine;
@@ -18,6 +21,9 @@ public static class PlaygroundBuilder
     const string MaterialDir = "Assets/Art/Materials/Graybox";
     const string MovementDataPath = "Assets/Data/Player/DefaultMovement.asset";
     const string GreatswordComboPath = "Assets/Data/Combat/Greatsword/GreatswordCombo.asset";
+    const string PaladinPath = "Assets/Data/Classes/Paladin.asset";
+    const string TuningPath = "Assets/Data/Balancing/StatTuning.asset";
+    const string FxMaterialPath = "Assets/Art/Materials/Fx/FxTransparent.mat";
 
     const float PlayerHeight = 1.8f;
     const float PlayerRadius = 0.35f;
@@ -44,6 +50,7 @@ public static class PlaygroundBuilder
         Wire(body, "cameraRig", rig);
         Wire(body, "movement", LoadOrCreateMovementData());
         BuildPlayerCombat(body, rig, blade, markerMat);
+        BuildPlayerSkills(body);
         BuildDummies(dummyMat);
         BuildEnemies();
         BuildHud(body);
@@ -289,6 +296,8 @@ public static class PlaygroundBuilder
             Wire(enemy, "bodyRenderer", bodyGo.GetComponent<Renderer>());
             Wire(enemy, "telegraph", telegraph.transform);
             Wire(enemy, "healthBar", healthBar);
+            Wire(enemy, "scalingClass", AssetDatabase.LoadAssetAtPath<ClassData>(PaladinPath));
+            Wire(enemy, "tuning", AssetDatabase.LoadAssetAtPath<StatTuning>(TuningPath));
         }
     }
 
@@ -299,6 +308,11 @@ public static class PlaygroundBuilder
         Wire(hud, "combat", body.GetComponent<PlayerCombat>());
         Wire(hud, "lockOn", body.GetComponent<LockOnTargeter>());
         Wire(hud, "health", body.GetComponent<Damageable>());
+        Wire(hud, "stats", body.GetComponent<PlayerStats>());
+        Wire(hud, "caster", body.GetComponent<SkillCaster>());
+
+        var panel = new GameObject("StatusPanel").AddComponent<StatusPanel>();
+        Wire(panel, "stats", body.GetComponent<PlayerStats>());
 
         var flame = new GameObject("ComboFlame").AddComponent<ComboFlameHud>();
         Wire(flame, "combat", body.GetComponent<PlayerCombat>());
@@ -309,6 +323,62 @@ public static class PlaygroundBuilder
         var col = go.GetComponent<Collider>();
         if (col != null) Object.DestroyImmediate(col);
         return go;
+    }
+
+    /// <summary>Stats (Paladin), skill caster and the skill effects on the player.</summary>
+    static void BuildPlayerSkills(PlayerController body)
+    {
+        GameObject root = body.gameObject;
+        var classData = AssetDatabase.LoadAssetAtPath<ClassData>(PaladinPath);
+        var tuning = AssetDatabase.LoadAssetAtPath<StatTuning>(TuningPath);
+        if (classData == null || tuning == null)
+            throw new System.InvalidOperationException("Missing class data: run AETHVIRSE > Build Class Data first");
+
+        var stats = root.AddComponent<PlayerStats>();
+        Wire(stats, "classData", classData);
+        Wire(stats, "tuning", tuning);
+        Wire(stats, "player", body);
+        Wire(stats, "combat", root.GetComponent<PlayerCombat>());
+        Wire(stats, "damageable", root.GetComponent<Damageable>());
+
+        var caster = root.AddComponent<SkillCaster>();
+        Wire(caster, "stats", stats);
+        Wire(caster, "player", body);
+        Wire(caster, "combat", root.GetComponent<PlayerCombat>());
+
+        Transform visual = root.transform.Find("Visual");
+        var fx = root.AddComponent<SkillFx>();
+        Wire(fx, "caster", caster);
+        Wire(fx, "combat", root.GetComponent<PlayerCombat>());
+        Wire(fx, "stats", stats);
+        Wire(fx, "visual", visual);
+        Wire(fx, "bodyMesh", visual.Find("Body").GetComponent<MeshFilter>());
+        Wire(fx, "blade", visual.Find("WeaponPivot/Blade").GetComponent<Renderer>());
+        Wire(fx, "fxMaterial", MakeFxMaterial());
+    }
+
+    /// <summary>Transparent, unlit, double-sided URP material for effects (alpha via _BaseColor).</summary>
+    static Material MakeFxMaterial()
+    {
+        var mat = AssetDatabase.LoadAssetAtPath<Material>(FxMaterialPath);
+        if (mat == null)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(FxMaterialPath));
+            mat = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            AssetDatabase.CreateAsset(mat, FxMaterialPath);
+        }
+        mat.SetFloat("_Surface", 1f);
+        mat.SetFloat("_Blend", 0f);
+        mat.SetFloat("_Cull", 0f);
+        mat.SetFloat("_ZWrite", 0f);
+        mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        mat.SetOverrideTag("RenderType", "Transparent");
+        mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+        mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+        mat.SetColor("_BaseColor", Color.white);
+        EditorUtility.SetDirty(mat);
+        return mat;
     }
 
     static void BuildDummies(Material mat)

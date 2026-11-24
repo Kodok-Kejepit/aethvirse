@@ -41,10 +41,18 @@ namespace Aethvirse.Player
         float _counterTimer;
         float _dodgeStartedAt = float.NegativeInfinity;
         bool _cursorWasLocked;
+        bool _skillStrikeSent;
         AttackData _lastAttack;
         Transform _frame;
 
         public ComboData Combo => combo;
+        /// <summary>Skill of the current attack (null for normal attacks).</summary>
+        public Skills.SkillData CurrentSkill { get; private set; }
+        public Skills.SkillData PendingSkill { get; private set; }
+        int _pendingSkillLevel = 1, _currentSkillLevel = 1;
+        Skills.SkillComboData _pendingCombo, _currentCombo;
+        /// <summary>Raised when a skill's strike window opens (for its look: rings, arcs, pillars).</summary>
+        public event Action<Skills.SkillData> SkillStrike;
         public CombatStats Stats => stats;
         public AttackData Current { get; private set; }
         public AttackData Pending { get; private set; }
@@ -72,9 +80,11 @@ namespace Aethvirse.Player
         {
             // A click on a free cursor captures it; it does not attack. Touch mode never uses the mouse.
             bool mouseAttacks = _cursorWasLocked && !TouchControls.IsActive;
-            if (_input.LightAttack.WasPressedThisFrame() || (mouseAttacks && _input.LightAttackMouse.WasPressedThisFrame()))
+            // With LB held the face buttons cast skills; do not buffer them as attacks.
+            bool modifier = _input.SkillModifier.IsPressed();
+            if (!modifier && (_input.LightAttack.WasPressedThisFrame() || (mouseAttacks && _input.LightAttackMouse.WasPressedThisFrame())))
                 _lightBuffer = inputBuffer;
-            if (_input.HeavyAttack.WasPressedThisFrame() || (mouseAttacks && _input.HeavyAttackMouse.WasPressedThisFrame()))
+            if (!modifier && (_input.HeavyAttack.WasPressedThisFrame() || (mouseAttacks && _input.HeavyAttackMouse.WasPressedThisFrame())))
                 _heavyBuffer = inputBuffer;
             _cursorWasLocked = Cursor.lockState == CursorLockMode.Locked;
 
@@ -88,22 +98,45 @@ namespace Aethvirse.Player
 
         public bool HasAttackInput => _lightBuffer > 0f || _heavyBuffer > 0f;
 
+        public void SetStats(CombatStats newStats) => stats = newStats;
+
+        /// <summary>A damaging skill becomes the next attack (SkillCaster).</summary>
+        public void QueueSkill(Skills.SkillData skill, int level, Skills.SkillComboData skillCombo)
+        {
+            Pending = skill.attack;
+            PendingSkill = skill;
+            _pendingSkillLevel = level;
+            _pendingCombo = skillCombo;
+            _lightBuffer = _heavyBuffer = 0f;
+        }
+
+        /// <summary>Skills may cut a normal attack short (not another skill).</summary>
+        public bool CanCancelIntoSkill => Current != null && CurrentSkill == null;
+
         /// <summary>Picks the next attack from the buffered input (heavy wins) into <see cref="Pending"/>.</summary>
         public bool ConsumeAttack()
         {
-            if (!HasAttackInput || combo == null) return false;
+            if (!HasAttackInput || combo == null || _input.SkillModifier.IsPressed()) return false;
             bool heavy = _heavyBuffer > 0f;
             _lightBuffer = _heavyBuffer = 0f;
-            AttackData previous = Current != null ? Current : (_chainTimer > 0f ? _lastAttack : null);
+            AttackData previous = Current != null && CurrentSkill == null ? Current : (_chainTimer > 0f ? _lastAttack : null);
             Pending = combo.ResolveNext(previous, heavy);
+            PendingSkill = null;
+            _pendingCombo = null;
             return Pending != null;
         }
 
         public AttackData BeginAttack()
         {
             Current = Pending;
+            CurrentSkill = PendingSkill;
+            _currentSkillLevel = _pendingSkillLevel;
+            _currentCombo = _pendingCombo;
             Pending = null;
+            PendingSkill = null;
+            _pendingCombo = null;
             _hits.Begin();
+            _skillStrikeSent = false;
             return Current;
         }
 
@@ -111,14 +144,22 @@ namespace Aethvirse.Player
         public void SweepHitbox()
         {
             if (Current == null || _frame == null) return;
+            if (CurrentSkill != null && !_skillStrikeSent)
+            {
+                _skillStrikeSent = true;
+                SkillStrike?.Invoke(CurrentSkill);
+            }
             _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize, Strike);
         }
 
         public void EndAttack()
         {
-            _lastAttack = Current;
+            // Skills do not continue the weapon combo chain.
+            _lastAttack = CurrentSkill == null ? Current : null;
             _chainTimer = combo != null ? combo.chainGrace : 0f;
             Current = null;
+            CurrentSkill = null;
+            _currentCombo = null;
             ResetWeaponPose();
         }
 
@@ -126,10 +167,20 @@ namespace Aethvirse.Player
         {
             AttackData a = Current;
             bool counter = CounterReady;
-            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, a.damageMultiplier, a.element, _rng,
-                forceCrit: counter, bonusMult: counter ? counterBonus : 1f);
+            float multiplier = CurrentSkill != null ? CurrentSkill.MultiplierAt(_currentSkillLevel) : a.damageMultiplier;
+            float bonus = counter ? counterBonus : 1f;
+            bool forceCrit = counter;
+            float extraStagger = 0f;
+            if (_currentCombo != null)
+            {
+                bonus *= _currentCombo.bonusMultiplier;
+                forceCrit |= _currentCombo.forceCrit;
+                extraStagger = _currentCombo.extraStagger;
+            }
+            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, a.element, _rng,
+                forceCrit: forceCrit, bonusMult: bonus);
             info.isHeavy = a.isHeavy;
-            info.stagger = a.stagger;
+            info.stagger = a.stagger + extraStagger;
             info.hitStop = a.hitStop;
             info.source = gameObject;
             info.hitPosition = target.transform.position;

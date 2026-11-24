@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 234e6b6a1cf09bd178c363a9d4d996b3, type: 3}
+  m_Name: Paladin
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Stats.ClassData
+  id: vanguard
+  displayName: Paladin
+  description: Holy knight. Heavy sword combos, high HP and DEF.
+  magicDamage: 0
+  baseStats:
+    strength: 12
+    agility: 6
+    intelligence: 3
+    vitality: 11
+    sense: 4
+  growth:
+    strength: 2
+    agility: 0.6
+    intelligence: 0.2
+    vitality: 1.8
+    sense: 0.4
+  recommendedSplit:
+    strength: 0.5
+    agility: 0.1
+    intelligence: 0
+    vitality: 0.35
+    sense: 0.05
+  combo: {fileID: 11400000, guid: 700c3726a5559db8ca5c14d393f6e73a, type: 2}
+  skills:
+  - {fileID: 11400000, guid: 2f51f17d6f7787d51bb947050b9dec7c, type: 2}
+  - {fileID: 11400000, guid: be749a81044b7e4658d3e2e134b06705, type: 2}
+  - {fileID: 11400000, guid: 3656952ab30b37d4facf0ff451d129ce, type: 2}
+  - {fileID: 11400000, guid: bf0029c98070c346ba4b16bce19d6e9a, type: 2}
+  - {fileID: 11400000, guid: 039f41aee4814ec459c1045509db48fb, type: 2}
+  - {fileID: 11400000, guid: 6f08c25205a87d5f3bbf97e4dadb920c, type: 2}
+  - {fileID: 11400000, guid: d3af16618ae420a08987b938f55cc836, type: 2}
+  - {fileID: 11400000, guid: 3e688bab6ce537fa5b0238a56f7d84f5, type: 2}
+  - {fileID: 11400000, guid: 7bf6954e72ae481648ff069f14a222d6, type: 2}
+  skillCombos:
+  - id: charge_breaker
+    displayName: Breaker
+    first: iron_charge
+    second: rending_slash
+    window: 2
+    bonusMultiplier: 1
+    forceCrit: 1
+    extraStagger: 0
+  - id: fury_quake
+    displayName: Fury Quake
+    first: war_cry
+    second: earthsplitter
+    window: 4
+    bonusMultiplier: 1.5
+    forceCrit: 0
+    extraStagger: 0
+  - id: molten_rift
+    displayName: Molten Rift
+    first: flame_edge
+    second: earthsplitter
+    window: 2.5
+    bonusMultiplier: 1.3
+    forceCrit: 0
+    extraStagger: 20

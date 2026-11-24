@@ -1,5 +1,6 @@
 using System;
 using Aethvirse.Cameras;
+using Aethvirse.Skills;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -69,6 +70,17 @@ namespace Aethvirse.Input.Touch
             BuildButton(safe, "Jump", "^", new Vector2(-200f, 450f), 150f, "<Gamepad>/buttonSouth");
             RectTransform lockButton = BuildButton(safe, "LockOn", "L", new Vector2(-110f, -110f), 120f, "<Gamepad>/rightStickPress");
             lockButton.anchorMin = lockButton.anchorMax = Vector2.one;
+
+            // Skills in an arc left of the attack cluster; the ultimate above it.
+            SkillCaster caster = FindFirstObjectByType<SkillCaster>();
+            if (caster != null)
+            {
+                Vector2[] spots = { new Vector2(-660f, 110f), new Vector2(-660f, 270f), new Vector2(-620f, 430f), new Vector2(-430f, 540f) };
+                for (int i = 0; i < spots.Length; i++) BuildSkillButton(safe, caster, i, spots[i], 130f, Color.white);
+                BuildSkillButton(safe, caster, 4, new Vector2(-190f, 640f), 140f, new Color(1f, 0.85f, 0.3f));
+            }
+            RectTransform statusButton = BuildTapButton(safe, "Status", "C", new Vector2(-260f, -110f), 110f, Core.StatusPanel.Toggle);
+            statusButton.anchorMin = statusButton.anchorMax = Vector2.one;
         }
 
         static void EnsureEventSystem()
@@ -122,6 +134,36 @@ namespace Aethvirse.Input.Touch
                 control.SetGraphic(i == 0 ? image : null);
             }
             button.gameObject.SetActive(true);
+            return button;
+        }
+
+        void BuildSkillButton(RectTransform parent, SkillCaster caster, int slot, Vector2 fromBottomRight, float size, Color ring)
+        {
+            RectTransform button = Circle($"Skill{slot + 1}", parent, TouchSprites.Disc, size, Color.white);
+            button.anchorMin = button.anchorMax = new Vector2(1f, 0f);
+            button.anchoredPosition = fromBottomRight;
+            Image face = button.GetComponent<Image>();
+            face.raycastTarget = true;
+            RectTransform outline = Circle("Ring", button, TouchSprites.Ring, size, ring);
+            outline.anchoredPosition = Vector2.zero;
+            RectTransform cd = Circle("Cooldown", button, TouchSprites.Disc, size, new Color(0f, 0f, 0f, 0.6f));
+            Image cooldown = cd.GetComponent<Image>();
+            cooldown.type = Image.Type.Filled;
+            cooldown.fillMethod = Image.FillMethod.Radial360;
+            cooldown.fillOrigin = (int)Image.Origin360.Top;
+            cooldown.fillAmount = 0f;
+            Text(button, "", size * 0.36f);
+            Text label = button.GetComponentInChildren<Text>();
+            button.gameObject.AddComponent<TouchSkillButton>().Setup(caster, slot, face, cooldown, label);
+        }
+
+        RectTransform BuildTapButton(RectTransform parent, string name, string label, Vector2 position, float size, System.Action onTap)
+        {
+            RectTransform button = Circle(name, parent, TouchSprites.Disc, size, new Color(1f, 1f, 1f, 0.35f));
+            button.anchoredPosition = position;
+            button.GetComponent<Image>().raycastTarget = true;
+            Text(button, label, size * 0.45f);
+            button.gameObject.AddComponent<TouchTap>().OnTap = onTap;
             return button;
         }
 

@@ -41,3 +41,12 @@ Technical decisions for the Unity version of AETHVIRSE. The Godot prototype's de
 - Owner also asked that every attack in a combo moves differently: graybox swings now have their own
   kinds (right/left slash, chop, rising, diagonal, spin, double spin, slam, thrust); real animation clips
   replace them with the hero model.
+
+## Stats & skills port (2026-11-24)
+- The tank class shows as **Paladin** (id `vanguard`), as in the latest Godot data (hero roster 2026-11-09);
+  STORY.md's "Warden" is the older name.
+- Starter weapon ATK = `level × weaponAtkPerLevel` (the sheet's average Rare weapon) until items (M6).
+- Test cheats (F6 level up, F7 refill + no cooldowns) are on in every build for playtests; they get gated to
+  debug builds with the cheat console (M5) / release (M12).
+- Skill looks are graybox effects (procedural rings / arcs / spikes / pillars on one transparent unlit material);
+  real VFX come with the visual identity milestone (M4) and the hero model.
