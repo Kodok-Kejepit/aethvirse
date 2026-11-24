@@ -55,6 +55,8 @@ namespace Aethvirse.Player
         {
             Target = target;
             if (cameraRig != null) cameraRig.LockTarget = target;
+            PlayerCombat combat = GetComponent<PlayerCombat>();
+            if (combat != null) combat.HomingTarget = target != null && !(target is Object o && o == null) ? target.transform : null;
             if (marker != null) marker.gameObject.SetActive(target != null);
         }
 

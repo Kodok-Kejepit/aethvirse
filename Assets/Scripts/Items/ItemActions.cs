@@ -132,6 +132,7 @@ namespace Aethvirse.Items
             for (int i = 0; i < r.inputIds.Count; i++) inv.Remove(r.inputIds[i], r.inputCounts[i]);
             wallet.SpendGold(r.goldCost);
             inv.Add(r.output, r.outputCount);
+            Core.GameEvents.RaiseCrafted(r.output);
             return true;
         }
     }

@@ -57,10 +57,12 @@ namespace Aethvirse.Enemies
         public EnemyData Data => data;
         public EnemyState State { get; private set; } = EnemyState.Idle;
         public bool IsLockable => State != EnemyState.Dead && isActiveAndEnabled;
-        public string DisplayName => $"{data.displayName}  Lv {data.level}";
+        public string DisplayName => $"{data.displayName}  Lv {Level}";
+        /// <summary>Spawned waves remove themselves instead of respawning.</summary>
+        public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
         Vector3 Facing => visual.forward;
-        Transform Target => PlayerTarget.Current;
+        Transform Target => PlayerTarget.Visible;
 
         void Awake()
         {
@@ -91,7 +93,7 @@ namespace Aethvirse.Enemies
             _gold = data.goldReward;
             if (data.scaleByLevel && scalingClass != null && tuning != null)
             {
-                EnemyScaling.Result r = EnemyScaling.Compute(data.level, data.tier, scalingClass, tuning);
+                EnemyScaling.Result r = EnemyScaling.Compute(Level, data.tier, scalingClass, tuning);
                 maxHp = Mathf.RoundToInt(r.maxHealth * data.hpScale);
                 stats.attack = r.attack * data.attackScale;
                 stats.defense = r.defense;
@@ -100,6 +102,22 @@ namespace Aethvirse.Enemies
             }
             _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
+
+        int _levelOverride;
+        float _aggroOverride;
+
+        /// <summary>Runtime spawns (waves, Gates): re-scale to a level and optionally widen the aggro radius.</summary>
+        public void SetLevel(int level, float aggroRadius = 0f, bool dropsLoot = true)
+        {
+            _levelOverride = level;
+            _aggroOverride = aggroRadius;
+            _noLoot = !dropsLoot;
+            ConfigureStats();
+        }
+
+        bool _noLoot;
+        float AggroRadius => _aggroOverride > 0f ? _aggroOverride : data.aggroRadius;
+        int Level => _levelOverride > 0 ? _levelOverride : data.level;
 
         void OnEnable() => LockTargets.Register(this);
 
@@ -132,7 +150,7 @@ namespace Aethvirse.Enemies
 
         void UpdateIdle(float dt)
         {
-            if (DistanceToTarget() <= data.aggroRadius)
+            if (DistanceToTarget() <= AggroRadius)
             {
                 SetState(EnemyState.Chase);
                 return;
@@ -229,6 +247,7 @@ namespace Aethvirse.Enemies
             float k = Mathf.Clamp01(_stateTime / 0.5f);
             visual.localRotation = Quaternion.Euler(Mathf.Lerp(0f, -85f, k), visual.localEulerAngles.y, 0f);
             if (_stateTime >= DeathTime) SetVisible(false);
+            if (!RespawnAtHome && _stateTime >= DeathTime) { Destroy(gameObject); return; }
             if (data.respawnDelay > 0f && _stateTime >= DeathTime + data.respawnDelay) Respawn();
         }
 
@@ -310,10 +329,10 @@ namespace Aethvirse.Enemies
         void DropLoot()
         {
             var inv = Items.PlayerInventory.Current;
-            if (inv == null || !data.dropsLoot) return;
+            if (inv == null || !data.dropsLoot || _noLoot) return;
             Vector3 at = transform.position;
             if (_gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = _gold });
-            foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(data.level, data.tier, inv.Database, inv.Rules, _rng))
+            foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(Level, data.tier, inv.Database, inv.Rules, _rng))
                 Items.WorldPickup.Spawn(at, drop);
         }
 

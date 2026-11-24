@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: q_rival
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: q_rival
+  title: Prove You Belong
+  description: Kaelen Dray says Cinder Class is a waste of a seat. Show him at the
+    training ground.
+  kind: 4
+  autoStart: 0
+  startConditions: []
+  timeLimit: 0
+  academyPoints: 40
+  objectives:
+  - type: 1
+    target: kaelen
+    count: 1
+    text: Talk to Kaelen at the arena
+    stage: 0
+    optional: 0
+  - type: 6
+    target: 
+    count: 30
+    text: Land 30 attacks on the training dummies
+    stage: 1
+    optional: 0
+  - type: 12
+    target: 
+    count: 5
+    text: Use skills 5 times
+    stage: 1
+    optional: 0
+  - type: 1
+    target: kaelen
+    count: 1
+    text: Talk to Kaelen again
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 2
+    key: 
+    amount: 200
+    text: 
+  - type: 3
+    key: kaelen_noticed
+    amount: 1
+    text: 

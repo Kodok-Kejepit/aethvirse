@@ -29,5 +29,14 @@ MonoBehaviour:
   hitStop: 0.08
   lungeSpeed: 6
   swing: 3
+  ranged: 0
+  projectileCount: 1
+  projectileSpread: 10
+  projectileSpeed: 28
+  projectileRange: 26
+  projectileRadius: 0.35
+  projectilePierce: 0
+  projectileColor: {r: 0.9, g: 0.9, b: 1, a: 1}
+  homing: 0
   nextLight: {fileID: 0}
   nextHeavy: {fileID: 0}

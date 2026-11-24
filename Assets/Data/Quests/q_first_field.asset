@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: q_first_field
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: q_first_field
+  title: First Field Assignment
+  description: 'Cinder Class gets the jobs nobody else takes: thin out the Ash Hounds
+    in Ashfall Outskirts.'
+  kind: 0
+  autoStart: 0
+  startConditions: []
+  timeLimit: 0
+  academyPoints: 50
+  objectives:
+  - type: 3
+    target: r1_ashfall
+    count: 1
+    text: Go to Ashfall Outskirts (expedition gate)
+    stage: 0
+    optional: 0
+  - type: 0
+    target: ash_hound
+    count: 3
+    text: Defeat 3 Ash Hounds
+    stage: 1
+    optional: 0
+  - type: 1
+    target: horne
+    count: 1
+    text: Report back to Horne
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 2
+    key: 
+    amount: 150
+    text: 
+  - type: 1
+    key: 
+    amount: 100
+    text: 
+  - type: 0
+    key: potion_small
+    amount: 3
+    text: 
+  - type: 7
+    key: q_rival
+    amount: 1
+    text: 

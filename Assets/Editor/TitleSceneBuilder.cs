@@ -29,7 +29,9 @@ public static class TitleSceneBuilder
         {
             new EditorBuildSettingsScene(BootPath, true),
             new EditorBuildSettingsScene(TitlePath, true),
+            new EditorBuildSettingsScene(AcademyBuilder.AcademyPath, true),
             new EditorBuildSettingsScene(PlaygroundPath, true),
+            new EditorBuildSettingsScene(AcademyBuilder.PenaltyPath, true),
         };
     }
 }

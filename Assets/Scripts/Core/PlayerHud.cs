@@ -132,6 +132,8 @@ namespace Aethvirse.Core
                 $"Day {session.Clock.Day}  ·  {session.Clock.Format()}  ·  {session.Weather.current}", _small);
             _small.alignment = TextAnchor.MiddleLeft;
 
+            DrawQuestTracker(s);
+
             // Interaction prompt above the skill bar.
             if (interaction != null && interaction.Current != null)
             {
@@ -219,6 +221,41 @@ namespace Aethvirse.Core
                 GUI.Label(new Rect(r.x + 4, r.y + 1, 30 * s, 20 * s), SlotKeys[i], _small);
                 _small.fontSize = Mathf.RoundToInt(20 * s);
             }
+        }
+
+        /// <summary>Right side under the clock: up to 3 active quests with their current objective and progress.</summary>
+        void DrawQuestTracker(float s)
+        {
+            Quests.QuestSystem qs = Quests.QuestSystem.Instance;
+            float y = 48 * s, w = 460 * s, x = Screen.width - w - 20 * s;
+            int shown = 0;
+            _small.alignment = TextAnchor.UpperLeft;
+            foreach (Quests.QuestData q in qs.ActiveQuests())
+            {
+                if (shown++ >= 3) break;
+                Quests.QuestObjective o = qs.Log.Current(q, out int index);
+                string progress = o != null && o.count > 1 ? $"  {qs.Log.Progress(q.id, index)}/{o.count}" : "";
+                QuestLog_Timer(q, qs, out string timer);
+                GUI.color = new Color(0f, 0f, 0f, 0.45f);
+                GUI.DrawTexture(new Rect(x, y, w, 58 * s), Texture2D.whiteTexture);
+                GUI.color = Color.white;
+                _small.normal.textColor = q.kind == Quests.QuestKind.Story ? new Color(1f, 0.85f, 0.4f) : q.kind == Quests.QuestKind.Daily ? new Color(0.5f, 0.85f, 1f) : q.kind == Quests.QuestKind.Emergency ? new Color(1f, 0.45f, 0.4f) : new Color(0.6f, 1f, 0.7f);
+                GUI.Label(new Rect(x + 8 * s, y + 2 * s, w, 26 * s), q.title + timer, _small);
+                _small.normal.textColor = Color.white;
+                GUI.Label(new Rect(x + 8 * s, y + 28 * s, w, 26 * s), "· " + (o != null ? o.text : "…") + progress, _small);
+                y += 64 * s;
+            }
+            _small.alignment = TextAnchor.MiddleLeft;
+        }
+
+        static void QuestLog_Timer(Quests.QuestData q, Quests.QuestSystem qs, out string timer)
+        {
+            timer = "";
+            if (q.timeLimit <= 0f) return;
+            Quests.QuestLog.State st = qs.Log.Get(q.id);
+            if (st == null) return;
+            float left = Mathf.Max(0f, q.timeLimit - (Time.time - st.startedAt));
+            timer = $"  {Mathf.FloorToInt(left / 60f)}:{Mathf.FloorToInt(left) % 60:00}";
         }
 
         static string Initials(string name)

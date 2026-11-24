@@ -38,6 +38,9 @@ namespace Aethvirse.Player
         void StartAttack()
         {
             _attack = combat.BeginAttack();
+            if (combat.CurrentSkill == null) Core.GameEvents.RaiseAttacked();
+            // Attacking breaks stealth.
+            PlayerTarget.HiddenUntil = 0f;
             _attackElapsed = 0f;
             IsSprinting = false;
             _attackDirection = SnapFacing(AimDirection());

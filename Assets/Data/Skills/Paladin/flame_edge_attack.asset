@@ -20,8 +20,8 @@ MonoBehaviour:
   startup: 0.12
   active: 0.2
   recovery: 0.3
-  comboWindow: 0.62
-  dodgeCancel: 0.32
+  comboWindow: 0.5
+  dodgeCancel: 0.22
   hitboxSize: {x: 3, y: 1.5, z: 2.4}
   hitboxOffset: {x: 0, y: 1, z: 1.3}
   knockback: 3
@@ -29,5 +29,14 @@ MonoBehaviour:
   hitStop: 0.07
   lungeSpeed: 4
   swing: 6
+  ranged: 0
+  projectileCount: 1
+  projectileSpread: 10
+  projectileSpeed: 28
+  projectileRange: 26
+  projectileRadius: 0.35
+  projectilePierce: 0
+  projectileColor: {r: 0.9, g: 0.9, b: 1, a: 1}
+  homing: 0
   nextLight: {fileID: 0}
   nextHeavy: {fileID: 0}

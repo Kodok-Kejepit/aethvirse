@@ -45,6 +45,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3af16618ae420a08987b938f55cc836, type: 2}
   - {fileID: 11400000, guid: 3e688bab6ce537fa5b0238a56f7d84f5, type: 2}
   - {fileID: 11400000, guid: 7bf6954e72ae481648ff069f14a222d6, type: 2}
+  - {fileID: 11400000, guid: 2a1661e369fac3f0e809aa3f0f13b8a5, type: 2}
+  - {fileID: 11400000, guid: 023586393919e9e1b8afbde49ba28508, type: 2}
+  - {fileID: 11400000, guid: 314d3da0b215900e9a020b7bdb2ade20, type: 2}
+  - {fileID: 11400000, guid: 1301ec7656d2e856ab4e47fd182698d0, type: 2}
+  - {fileID: 11400000, guid: d49265363449c49f39408d201f5d48ee, type: 2}
+  - {fileID: 11400000, guid: fc06bfc758e8cdae89cec0584aa8ca1e, type: 2}
   skillCombos:
   - id: charge_breaker
     displayName: Breaker
@@ -70,3 +76,11 @@ MonoBehaviour:
     bonusMultiplier: 1.3
     forceCrit: 0
     extraStagger: 20
+  - id: dawn_verdict
+    displayName: Dawn Verdict
+    first: holy_ward
+    second: judgement
+    window: 4
+    bonusMultiplier: 1.4
+    forceCrit: 1
+    extraStagger: 0

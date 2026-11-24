@@ -86,6 +86,10 @@ namespace Aethvirse.Save
             data.world.flags = s.Flags;
             data.world.gold = s.Gold;
             data.world.region = s.Region;
+            data.world.academyPoints = s.AcademyPoints;
+            data.world.codexPoints = s.CodexPoints;
+            data.world.penaltyPending = s.PenaltyPending;
+            data.world.quests = Quests.QuestSystem.Instance.Log;
             player.Capture(data.player);
             try
             {
@@ -106,11 +110,19 @@ namespace Aethvirse.Save
             SaveData data = SaveData.FromJson(SaveFile.Read(PathFor(slot)));
             if (data == null) return false;
             GameSession.Instance.Restore(data.world.clock, data.world.weather, data.world.flags, data.world.gold, data.playtime, data.world.region);
+            GameSession.Instance.AcademyPoints = data.world.academyPoints;
+            if (!string.IsNullOrEmpty(data.player.classId)) GameSession.Instance.ClassId = data.player.classId;
+            GameSession.Instance.CodexPoints = data.world.codexPoints;
+            GameSession.Instance.PenaltyPending = data.world.penaltyPending;
+            Quests.QuestSystem.Instance.Restore(data.world.quests);
             _pending = data;
             Combat.TimeFx.ResetAll();
             SceneManager.LoadScene(string.IsNullOrEmpty(data.scene) ? Core.BootLoader.FirstScene : data.scene);
             return true;
         }
+
+        /// <summary>Scene travel hands the carried player state over this way.</summary>
+        public static void SetPending(SaveData data) => _pending = data;
 
         /// <summary>The loaded data waiting for the player (once).</summary>
         public static SaveData TakePending()

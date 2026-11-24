@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255e5424c2758266ba317319a06e517e, type: 3}
+  m_Name: QuestDatabase
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestDatabase
+  quests:
+  - {fileID: 11400000, guid: 024f417c42c74dcf79cc115f12d08cfc, type: 2}
+  - {fileID: 11400000, guid: 85f2d119406e95c319f377a3eb1bb8d7, type: 2}
+  - {fileID: 11400000, guid: 6f16267c0d6f24bc79d434aedd6ee1cb, type: 2}
+  - {fileID: 11400000, guid: a64fb304358213946bc39888dc4e0d37, type: 2}
+  - {fileID: 11400000, guid: e8834e538c1325f5c89cd1aa294d1e6c, type: 2}

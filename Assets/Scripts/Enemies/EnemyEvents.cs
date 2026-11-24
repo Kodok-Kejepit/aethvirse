@@ -15,6 +15,7 @@ namespace Aethvirse.Enemies
         {
             Killed?.Invoke(xp);
             KilledEnemy?.Invoke(data);
+            Core.GameEvents.RaiseEnemyKilled(data != null ? data.id : "");
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

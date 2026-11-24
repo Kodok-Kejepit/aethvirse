@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: blink
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: blink
+  displayName: Blink
+  description: Step through space.
+  kind: 1
+  isUltimate: 0
+  iconColor: {r: 0.7, g: 0.6, b: 1, a: 1}
+  unlockLevel: 8
+  maxLevel: 10
+  fx: 9
+  mpCost: 15
+  cooldown: 7
+  attack: {fileID: 11400000, guid: 06c22989b6547b877875a15b42598558, type: 2}
+  damageMultiplier: 0.8
+  multiplierPerLevel: 0.05
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15

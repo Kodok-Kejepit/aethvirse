@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6551362a7b6f3db0d87abb67f8b91d18, type: 3}
+  m_Name: quartermaster
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Dialog.NpcData
+  id: quartermaster
+  displayName: Quartermaster
+  bodyColor: {r: 0.35, g: 0.55, b: 0.4, a: 1}
+  entries:
+  - id: shop
+    conditions: []
+    lines:
+    - "Potions, bread, scrolls. Academy prices \u2014 which is to say, not cheap."
+    dailyVariants: []
+    onShow: []
+    choices:
+    - text: Show me your goods.
+      conditions: []
+      effects:
+      - type: 8
+        key: 
+        amount: 1
+        text: 
+      reply: []
+      goldCost: 0
+    - text: Just looking.
+      conditions: []
+      effects: []
+      reply: []
+      goldCost: 0
+  awayFromHour: -1
+  awayToHour: -1
+  hiddenWhenFlag: 

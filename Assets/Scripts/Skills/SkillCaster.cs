@@ -121,11 +121,24 @@ namespace Aethvirse.Skills
             _lastSkillTime = now;
             if (combo != null) ComboTriggered?.Invoke(combo);
             SkillUsed?.Invoke(skill);
+            Core.GameEvents.RaiseSkillUsed(skill.id);
 
-            if (skill.kind == SkillKind.Buff)
+            switch (skill.kind)
             {
-                stats.AddBuff(skill.buffStat, skill.BuffAt(level), skill.buffDuration);
-                return;
+                case SkillKind.Buff:
+                    stats.AddBuff(skill.buffStat, skill.BuffAt(level), skill.buffDuration);
+                    return;
+                case SkillKind.Heal:
+                    var health = GetComponent<Combat.Damageable>();
+                    if (health != null) health.Health.Heal(Mathf.RoundToInt(health.Health.maxHealth * (skill.healShare + skill.multiplierPerLevel * (level - 1))));
+                    return;
+                case SkillKind.Stealth:
+                    PlayerTarget.HiddenUntil = Time.time + skill.stealthDuration;
+                    combat.GrantCounter();
+                    return;
+                case SkillKind.Trap:
+                    combat.PlaceTrap(skill, level, transform.position);
+                    return;
             }
             if (!skill.IsDamaging) return;
             combat.QueueSkill(skill, level, combo);

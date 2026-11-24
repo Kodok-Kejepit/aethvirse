@@ -27,7 +27,30 @@ namespace Aethvirse.World
 
         public WorldClock Clock { get; private set; } = new WorldClock();
         public WeatherState Weather { get; private set; } = new WeatherState();
-        public WorldFlags Flags { get; private set; } = new WorldFlags();
+        WorldFlags _flags;
+        public WorldFlags Flags
+        {
+            get => _flags ??= Hook(new WorldFlags());
+            private set => _flags = Hook(value);
+        }
+        /// <summary>Forwarded from whichever flag set is current (it is replaced on load / new game).</summary>
+        public event Action<string> FlagSet;
+
+        WorldFlags Hook(WorldFlags f)
+        {
+            f.FlagSet += x => FlagSet?.Invoke(x);
+            return f;
+        }
+
+        /// <summary>The class chosen at New Game (ClassData.id).</summary>
+        public string ClassId { get; set; } = "vanguard";
+        public int AcademyPoints { get; set; }
+        public int CodexPoints { get; set; }
+        /// <summary>A missed daily quest waits to be paid for in the Penalty Zone.</summary>
+        public bool PenaltyPending { get; set; }
+        /// <summary>Where SceneTravel.Return goes (Penalty Zone, Gates, interiors).</summary>
+        public string ReturnScene { get; set; } = "";
+        public Vector3 ReturnPosition { get; set; }
         public WeatherTable WeatherTable { get; set; } = new WeatherTable();
         public int Gold { get; private set; }
         public float Playtime { get; private set; }
@@ -95,6 +118,10 @@ namespace Aethvirse.World
             Gold = 0;
             Playtime = 0f;
             Region = "";
+            AcademyPoints = 0;
+            CodexPoints = 0;
+            PenaltyPending = false;
+            ReturnScene = "";
         }
 
         public void Restore(WorldClock clock, WeatherState weather, WorldFlags flags, int gold, float playtime, string region)

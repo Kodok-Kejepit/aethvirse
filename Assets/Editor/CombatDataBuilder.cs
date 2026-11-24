@@ -16,6 +16,9 @@ public static class CombatDataBuilder
     {
         Directory.CreateDirectory(GreatswordDir);
         BuildGreatsword();
+        BuildDaggers();
+        BuildStaff();
+        BuildBow();
         Directory.CreateDirectory(EnemyDir);
         BuildAshHound();
         AssetDatabase.SaveAssets();
@@ -50,6 +53,116 @@ public static class CombatDataBuilder
         combo.heavyStart = overhead;
         combo.chainGrace = 0.35f;
         EditorUtility.SetDirty(combo);
+    }
+
+    // Shorthand for the other weapons: (id, name, mult, heavy, startup, active, recovery, swing).
+    static AttackData A(string dir, string id, string name, float mult, bool heavy, float startup, float active, float recovery,
+        SwingKind swing, Vector3 size, Vector3 offset, float knockback, float stagger, float hitStop, float lunge)
+    {
+        Directory.CreateDirectory(dir);
+        var a = LoadOrCreate<AttackData>($"{dir}/{id}.asset");
+        a.id = id; a.displayName = name; a.damageMultiplier = mult; a.isHeavy = heavy; a.element = ElementType.Physical;
+        a.startup = startup; a.active = active; a.recovery = recovery;
+        a.comboWindow = Mathf.Min(startup + active + recovery * 0.4f, startup + active + recovery);
+        a.dodgeCancel = startup + active * 0.5f;
+        a.hitboxSize = size; a.hitboxOffset = offset; a.knockback = knockback; a.stagger = stagger; a.hitStop = hitStop;
+        a.lungeSpeed = lunge; a.swing = swing; a.ranged = false; a.homing = false; a.projectileCount = 1; a.projectilePierce = 0;
+        EditorUtility.SetDirty(a);
+        return a;
+    }
+
+    static AttackData Ranged(AttackData a, int count, float spread, float speed, float range, float radius, int pierce, Color color, bool homing)
+    {
+        a.ranged = true; a.projectileCount = count; a.projectileSpread = spread; a.projectileSpeed = speed; a.projectileRange = range;
+        a.projectileRadius = radius; a.projectilePierce = pierce; a.projectileColor = color; a.homing = homing;
+        EditorUtility.SetDirty(a);
+        return a;
+    }
+
+    static void Chain(string comboPath, AttackData[] lights, AttackData[] heavies, AttackData heavyStart)
+    {
+        for (int i = 0; i < lights.Length; i++) Link(lights[i], i + 1 < lights.Length ? lights[i + 1] : null, i < heavies.Length ? heavies[i] : null);
+        foreach (AttackData h in heavies) Link(h, null, null);
+        Link(heavyStart, null, null);
+        var combo = LoadOrCreate<ComboData>(comboPath);
+        combo.lightStart = lights[0];
+        combo.heavyStart = heavyStart;
+        combo.chainGrace = 0.35f;
+        EditorUtility.SetDirty(combo);
+    }
+
+    /// <summary>Twin daggers (Assassin): six quick cuts, low stagger, short reach; heavies are flips and lunges.</summary>
+    static void BuildDaggers()
+    {
+        const string d = "Assets/Data/Combat/Daggers";
+        Vector3 small = new Vector3(1.8f, 1.3f, 1.6f), near = new Vector3(0f, 1f, 1f);
+        var lights = new[]
+        {
+            A(d, "dagger_1", "Cut I", 0.55f, false, 0.05f, 0.07f, 0.14f, SwingKind.Horizontal, small, near, 1f, 5f, 0.03f, 3f),
+            A(d, "dagger_2", "Cut II", 0.55f, false, 0.05f, 0.07f, 0.14f, SwingKind.Backhand, small, near, 1f, 5f, 0.03f, 3f),
+            A(d, "dagger_3", "Cut III", 0.6f, false, 0.05f, 0.08f, 0.15f, SwingKind.Thrust, small, near, 1f, 6f, 0.03f, 4f),
+            A(d, "dagger_4", "Cut IV", 0.6f, false, 0.05f, 0.08f, 0.15f, SwingKind.Diagonal, small, near, 1f, 6f, 0.03f, 3f),
+            A(d, "dagger_5", "Cut V", 0.65f, false, 0.06f, 0.08f, 0.16f, SwingKind.Rising, small, near, 1.5f, 7f, 0.04f, 3f),
+            A(d, "dagger_6", "Whirling Fangs", 1.3f, false, 0.08f, 0.2f, 0.3f, SwingKind.DoubleSpin, new Vector3(3.6f, 1.4f, 3.6f), new Vector3(0, 1f, 0f), 4f, 18f, 0.06f, 2f),
+        };
+        var heavies = new[]
+        {
+            A(d, "dagger_h1", "Backflip Slash", 1.4f, true, 0.12f, 0.1f, 0.3f, SwingKind.Rising, small, near, 3f, 18f, 0.06f, -4f),
+            A(d, "dagger_h2", "Viper Lunge", 1.6f, true, 0.1f, 0.12f, 0.3f, SwingKind.Thrust, new Vector3(1.2f, 1.2f, 3.4f), new Vector3(0, 1f, 1.8f), 3f, 20f, 0.06f, 12f),
+            A(d, "dagger_h3", "Cross Rend", 1.7f, true, 0.12f, 0.12f, 0.32f, SwingKind.Diagonal, new Vector3(2.4f, 1.4f, 2f), new Vector3(0, 1f, 1.1f), 3.5f, 22f, 0.07f, 4f),
+            A(d, "dagger_h4", "Shadow Fall", 2f, true, 0.18f, 0.12f, 0.36f, SwingKind.Slam, new Vector3(2.8f, 1.6f, 2.8f), new Vector3(0, 0.6f, 0.8f), 4f, 28f, 0.08f, 3f),
+            A(d, "dagger_h5", "Fang Tempest", 2.2f, true, 0.16f, 0.26f, 0.4f, SwingKind.Spin, new Vector3(4.2f, 1.6f, 4.2f), new Vector3(0, 1f, 0f), 5f, 30f, 0.09f, 1f),
+        };
+        AttackData start = A(d, "dagger_heavy", "Twin Pierce", 1.3f, true, 0.1f, 0.1f, 0.28f, SwingKind.Thrust, new Vector3(1.4f, 1.3f, 2.6f), new Vector3(0, 1f, 1.4f), 3f, 16f, 0.06f, 8f);
+        Chain($"{d}/DaggersCombo.asset", lights, heavies, start);
+    }
+
+    /// <summary>Focus staff (Mage): homing bolts; heavies are piercing orbs, fans and a close blast.</summary>
+    static void BuildStaff()
+    {
+        const string d = "Assets/Data/Combat/Staff";
+        Color arcane = new Color(0.6f, 0.75f, 1f);
+        Vector3 box = new Vector3(1.6f, 1.4f, 1.6f), front = new Vector3(0f, 1f, 1f);
+        var lights = new[]
+        {
+            Ranged(A(d, "staff_1", "Spark Bolt", 0.7f, false, 0.1f, 0.05f, 0.2f, SwingKind.Thrust, box, front, 1f, 6f, 0.03f, 0f), 1, 0f, 30f, 24f, 0.3f, 0, arcane, true),
+            Ranged(A(d, "staff_2", "Spark Bolt", 0.7f, false, 0.1f, 0.05f, 0.2f, SwingKind.Thrust, box, front, 1f, 6f, 0.03f, 0f), 1, 0f, 30f, 24f, 0.3f, 0, arcane, true),
+            Ranged(A(d, "staff_3", "Twin Bolt", 0.55f, false, 0.12f, 0.05f, 0.22f, SwingKind.Vertical, box, front, 1f, 6f, 0.03f, 0f), 2, 8f, 30f, 24f, 0.3f, 0, arcane, true),
+            Ranged(A(d, "staff_4", "Arc Burst", 1.4f, false, 0.18f, 0.08f, 0.35f, SwingKind.Spin, box, front, 3f, 16f, 0.05f, 0f), 5, 40f, 24f, 16f, 0.35f, 0, arcane, false),
+        };
+        var heavies = new[]
+        {
+            Ranged(A(d, "staff_h1", "Lance of Light", 1.6f, true, 0.25f, 0.05f, 0.35f, SwingKind.Thrust, box, front, 3f, 18f, 0.06f, 0f), 1, 0f, 40f, 32f, 0.45f, 4, new Color(1f, 0.95f, 0.6f), false),
+            Ranged(A(d, "staff_h2", "Fan of Sparks", 1.1f, true, 0.22f, 0.05f, 0.35f, SwingKind.Horizontal, box, front, 2f, 12f, 0.05f, 0f), 7, 50f, 26f, 18f, 0.3f, 0, arcane, false),
+            A(d, "staff_h3", "Repulse", 1.8f, true, 0.2f, 0.12f, 0.4f, SwingKind.Spin, new Vector3(5f, 2f, 5f), new Vector3(0, 1f, 0f), 9f, 30f, 0.08f, 0f),
+            Ranged(A(d, "staff_h4", "Great Orb", 2.6f, true, 0.35f, 0.05f, 0.45f, SwingKind.Vertical, box, front, 5f, 35f, 0.1f, 0f), 1, 0f, 16f, 26f, 0.9f, 8, new Color(0.7f, 0.5f, 1f), true),
+        };
+        AttackData start = Ranged(A(d, "staff_heavy", "Arcane Orb", 1.5f, true, 0.25f, 0.05f, 0.38f, SwingKind.Vertical, box, front, 3f, 20f, 0.06f, 0f), 1, 0f, 22f, 26f, 0.6f, 2, new Color(0.7f, 0.5f, 1f), true);
+        Chain($"{d}/StaffCombo.asset", lights, heavies, start);
+    }
+
+    /// <summary>Hunting bow (Marksman): fast arrows that curve to the lock-on; heavies pierce and spread.</summary>
+    static void BuildBow()
+    {
+        const string d = "Assets/Data/Combat/Bow";
+        Color arrow = new Color(0.95f, 0.9f, 0.75f);
+        Vector3 box = new Vector3(1.6f, 1.4f, 1.6f), front = new Vector3(0f, 1f, 1f);
+        var lights = new[]
+        {
+            Ranged(A(d, "bow_1", "Quick Shot", 0.75f, false, 0.08f, 0.04f, 0.18f, SwingKind.Thrust, box, front, 1f, 6f, 0.03f, 0f), 1, 0f, 42f, 34f, 0.22f, 0, arrow, true),
+            Ranged(A(d, "bow_2", "Quick Shot", 0.75f, false, 0.08f, 0.04f, 0.18f, SwingKind.Thrust, box, front, 1f, 6f, 0.03f, 0f), 1, 0f, 42f, 34f, 0.22f, 0, arrow, true),
+            Ranged(A(d, "bow_3", "Double Shot", 0.6f, false, 0.1f, 0.04f, 0.2f, SwingKind.Thrust, box, front, 1f, 6f, 0.03f, 0f), 2, 5f, 42f, 34f, 0.22f, 0, arrow, true),
+            Ranged(A(d, "bow_4", "Rain Volley", 0.6f, false, 0.16f, 0.06f, 0.3f, SwingKind.Rising, box, front, 1f, 8f, 0.04f, 0f), 5, 30f, 36f, 26f, 0.25f, 0, arrow, false),
+        };
+        var heavies = new[]
+        {
+            Ranged(A(d, "bow_h1", "Piercing Arrow", 1.8f, true, 0.3f, 0.04f, 0.3f, SwingKind.Thrust, box, front, 4f, 22f, 0.06f, 0f), 1, 0f, 60f, 44f, 0.3f, 5, new Color(1f, 0.8f, 0.4f), false),
+            Ranged(A(d, "bow_h2", "Scatter Shot", 0.9f, true, 0.22f, 0.04f, 0.32f, SwingKind.Horizontal, box, front, 3f, 12f, 0.05f, -5f), 6, 45f, 36f, 18f, 0.25f, 0, arrow, false),
+            A(d, "bow_h3", "Kick Away", 1.3f, true, 0.12f, 0.1f, 0.3f, SwingKind.Thrust, new Vector3(1.8f, 1.4f, 1.8f), new Vector3(0, 1f, 1f), 8f, 25f, 0.06f, -8f),
+            Ranged(A(d, "bow_h4", "Heartseeker", 3f, true, 0.45f, 0.04f, 0.4f, SwingKind.Thrust, box, front, 5f, 40f, 0.1f, 0f), 1, 0f, 70f, 50f, 0.35f, 2, new Color(1f, 0.4f, 0.4f), true),
+        };
+        AttackData start = Ranged(A(d, "bow_heavy", "Charged Arrow", 1.5f, true, 0.28f, 0.04f, 0.3f, SwingKind.Thrust, box, front, 4f, 20f, 0.06f, 0f), 1, 0f, 55f, 40f, 0.3f, 2, new Color(1f, 0.85f, 0.5f), true);
+        Chain($"{d}/BowCombo.asset", lights, heavies, start);
     }
 
     /// <summary>Ash Hound (Godot data/enemies/ash_hound.tres): fast, short windup, hits that shove you.</summary>

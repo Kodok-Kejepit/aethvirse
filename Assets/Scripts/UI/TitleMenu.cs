@@ -12,6 +12,7 @@ namespace Aethvirse.UI
         public const string SceneName = "Title";
 
         bool _loadPage;
+        bool _classPage;
         int _latest = -1;
         GUIStyle _title, _sub, _button;
 
@@ -26,9 +27,12 @@ namespace Aethvirse.UI
 
         public static void NewGame()
         {
+            string classId = GameSession.Instance.ClassId;
             GameSession.Instance.ResetForNewGame();
+            GameSession.Instance.ClassId = classId;
+            Quests.QuestSystem.Instance.ResetForNewGame();
             SaveManager.TakePending();
-            SceneManager.LoadScene(Core.BootLoader.FirstScene);
+            SceneManager.LoadScene(Core.BootLoader.NewGameScene);
         }
 
         void OnGUI()
@@ -47,6 +51,24 @@ namespace Aethvirse.UI
             GUI.Label(new Rect(0, Screen.height * 0.14f + 100 * s, Screen.width, 40 * s), "UNSEAL THE CODEX", _sub);
 
             float w = 560 * s, x = (Screen.width - w) * 0.5f, y = Screen.height * 0.45f, h = 66 * s, gap = 16 * s;
+            if (_classPage)
+            {
+                Stats.ClassRegistry reg = Stats.ClassRegistry.Instance;
+                GUI.Label(new Rect(0, y - 70 * s, Screen.width, 50 * s), "Choose your class", _sub);
+                if (reg != null)
+                    foreach (Stats.ClassData c in reg.classes)
+                    {
+                        if (c == null) continue;
+                        if (GUI.Button(new Rect(x - 200 * s, y, w + 400 * s, h), $"{c.displayName} — {c.description}", _button))
+                        {
+                            GameSession.Instance.ClassId = c.id;
+                            NewGame();
+                        }
+                        y += h + gap;
+                    }
+                if (GUI.Button(new Rect(x, y, w, h), "Back", _button)) _classPage = false;
+                return;
+            }
             if (_loadPage)
             {
                 for (int slot = 0; slot <= SaveManager.ManualSlots; slot++)
@@ -64,7 +86,7 @@ namespace Aethvirse.UI
                 if (GUI.Button(new Rect(x, y, w, h), "Continue", _button)) SaveManager.Load(_latest);
                 y += h + gap;
             }
-            if (GUI.Button(new Rect(x, y, w, h), "New Game", _button)) NewGame();
+            if (GUI.Button(new Rect(x, y, w, h), "New Game", _button)) _classPage = true;
             y += h + gap;
             GUI.enabled = _latest >= 0;
             if (GUI.Button(new Rect(x, y, w, h), "Load", _button)) _loadPage = true;
