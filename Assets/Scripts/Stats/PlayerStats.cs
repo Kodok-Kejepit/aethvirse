@@ -22,6 +22,7 @@ namespace Aethvirse.Stats
         [SerializeField] PlayerController player;
         [SerializeField] PlayerCombat combat;
         [SerializeField] Damageable damageable;
+        [SerializeField] Items.PlayerInventory inventory;
 
         readonly Dictionary<string, int> _skillLevels = new Dictionary<string, int>();
         readonly BuffSet _buffs = new BuffSet();
@@ -34,6 +35,8 @@ namespace Aethvirse.Stats
         public ManaPool Mana { get; } = new ManaPool();
         public string[] Slots { get; } = new string[SlotCount];
         public BuffSet Buffs => _buffs;
+        /// <summary>Share of damage dealt healed back (gear affixes).</summary>
+        public float Lifesteal { get; private set; }
 
         /// <summary>Anything shown in the HUD / status panel changed.</summary>
         public event Action Changed;
@@ -88,6 +91,11 @@ namespace Aethvirse.Stats
                 p.hasPosition = true;
             }
             p.health = damageable != null ? damageable.Health.Ratio : 1f;
+            if (inventory != null && inventory.Bag != null)
+            {
+                p.inventory = inventory.Bag;
+                p.hasInventory = true;
+            }
             p.mana = Mana.Ratio;
         }
 
@@ -102,6 +110,7 @@ namespace Aethvirse.Stats
             _skillLevels.Clear();
             for (int i = 0; i < p.skillIds.Count && i < p.skillLevels.Count; i++) _skillLevels[p.skillIds[i]] = p.skillLevels[i];
             for (int i = 0; i < SlotCount; i++) Slots[i] = p.slots != null && i < p.slots.Length ? p.slots[i] : null;
+            if (inventory != null && p.hasInventory) inventory.Restore(p.inventory);
             EnsureSkillsUnlocked();
             Recompute(refill: true);
             if (damageable != null && p.health < 1f)
@@ -110,8 +119,19 @@ namespace Aethvirse.Stats
             if (player != null && p.hasPosition) player.Teleport(p.position);
         }
 
-        void OnEnable() => Enemies.EnemyEvents.Killed += OnEnemyKilled;
-        void OnDisable() => Enemies.EnemyEvents.Killed -= OnEnemyKilled;
+        void OnEnable()
+        {
+            Enemies.EnemyEvents.Killed += OnEnemyKilled;
+            if (inventory != null) inventory.EquipmentChanged += OnEquipmentChanged;
+        }
+
+        void OnDisable()
+        {
+            Enemies.EnemyEvents.Killed -= OnEnemyKilled;
+            if (inventory != null) inventory.EquipmentChanged -= OnEquipmentChanged;
+        }
+
+        void OnEquipmentChanged() => Recompute(refill: false);
 
         void Update()
         {
@@ -131,8 +151,17 @@ namespace Aethvirse.Stats
         {
             int level = Progression.level;
             Primary = Progression.PrimaryStats(classData.baseStats, classData.growth);
-            // Starter weapon until items arrive (M6): the sheet's average weapon for this level.
-            DerivedStats d = DerivedStats.Compute(level, Primary, tuning, level * tuning.weaponAtkPerLevel);
+            bool gear = inventory != null && inventory.Bag != null;
+            if (gear) Primary = Primary.Plus(inventory.EquipmentStats());
+            // Equipped weapon (none = bare hands; the starter kit equips the issued weapon).
+            float weapon = gear ? inventory.WeaponAttack(level) : level * tuning.weaponAtkPerLevel;
+            DerivedStats d = DerivedStats.Compute(level, Primary, tuning, weapon);
+            if (gear)
+            {
+                d.defense += inventory.EquipmentDefense();
+                d.critChance = Mathf.Min(tuning.critCap, d.critChance + inventory.EquipmentBonus(Items.StatKeys.Crit));
+                Lifesteal = inventory.EquipmentBonus(Items.StatKeys.Lifesteal);
+            }
             float atkBonus = _buffs.Total(BuffStat.Attack) + PassiveTotal(BuffStat.Attack);
             d.attack *= 1f + atkBonus;
             d.magicAttack *= 1f + atkBonus;
@@ -143,7 +172,11 @@ namespace Aethvirse.Stats
             Derived = d;
 
             CombatStats combatStats = d.ToCombatStats(classData.magicDamage);
-            if (combat != null) combat.SetStats(combatStats);
+            if (combat != null)
+            {
+                combat.SetStats(combatStats);
+                combat.Lifesteal = Lifesteal;
+            }
             if (damageable != null)
             {
                 damageable.SetStats(combatStats);

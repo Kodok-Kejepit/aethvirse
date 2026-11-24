@@ -32,7 +32,7 @@ namespace Aethvirse.UI
             if (input.Pause.WasPressedThisFrame()) SetOpen(!_open);
             else if (esc && _open) SetOpen(false);
             // Esc first frees a captured cursor (camera); with a free cursor it pauses.
-            else if (esc && !_cursorWasLocked && !Core.StatusPanel.IsOpen) SetOpen(true);
+            else if (esc && !_cursorWasLocked && !Core.StatusPanel.IsOpen && !InventoryPanel.IsOpen) SetOpen(true);
             _cursorWasLocked = Cursor.lockState == CursorLockMode.Locked;
         }
 

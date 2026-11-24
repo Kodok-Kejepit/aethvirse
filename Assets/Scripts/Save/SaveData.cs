@@ -13,9 +13,11 @@ namespace Aethvirse.Save
     [Serializable]
     public sealed class SaveData
     {
-        public const int CurrentVersion = 1;
+        /// <summary>1 = first Unity save; 2 = + inventory.</summary>
+        public const int CurrentVersion = 2;
 
-        public int version = CurrentVersion;
+        /// <summary>0 in a fresh object, so JSON without a version (not a save) is refused; set on write.</summary>
+        public int version;
         public string savedAtUtc = "";
         public string scene = "";
         public float playtime;
@@ -32,6 +34,9 @@ namespace Aethvirse.Save
             public bool hasPosition;
             public float health = 1f;
             public float mana = 1f;
+            /// <summary>JsonUtility never writes null objects, so this says whether <see cref="inventory"/> is real.</summary>
+            public bool hasInventory;
+            public Items.Inventory inventory = new Items.Inventory();
         }
 
         [Serializable]
@@ -47,7 +52,11 @@ namespace Aethvirse.Save
         public PlayerSection player = new PlayerSection();
         public WorldSection world = new WorldSection();
 
-        public string ToJson() => JsonUtility.ToJson(this);
+        public string ToJson()
+        {
+            version = CurrentVersion;
+            return JsonUtility.ToJson(this);
+        }
 
         /// <summary>Parses and migrates; null if the text is not a save.</summary>
         public static SaveData FromJson(string json)
@@ -62,9 +71,11 @@ namespace Aethvirse.Save
             return data;
         }
 
-        /// <summary>Upgrades older saves step by step (none yet: version 1 is the first Unity save).</summary>
+        /// <summary>Upgrades older saves step by step.</summary>
         void Migrate()
         {
+            // v1 → v2: no inventory yet; the player keeps the starter kit.
+            if (version < 2) player.hasInventory = false;
             version = CurrentVersion;
         }
     }

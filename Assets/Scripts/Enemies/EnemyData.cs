@@ -25,6 +25,8 @@ namespace Aethvirse.Enemies
         public float hpScale = 1f;
         public float attackScale = 1f;
         public int xpReward = 20;
+        public int goldReward = 5;
+        public bool dropsLoot = true;
 
         [Header("Movement & awareness")]
         public float walkSpeed = 1.6f;

@@ -6,6 +6,7 @@ using Aethvirse.Combat;
 using Aethvirse.Enemies;
 using Aethvirse.Fx;
 using Aethvirse.Interaction;
+using Aethvirse.Items;
 using Aethvirse.UI;
 using Aethvirse.World;
 using Aethvirse.Skills;
@@ -340,7 +341,16 @@ public static class PlaygroundBuilder
         if (classData == null || tuning == null)
             throw new System.InvalidOperationException("Missing class data: run AETHVIRSE > Build Class Data first");
 
+        var inventory = root.AddComponent<PlayerInventory>();
+        Wire(inventory, "database", AssetDatabase.LoadAssetAtPath<ItemDatabase>(ItemDataBuilder.DatabasePath));
+        Wire(inventory, "rules", AssetDatabase.LoadAssetAtPath<LootRules>(ItemDataBuilder.RulesPath));
+        var invSo = new SerializedObject(inventory);
+        SetList(invSo.FindProperty("recipes"), ItemDataBuilder.Recipes());
+        SetList(invSo.FindProperty("quartermasterStock"), ItemDataBuilder.QuartermasterStock());
+        invSo.ApplyModifiedPropertiesWithoutUndo();
+
         var stats = root.AddComponent<PlayerStats>();
+        Wire(stats, "inventory", inventory);
         Wire(stats, "classData", classData);
         Wire(stats, "tuning", tuning);
         Wire(stats, "player", body);
@@ -491,6 +501,36 @@ public static class PlaygroundBuilder
         return go;
     }
 
+    /// <summary>Copies a list of plain serializable values into a serialized array property (via JSON).</summary>
+    static void SetList<T>(SerializedProperty prop, System.Collections.Generic.List<T> values)
+    {
+        prop.arraySize = values.Count;
+        for (int i = 0; i < values.Count; i++)
+        {
+            SerializedProperty el = prop.GetArrayElementAtIndex(i);
+            object v = values[i];
+            foreach (System.Reflection.FieldInfo f in typeof(T).GetFields())
+            {
+                SerializedProperty fp = el.FindPropertyRelative(f.Name);
+                if (fp == null) continue;
+                object value = f.GetValue(v);
+                switch (value)
+                {
+                    case string str: fp.stringValue = str; break;
+                    case int n: fp.intValue = n; break;
+                    case System.Collections.Generic.List<string> ls:
+                        fp.arraySize = ls.Count;
+                        for (int k = 0; k < ls.Count; k++) fp.GetArrayElementAtIndex(k).stringValue = ls[k];
+                        break;
+                    case System.Collections.Generic.List<int> li:
+                        fp.arraySize = li.Count;
+                        for (int k = 0; k < li.Count; k++) fp.GetArrayElementAtIndex(k).intValue = li[k];
+                        break;
+                }
+            }
+        }
+    }
+
     static void Wire(Object target, string field, Object value)
     {
         var so = new SerializedObject(target);
@@ -509,6 +549,7 @@ public static class PlaygroundBuilder
         Wire(env, "sun", sun);
         var weather = new GameObject("RegionWeather").AddComponent<RegionWeather>();
         new GameObject("PauseMenu").AddComponent<PauseMenu>();
+        new GameObject("InventoryPanel").AddComponent<InventoryPanel>();
         new GameObject("CodexHooks").AddComponent<CodexHooks>();
         var detector = body.gameObject.AddComponent<InteractionDetector>();
         Wire(detector, "facing", body.transform.Find("Visual"));
@@ -536,6 +577,12 @@ public static class PlaygroundBuilder
         var so = new SerializedObject(notice);
         so.FindProperty("text").stringValue = "Movement test ground. Dummies east, Ash Hounds north-east.";
         so.ApplyModifiedPropertiesWithoutUndo();
+
+        Material npc = MakeMaterial("Npc", new Color(0.35f, 0.55f, 0.4f));
+        GameObject qm = Primitive(PrimitiveType.Capsule, "Quartermaster", parent, new Vector3(-7f, 1f, 1.5f), Vector3.one, npc);
+        Interactable qi = qm.AddComponent<Interactable>();
+        qi.Prompt = "Talk to the Quartermaster (shop)";
+        qm.AddComponent<ShopKeeper>();
 
         GameObject bench = Primitive(PrimitiveType.Cube, "RestBench", parent, new Vector3(-5f, 0.25f, 3.5f), new Vector3(1.8f, 0.5f, 0.6f), wood);
         Interactable ri = bench.AddComponent<Interactable>();
