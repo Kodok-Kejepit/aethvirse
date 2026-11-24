@@ -74,10 +74,11 @@ public static class PlaygroundBuilder
             Box(course, $"Step_{h:0.00}m", new Vector3(-7.5f + i * 3f, h / 2f, 8f), new Vector3(2f, h, 2f), block);
         }
 
-        // Ramps: 20° (walkable), 40° (walkable, steep), 55° (too steep, slides off).
-        Ramp(course, "Ramp_20", new Vector3(-12f, 0f, -4f), 20f, ramp);
-        Ramp(course, "Ramp_40", new Vector3(-6f, 0f, -4f), 40f, ramp);
-        Ramp(course, "Ramp_55", new Vector3(0f, 0f, -4f), 55f, ramp);
+        // Ramps behind the spawn, rising away from it (-Z): 20° (walkable), 40° (walkable, steep),
+        // 55° (too steep). They must stay clear of the spawn and the camera behind it.
+        Ramp(course, "Ramp_20", new Vector3(-12f, 0f, -8f), 20f, ramp, yaw: 180f);
+        Ramp(course, "Ramp_40", new Vector3(-6f, 0f, -8f), 40f, ramp, yaw: 180f);
+        Ramp(course, "Ramp_55", new Vector3(0f, 0f, -8f), 55f, ramp, yaw: 180f);
 
         // Jump gaps between platforms: 2 m (run), 4 m (sprint), 6 m (sprint + air dash).
         float x = 10f;
@@ -213,14 +214,14 @@ public static class PlaygroundBuilder
         return go;
     }
 
-    /// <summary>A ramp rising along +Z from <paramref name="foot"/>, <paramref name="length"/> m long on the ground.</summary>
-    static void Ramp(Transform parent, string name, Vector3 foot, float angle, Material mat, float length = 6f)
+    /// <summary>A ramp rising from <paramref name="foot"/> toward <paramref name="yaw"/> (0 = +Z), <paramref name="length"/> m long on the ground.</summary>
+    static void Ramp(Transform parent, string name, Vector3 foot, float angle, Material mat, float length = 6f, float yaw = 0f)
     {
         float rise = Mathf.Tan(angle * Mathf.Deg2Rad) * length;
         float slope = Mathf.Sqrt(length * length + rise * rise);
         const float thickness = 0.4f;
         var go = Box(parent, name, Vector3.zero, new Vector3(3f, thickness, slope), mat);
-        go.transform.rotation = Quaternion.Euler(-angle, 0f, 0f);
+        go.transform.rotation = Quaternion.Euler(-angle, yaw, 0f);
         // Put the top surface's low edge on the ground at the foot.
         Vector3 up = go.transform.up;
         Vector3 forward = go.transform.forward;
