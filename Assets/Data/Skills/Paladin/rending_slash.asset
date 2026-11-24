@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: rending_slash
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: rending_slash
+  displayName: Rending Slash
+  description: A heavy forward cleave that tears through guards.
+  kind: 0
+  isUltimate: 0
+  iconColor: {r: 0.45, g: 0.75, b: 1, a: 1}
+  unlockLevel: 1
+  maxLevel: 10
+  fx: 2
+  mpCost: 15
+  cooldown: 5
+  attack: {fileID: 11400000, guid: 924a6840e03d3c3d7a89b7793bb8a769, type: 2}
+  damageMultiplier: 2.2
+  multiplierPerLevel: 0.15
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02

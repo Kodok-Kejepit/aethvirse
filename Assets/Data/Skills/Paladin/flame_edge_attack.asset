@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: flame_edge_attack
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: flame_edge
+  displayName: flame_edge
+  damageMultiplier: 1
+  isHeavy: 1
+  element: 1
+  startup: 0.12
+  active: 0.2
+  recovery: 0.3
+  comboWindow: 0.62
+  dodgeCancel: 0.32
+  hitboxSize: {x: 3, y: 1.5, z: 2.4}
+  hitboxOffset: {x: 0, y: 1, z: 1.3}
+  knockback: 3
+  stagger: 25
+  hitStop: 0.07
+  lungeSpeed: 4
+  swing: 6
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 0}

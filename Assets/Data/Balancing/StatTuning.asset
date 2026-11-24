@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 395d78499a4cd6349a7d01b618c41d43, type: 3}
+  m_Name: StatTuning
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Stats.StatTuning
+  xpBase: 100
+  xpExponent: 1.8
+  levelCap: 1000
+  freePointsPerLevel: 5
+  skillPointsPerLevel: 1
+  hpBase: 100
+  hpPerVit: 20
+  hpPerLevel: 10
+  mpBase: 50
+  mpPerInt: 10
+  mpPerLevel: 3
+  atkPerStr: 2
+  atkPerAgi: 0.5
+  matkPerInt: 2.5
+  defPerVit: 1
+  defPerStr: 0.3
+  critBase: 0.05
+  critPerSen: 0.002
+  critPerAgi: 0.001
+  critCap: 0.75
+  critDmgBase: 1.5
+  critDmgPerSen: 0.005
+  aspdBase: 1
+  aspdPerAgi: 0.002
+  mspdPerAgi: 0.001
+  mspdCap: 1.3
+  cdrPerInt: 0.001
+  cdrCap: 0.4
+  mpRegenBase: 2
+  mpRegenPerInt: 0.05
+  defFactor: 0.5
+  hitsToKillNormal: 5
+  eliteHpMult: 4
+  bossHpMult: 40
+  normalHitsToKillHero: 12
+  eliteAtkMult: 1.6
+  bossAtkMult: 2.5
+  enemyDefPerLevel: 1.5
+  killsPerLevelBase: 15
+  killsPerLevelGrowth: 0.5
+  eliteXpMult: 5
+  bossXpMult: 50
+  goldBase: 5
+  goldGrowth: 1.06
+  weaponAtkPerLevel: 4

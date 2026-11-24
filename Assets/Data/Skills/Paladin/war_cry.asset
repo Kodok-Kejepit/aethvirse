@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: war_cry
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: war_cry
+  displayName: War Cry
+  description: A roar that sharpens your strikes. ATK up for a while.
+  kind: 3
+  isUltimate: 0
+  iconColor: {r: 1, g: 0.45, b: 0.3, a: 1}
+  unlockLevel: 5
+  maxLevel: 10
+  fx: 5
+  mpCost: 20
+  cooldown: 25
+  attack: {fileID: 0}
+  damageMultiplier: 1.5
+  multiplierPerLevel: 0.1
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
