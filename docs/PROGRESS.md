@@ -19,12 +19,16 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - **Playground scene** (built by `AETHVIRSE > Build Playground Scene`): steps 0.2–2.5 m, ramps 20° / 40° /
   55°, jump gaps 2 / 4 / 6 m, wall + pillars + low tunnel for the camera, an 8 m tower with a ramp.
   Boot loads it automatically.
-- F3 overlay: FPS, state, speed, stamina, position.
+- F3 overlay: FPS, state, speed, stamina, position (dark backing, readable over the sky).
+- Camera without a mouse: arrow keys (eased) and drag-to-look; CI also builds native Linux.
 - 19 EditMode tests (movement math, stamina).
 
 ### How to test
-Download the Windows build from the run's Artifacts (or open the project and press Play in `Boot`):
-1. Click to capture the mouse. Walk/run/sprint around; push the stick lightly on a gamepad to walk.
+On the Kali laptop: `tools/play.sh` (or menu "AETHVIRSE (Unity)") downloads the newest successful CI
+build for Linux and starts it — nothing is built locally. `tools/play.sh m1-core-movement` picks a branch.
+Windows: the run's Artifacts. Note: under Wine the captured mouse sends no movement on Hyprland — use the
+native Linux build.
+1. Click to capture the mouse, or hold a touchpad button and drag, or use the arrow keys. Walk/run/sprint around; push the stick lightly on a gamepad to walk.
 2. Steps: 0.2 / 0.35 m walk up, 0.5+ need a jump; 1.5 m needs a full jump, 2.5 m is out of reach.
 3. Ramps: 20° and 40° walkable, 55° not.
 4. Gaps: 2 m run-jump, 4 m sprint-jump, 6 m sprint-jump + air dash (Ctrl in the air).

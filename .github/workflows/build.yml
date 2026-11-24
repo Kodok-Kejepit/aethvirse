@@ -55,6 +55,9 @@ jobs:
             image: windows-mono
           - targetPlatform: Android
             image: android
+          # Native Linux build so the owner can playtest on Kali without Wine.
+          - targetPlatform: StandaloneLinux64
+            image: linux-il2cpp
     steps:
       - name: Free disk space (Android)
         if: matrix.targetPlatform == 'Android'
