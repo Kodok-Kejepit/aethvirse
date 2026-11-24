@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6551362a7b6f3db0d87abb67f8b91d18, type: 3}
+  m_Name: horne
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Dialog.NpcData
+  id: horne
+  displayName: Instructor Horne
+  bodyColor: {r: 0.45, g: 0.4, b: 0.35, a: 1}
+  entries:
+  - id: report_back
+    conditions:
+    - type: 0
+      key: stage_q_first_field_2
+      values: []
+      value: 0
+      value2: 0
+      negate: 0
+    lines:
+    - Back already? And in one piece.
+    - Hm. Three hounds. Don't let it go to your head, Cinder.
+    dailyVariants: []
+    onShow: []
+    choices: []
+  - id: first_day
+    conditions:
+    - type: 10
+      key: q_cinder_seat
+      values: []
+      value: 0
+      value2: 0
+      negate: 0
+    lines:
+    - So you're the Cinder Seat.
+    - Rank E. Lowest reading this academy has ever logged.
+    - Don't look at me like that. I teach the class nobody else wants. Find your
+      bed. Field work starts tomorrow.
+    dailyVariants: []
+    onShow: []
+    choices: []
+  - id: default
+    conditions: []
+    lines:
+    - Training ground's to the east. The board has work if you want coin.
+    dailyVariants:
+    - Rain makes the hounds bolder. Keep your guard up.
+    - Sleep. You look worse than usual.
+    - Read the notices. Some of them are even true.
+    onShow: []
+    choices: []
+  awayFromHour: -1
+  awayToHour: -1
+  hiddenWhenFlag: 

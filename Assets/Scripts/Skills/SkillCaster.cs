@@ -121,6 +121,7 @@ namespace Aethvirse.Skills
             _lastSkillTime = now;
             if (combo != null) ComboTriggered?.Invoke(combo);
             SkillUsed?.Invoke(skill);
+            Core.GameEvents.RaiseSkillUsed(skill.id);
 
             if (skill.kind == SkillKind.Buff)
             {

@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6551362a7b6f3db0d87abb67f8b91d18, type: 3}
+  m_Name: kaelen
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Dialog.NpcData
+  id: kaelen
+  displayName: Kaelen Dray
+  bodyColor: {r: 0.7, g: 0.6, b: 0.25, a: 1}
+  entries:
+  - id: rival_done
+    conditions:
+    - type: 0
+      key: stage_q_rival_2
+      values: []
+      value: 0
+      value2: 0
+      negate: 0
+    lines:
+    - "\u2026Fine. You can swing a sword."
+    - That doesn't mean you belong here, Cinder. But fine.
+    dailyVariants: []
+    onShow: []
+    choices: []
+  - id: rival_start
+    conditions:
+    - type: 0
+      key: stage_q_rival_0
+      values: []
+      value: 0
+      value2: 0
+      negate: 0
+    lines:
+    - Cinder Seat. They let anyone in now.
+    - Show me you're not dead weight. Hit something. Use whatever tricks you have.
+    dailyVariants: []
+    onShow: []
+    choices: []
+  - id: default
+    conditions: []
+    lines:
+    - Rank S doesn't talk to rank E. Go away.
+    dailyVariants: []
+    onShow: []
+    choices: []
+  awayFromHour: -1
+  awayToHour: -1
+  hiddenWhenFlag: 

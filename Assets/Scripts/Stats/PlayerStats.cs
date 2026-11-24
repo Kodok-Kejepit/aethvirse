@@ -64,6 +64,7 @@ namespace Aethvirse.Stats
             Save.SaveData pending = Save.SaveManager.TakePending();
             if (pending != null) Restore(pending.player);
             World.GameSession.Instance.WorldRunning = true;
+            Quests.QuestSystem.Instance.OnWorldReady();
         }
 
         void OnDestroy()

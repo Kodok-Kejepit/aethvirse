@@ -121,8 +121,8 @@ namespace Aethvirse.Player
             float yaw = cameraRig != null ? cameraRig.Yaw : 0f;
             InputDirection = MovementMath.CameraRelative(raw, yaw);
             InputMagnitude = InputDirection.magnitude;
-            // With the gamepad skill modifier (LB) held, the face buttons cast skills instead.
-            if (_input.SkillModifier.IsPressed()) return;
+            // With the gamepad skill modifier (LB) held, the face buttons cast skills instead; a dialog eats them too.
+            if (_input.SkillModifier.IsPressed() || Dialog.DialogBox.IsOpen) return;
             if (_input.Jump.WasPressedThisFrame()) _jumpBuffer = movement.inputBuffer;
             if (_input.Dodge.WasPressedThisFrame()) _dodgeBuffer = movement.inputBuffer;
         }
@@ -277,6 +277,7 @@ namespace Aethvirse.Player
             IsInvulnerable = true;
             IsSprinting = false;
             if (combat != null) combat.NotifyDodgeStarted();
+            Core.GameEvents.RaiseDodged();
         }
 
         // --- Shared helpers -----------------------------------------------------------------
@@ -327,7 +328,14 @@ namespace Aethvirse.Player
 
         void Move(float dt)
         {
+            Vector3 before = transform.position;
             CollisionFlags flags = _body.Move(_velocity * dt);
+            if (Grounded)
+            {
+                Vector3 step = transform.position - before;
+                step.y = 0f;
+                if (step.sqrMagnitude > 0.000001f) Core.GameEvents.RaiseMoved(step.magnitude);
+            }
             if ((flags & CollisionFlags.Above) != 0 && _velocity.y > 0f) _velocity.y = 0f;
         }
 

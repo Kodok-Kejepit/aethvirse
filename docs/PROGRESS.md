@@ -9,9 +9,9 @@ e.g. the combo-flame style, come then).
 | # | Phase 1 milestone | Status |
 |---|---|---|
 | M1–M3 | Movement, combat, stats & skills | done |
-| P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | done |
-| P1-5 | Items, inventory, equipment, loot, shop, crafting | done |
-| P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | |
+| P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | done (v0.5) |
+| P1-5 | Items, inventory, equipment, loot, shop, crafting | done (v0.5) |
+| P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | done |
 | P1-7 | Four classes with many skills each | |
 | P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | |
 | P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | |
@@ -26,6 +26,30 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-6 — Quests, dialog, academy (branch `p1-6-quests`)
+
+### Done
+- **New games start at Aster Vey Academy** (story start, graybox hub): classroom (Instructor Horne, Headmaster
+  Ilsveth), library (Nyra; closed 22:00–06:00), dormitory (bed = save + sleep), training ground (dummies, rival
+  Kaelen), Quartermaster, quest board, Expedition Gate → Ashfall Outskirts (and a gate back).
+- **Quests:** data-driven objectives (kill, talk, collect, reach area, clear Gate, flag, attack, dodge, distance,
+  pickup, craft, use item, skill, secret), stages that run in order with optional objectives, rewards (items, gold,
+  XP, flags, academy points, Codex points, follow-up quests), auto-start by conditions, timed quests, HUD tracker.
+- **Story start:** The Cinder Seat → First Field Assignment (Ashfall, 3 Ash Hounds) → Prove You Belong (rival);
+  side quest Ink and Ash (Nyra); board bounty Ash Hound Cull.
+- **Academy rank E → S** from academy points (= Guild rank), rank-up message.
+- **Codex daily quest:** training + hunting + gathering task each day, scaled by level; missing a day → warning →
+  **Penalty Zone** (survive 90 s of growing waves, then the exit portal takes you back). **Emergency quests**
+  (12 % per game hour): defeat 6 monsters in 3 minutes.
+- **Dialog:** branching entries chosen by conditions (flags, quest stages, items, time …), daily small talk,
+  choices with gold costs and effects (items, gold, flags, quests, shop), typing effect; NPC schedules.
+- **Conditions** shared by quests, dialog and (next) secrets. **Game events hub** for kills, attacks, dodges,
+  distance, pickups, crafting, items, skills, talks, areas, Gates.
+- Scene travel carries the player (stats, bag, skills) between scenes; saves v3 add quests, academy rank,
+  Codex points and the pending penalty.
+- Ash Hound is a prefab now (runtime spawns). A test guards that every component / asset class lives in a
+  file of the same name (Unity cannot load it otherwise).
 
 ## P1-5 — Items & loot (branch `p1-5-items`)
 

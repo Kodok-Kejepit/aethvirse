@@ -9,6 +9,8 @@ namespace Aethvirse.Core
         public const string BootScene = "Boot";
         // M1: the movement playground. Later: the main menu.
         public const string FirstScene = "Playground";
+        /// <summary>New games start at the academy (story §6).</summary>
+        public const string NewGameScene = "Academy";
         /// <summary>Where Boot goes: the title screen.</summary>
         public const string TitleScene = "Title";
 

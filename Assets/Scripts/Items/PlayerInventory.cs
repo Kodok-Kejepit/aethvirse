@@ -169,6 +169,7 @@ namespace Aethvirse.Items
             }
             if (item.manaAmount > 0 && _stats != null) _stats.Mana.Restore(item.manaAmount);
             Bag.TakeOne(s);
+            Core.GameEvents.RaiseItemUsed(item.id);
             return true;
         }
 
@@ -191,6 +192,7 @@ namespace Aethvirse.Items
             if (s.itemId == "gold") { AddGold(s.count); return true; }
             bool ok = s.IsUniqueInstance ? Bag.AddStack(s) : Bag.Add(s.itemId, s.count) == 0;
             if (!ok) Codex.Notify("Bag full.", CodexTone.Warning);
+            else Core.GameEvents.RaisePickedUp(s.itemId, s.count);
             return ok;
         }
 

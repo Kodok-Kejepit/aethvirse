@@ -41,28 +41,18 @@ public static class PlaygroundBuilder
         Material ground = MakeMaterial("Ground", new Color(0.42f, 0.44f, 0.47f));
         Material block = MakeMaterial("Block", new Color(0.30f, 0.45f, 0.70f));
         Material ramp = MakeMaterial("Ramp", new Color(0.85f, 0.55f, 0.25f));
-        Material player = MakeMaterial("Player", new Color(0.92f, 0.92f, 0.95f));
-        Material accent = MakeMaterial("Accent", new Color(0.20f, 0.85f, 0.95f));
-        Material blade = MakeMaterial("Blade", new Color(0.80f, 0.85f, 0.95f));
         Material dummyMat = MakeMaterial("Dummy", new Color(0.72f, 0.55f, 0.36f));
-        Material markerMat = MakeMaterial("LockMarker", new Color(1f, 0.25f, 0.25f));
 
-        Light sun = BuildLight();
         BuildCourse(ground, block, ramp);
-        PlayerController body = BuildPlayer(player, accent, out Transform cameraTarget);
-        PlayerCameraRig rig = BuildCamera(cameraTarget);
-        Wire(body, "cameraRig", rig);
-        Wire(body, "movement", LoadOrCreateMovementData());
-        BuildPlayerCombat(body, rig, blade, markerMat);
-        BuildPlayerSkills(body);
+        BuildPlayerRig(Vector3.zero + Vector3.up * 0.05f, "r1_ashfall");
         BuildDummies(dummyMat);
         BuildEnemies();
-        BuildHud(body);
-        BuildServices(body, sun);
         BuildWorldObjects();
-
-        var overlay = new GameObject("DebugOverlay").AddComponent<DebugOverlay>();
-        Wire(overlay, "player", body);
+        var area = new GameObject("Area_Ashfall").AddComponent<AreaTrigger>();
+        var aso = new SerializedObject(area);
+        aso.FindProperty("areaId").stringValue = "r1_ashfall";
+        aso.FindProperty("size").vector3Value = new Vector3(120f, 40f, 120f);
+        aso.ApplyModifiedPropertiesWithoutUndo();
 
         Directory.CreateDirectory(Path.GetDirectoryName(ScenePath));
         EditorSceneManager.SaveScene(scene, ScenePath);
@@ -247,24 +237,74 @@ public static class PlaygroundBuilder
     const string AshHoundPath = "Assets/Data/Enemies/AshHound.asset";
 
     /// <summary>Three Ash Hounds in an arena north-east of the spawn (respawn 6 s after death).</summary>
-    static void BuildEnemies()
+    /// <summary>
+    /// Everything a gameplay scene needs around the player: sun, player (movement, combat, stats, skills, bag),
+    /// cameras, HUD, panels, services and the debug overlay. Used by every scene builder.
+    /// </summary>
+    public static PlayerController BuildPlayerRig(Vector3 spawn, string regionId)
+    {
+        Material player = MakeMaterial("Player", new Color(0.92f, 0.92f, 0.95f));
+        Material accent = MakeMaterial("Accent", new Color(0.20f, 0.85f, 0.95f));
+        Material blade = MakeMaterial("Blade", new Color(0.80f, 0.85f, 0.95f));
+        Material markerMat = MakeMaterial("LockMarker", new Color(1f, 0.25f, 0.25f));
+        Light sun = BuildLight();
+        PlayerController body = BuildPlayer(player, accent, out Transform cameraTarget);
+        body.transform.position = spawn;
+        PlayerCameraRig rig = BuildCamera(cameraTarget);
+        Wire(body, "cameraRig", rig);
+        Wire(body, "movement", LoadOrCreateMovementData());
+        BuildPlayerCombat(body, rig, blade, markerMat);
+        BuildPlayerSkills(body);
+        BuildHud(body);
+        BuildServices(body, sun, regionId);
+        var overlay = new GameObject("DebugOverlay").AddComponent<DebugOverlay>();
+        Wire(overlay, "player", body);
+        return body;
+    }
+
+    public const string AshHoundPrefabPath = "Assets/Prefabs/Enemies/AshHound.prefab";
+
+    /// <summary>Builds the Ash Hound as a prefab (scenes and runtime spawners instantiate it).</summary>
+    public static GameObject BuildEnemyPrefab()
     {
         var data = AssetDatabase.LoadAssetAtPath<EnemyData>(AshHoundPath);
         if (data == null) throw new System.InvalidOperationException($"Missing {AshHoundPath}: run AETHVIRSE > Build Combat Data first");
+        GameObject go = BuildEnemyObject(data, null, Vector3.zero, 0f);
+        Directory.CreateDirectory(Path.GetDirectoryName(AshHoundPrefabPath));
+        GameObject prefab = PrefabUtility.SaveAsPrefabAsset(go, AshHoundPrefabPath);
+        Object.DestroyImmediate(go);
+        return prefab;
+    }
+
+    public static GameObject PlaceEnemy(GameObject prefab, Transform parent, Vector3 position, float yaw)
+    {
+        var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+        go.transform.position = position;
+        go.transform.Find("Visual").rotation = Quaternion.Euler(0f, yaw, 0f);
+        return go;
+    }
+
+    static void BuildEnemies()
+    {
+        GameObject prefab = BuildEnemyPrefab();
+        var parent = new GameObject("Enemies").transform;
+        Vector3[] spots = { new Vector3(26f, 0f, 26f), new Vector3(31f, 0f, 23f), new Vector3(29f, 0f, 30f) };
+        Box(parent, "ArenaMarker", new Vector3(29f, 0.01f, 26f), new Vector3(14f, 0.02f, 14f), MakeMaterial("Arena", new Color(0.36f, 0.33f, 0.33f)));
+        foreach (Vector3 spot in spots) PlaceEnemy(prefab, parent, spot, 225f);
+    }
+
+    static GameObject BuildEnemyObject(EnemyData data, Transform parent, Vector3 position, float yaw)
+    {
         Material bodyMat = MakeMaterial("AshHound", data.bodyColor);
         Material eyeMat = MakeMaterial("EnemyEye", new Color(1f, 0.3f, 0.2f));
         Material telegraphMat = MakeMaterial("Telegraph", new Color(0.9f, 0.1f, 0.1f));
         Material barBack = MakeMaterial("BarBack", new Color(0.08f, 0.08f, 0.1f));
         Material barFill = MakeMaterial("BarFill", new Color(0.9f, 0.2f, 0.2f));
 
-        var parent = new GameObject("Enemies").transform;
-        Vector3[] spots = { new Vector3(26f, 0f, 26f), new Vector3(31f, 0f, 23f), new Vector3(29f, 0f, 30f) };
-        Box(parent, "ArenaMarker", new Vector3(29f, 0.01f, 26f), new Vector3(14f, 0.02f, 14f), MakeMaterial("Arena", new Color(0.36f, 0.33f, 0.33f)));
-        for (int i = 0; i < spots.Length; i++)
         {
-            var root = new GameObject($"AshHound_{i}");
-            root.transform.SetParent(parent, false);
-            root.transform.position = spots[i];
+            var root = new GameObject("AshHound");
+            if (parent != null) root.transform.SetParent(parent, false);
+            root.transform.position = position;
             var cc = root.AddComponent<CharacterController>();
             cc.height = 1.2f;
             cc.radius = 0.45f;
@@ -274,7 +314,7 @@ public static class PlaygroundBuilder
 
             var visual = new GameObject("Visual").transform;
             visual.SetParent(root.transform, false);
-            visual.rotation = Quaternion.Euler(0f, 225f, 0f);
+            visual.rotation = Quaternion.Euler(0f, yaw, 0f);
             GameObject bodyGo = NoCollider(Primitive(PrimitiveType.Cube, "Body", visual, new Vector3(0f, 0.6f, 0f), new Vector3(0.7f, 0.55f, 1.2f), bodyMat));
             NoCollider(Primitive(PrimitiveType.Cube, "Head", visual, new Vector3(0f, 0.85f, 0.7f), new Vector3(0.45f, 0.4f, 0.45f), bodyMat));
             NoCollider(Primitive(PrimitiveType.Cube, "EyeL", visual, new Vector3(-0.12f, 0.92f, 0.93f), new Vector3(0.08f, 0.06f, 0.02f), eyeMat));
@@ -305,6 +345,7 @@ public static class PlaygroundBuilder
             Wire(enemy, "healthBar", healthBar);
             Wire(enemy, "scalingClass", AssetDatabase.LoadAssetAtPath<ClassData>(PaladinPath));
             Wire(enemy, "tuning", AssetDatabase.LoadAssetAtPath<StatTuning>(TuningPath));
+            return root;
         }
     }
 
@@ -325,7 +366,7 @@ public static class PlaygroundBuilder
         Wire(flame, "combat", body.GetComponent<PlayerCombat>());
     }
 
-    static GameObject NoCollider(GameObject go)
+    public static GameObject NoCollider(GameObject go)
     {
         var col = go.GetComponent<Collider>();
         if (col != null) Object.DestroyImmediate(col);
@@ -397,10 +438,12 @@ public static class PlaygroundBuilder
         return mat;
     }
 
-    static void BuildDummies(Material mat)
+    public static void BuildDummies(Material mat) => BuildDummies(mat, Vector3.zero);
+
+    public static void BuildDummies(Material mat, Vector3 offset)
     {
         var parent = new GameObject("TrainingDummies").transform;
-        Vector3[] spots = { new Vector3(4f, 0f, 3.5f), new Vector3(6.5f, 0f, 2f), new Vector3(6.5f, 0f, 5f) };
+        Vector3[] spots = { offset + new Vector3(4f, 0f, 3.5f), offset + new Vector3(6.5f, 0f, 2f), offset + new Vector3(6.5f, 0f, 5f) };
         for (int i = 0; i < spots.Length; i++)
         {
             var root = new GameObject($"Dummy_{i}");
@@ -451,7 +494,7 @@ public static class PlaygroundBuilder
         return data;
     }
 
-    static Material MakeMaterial(string name, Color color)
+    public static Material MakeMaterial(string name, Color color)
     {
         string path = $"{MaterialDir}/{name}.mat";
         var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -467,7 +510,7 @@ public static class PlaygroundBuilder
         return mat;
     }
 
-    static GameObject Box(Transform parent, string name, Vector3 center, Vector3 size, Material mat)
+    public static GameObject Box(Transform parent, string name, Vector3 center, Vector3 size, Material mat)
     {
         var go = Primitive(PrimitiveType.Cube, name, parent, center, size, mat);
         go.isStatic = true;
@@ -475,7 +518,7 @@ public static class PlaygroundBuilder
     }
 
     /// <summary>A ramp rising from <paramref name="foot"/> toward <paramref name="yaw"/> (0 = +Z), <paramref name="length"/> m long on the ground.</summary>
-    static void Ramp(Transform parent, string name, Vector3 foot, float angle, Material mat, float length = 6f, float yaw = 0f)
+    public static void Ramp(Transform parent, string name, Vector3 foot, float angle, Material mat, float length = 6f, float yaw = 0f)
     {
         float rise = Mathf.Tan(angle * Mathf.Deg2Rad) * length;
         float slope = Mathf.Sqrt(length * length + rise * rise);
@@ -488,7 +531,7 @@ public static class PlaygroundBuilder
         go.transform.position = foot + forward * (slope / 2f) - up * (thickness / 2f);
     }
 
-    static GameObject Primitive(PrimitiveType type, string name, Transform parent, Vector3 localPos, Vector3 scale, Material mat)
+    public static GameObject Primitive(PrimitiveType type, string name, Transform parent, Vector3 localPos, Vector3 scale, Material mat)
     {
         var go = GameObject.CreatePrimitive(type);
         go.name = name;
@@ -531,7 +574,7 @@ public static class PlaygroundBuilder
         }
     }
 
-    static void Wire(Object target, string field, Object value)
+    public static void Wire(Object target, string field, Object value)
     {
         var so = new SerializedObject(target);
         SerializedProperty prop = so.FindProperty(field);
@@ -543,11 +586,14 @@ public static class PlaygroundBuilder
     static void RegisterScenes() => TitleSceneBuilder.RegisterScenes();
 
     /// <summary>Day/night + weather, pause menu, Codex hooks, interaction detector.</summary>
-    static void BuildServices(PlayerController body, Light sun)
+    static void BuildServices(PlayerController body, Light sun, string regionId)
     {
         var env = new GameObject("Environment").AddComponent<EnvironmentController>();
         Wire(env, "sun", sun);
         var weather = new GameObject("RegionWeather").AddComponent<RegionWeather>();
+        var wso = new SerializedObject(weather);
+        wso.FindProperty("regionId").stringValue = regionId;
+        wso.ApplyModifiedPropertiesWithoutUndo();
         new GameObject("PauseMenu").AddComponent<PauseMenu>();
         new GameObject("InventoryPanel").AddComponent<InventoryPanel>();
         new GameObject("CodexHooks").AddComponent<CodexHooks>();
@@ -588,5 +634,10 @@ public static class PlaygroundBuilder
         Interactable ri = bench.AddComponent<Interactable>();
         ri.Prompt = "Rest until morning";
         bench.AddComponent<RestSpot>();
+
+        GameObject back = Primitive(PrimitiveType.Cylinder, "ReturnGate", parent, new Vector3(3f, 2f, -6f), new Vector3(3f, 0.12f, 3f), MakeMaterial("ExpeditionGate", new Color(0.4f, 0.75f, 1f)));
+        back.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        back.AddComponent<Interactable>().Prompt = "Return to the academy";
+        AcademyBuilder.SetPortal(back.AddComponent<Portal>(), "Academy", false, null);
     }
 }

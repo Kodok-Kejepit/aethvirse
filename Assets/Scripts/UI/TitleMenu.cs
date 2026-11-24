@@ -27,8 +27,9 @@ namespace Aethvirse.UI
         public static void NewGame()
         {
             GameSession.Instance.ResetForNewGame();
+            Quests.QuestSystem.Instance.ResetForNewGame();
             SaveManager.TakePending();
-            SceneManager.LoadScene(Core.BootLoader.FirstScene);
+            SceneManager.LoadScene(Core.BootLoader.NewGameScene);
         }
 
         void OnGUI()

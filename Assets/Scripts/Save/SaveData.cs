@@ -13,8 +13,8 @@ namespace Aethvirse.Save
     [Serializable]
     public sealed class SaveData
     {
-        /// <summary>1 = first Unity save; 2 = + inventory.</summary>
-        public const int CurrentVersion = 2;
+        /// <summary>1 = first Unity save; 2 = + inventory; 3 = + quests, academy rank, Codex points.</summary>
+        public const int CurrentVersion = 3;
 
         /// <summary>0 in a fresh object, so JSON without a version (not a save) is refused; set on write.</summary>
         public int version;
@@ -47,6 +47,10 @@ namespace Aethvirse.Save
             public WorldFlags flags = new WorldFlags();
             public int gold;
             public string region = "";
+            public int academyPoints;
+            public int codexPoints;
+            public bool penaltyPending;
+            public Quests.QuestLog quests = new Quests.QuestLog();
         }
 
         public PlayerSection player = new PlayerSection();
@@ -76,6 +80,7 @@ namespace Aethvirse.Save
         {
             // v1 → v2: no inventory yet; the player keeps the starter kit.
             if (version < 2) player.hasInventory = false;
+            // v2 → v3: quests / academy fields default to empty (JsonUtility already did that).
             version = CurrentVersion;
         }
     }
