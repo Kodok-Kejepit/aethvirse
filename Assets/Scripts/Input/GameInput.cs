@@ -14,10 +14,12 @@ namespace Aethvirse.Input
 
         public readonly InputActionMap Player;
         public readonly InputAction Move;
-        /// <summary>Pointer delta in pixels (mouse). Only applied while the cursor is captured.</summary>
+        /// <summary>Pointer delta in pixels (mouse / touchpad). Applied while the cursor is captured or a button is held.</summary>
         public readonly InputAction LookPointer;
-        /// <summary>Stick direction, -1..1 (gamepad right stick).</summary>
+        /// <summary>Look as a rate, -1..1: gamepad right stick or the arrow keys (laptops without a mouse).</summary>
         public readonly InputAction LookStick;
+        /// <summary>Held mouse button / touchpad press: drag to look without capturing the cursor.</summary>
+        public readonly InputAction LookDrag;
         public readonly InputAction Jump;
         public readonly InputAction Sprint;
         public readonly InputAction Dodge;
@@ -37,6 +39,13 @@ namespace Aethvirse.Input
 
             LookPointer = Player.AddAction("LookPointer", InputActionType.Value, "<Mouse>/delta", expectedControlLayout: "Vector2");
             LookStick = Player.AddAction("LookStick", InputActionType.Value, "<Gamepad>/rightStick", expectedControlLayout: "Vector2");
+            LookStick.AddCompositeBinding("2DVector")
+                .With("Up", "<Keyboard>/upArrow")
+                .With("Down", "<Keyboard>/downArrow")
+                .With("Left", "<Keyboard>/leftArrow")
+                .With("Right", "<Keyboard>/rightArrow");
+            LookDrag = Player.AddAction("LookDrag", InputActionType.Button, "<Mouse>/leftButton");
+            LookDrag.AddBinding("<Mouse>/rightButton");
 
             Jump = Player.AddAction("Jump", InputActionType.Button, "<Keyboard>/space");
             Jump.AddBinding("<Gamepad>/buttonSouth");

@@ -8,8 +8,8 @@ namespace Aethvirse.Cameras
 {
     /// <summary>
     /// Free orbit camera (port of the Godot ThirdPersonCamera) on top of Cinemachine:
-    /// drives the OrbitalFollow axes from mouse / right stick (touch comes later), captures the
-    /// cursor on click (Esc releases it) and widens the FOV while sprinting.
+    /// drives the OrbitalFollow axes from mouse (captured or drag), arrow keys and right stick
+    /// (touch comes later), captures the cursor on click (Esc releases it) and widens the FOV while sprinting.
     /// Wall collision is the CinemachineDeoccluder on the same camera.
     /// </summary>
     [RequireComponent(typeof(CinemachineCamera), typeof(CinemachineOrbitalFollow))]
@@ -19,6 +19,8 @@ namespace Aethvirse.Cameras
         const float MouseDegreesPerPixel = 0.0025f * Mathf.Rad2Deg;
 
         [SerializeField] float stickDegreesPerSecond = 200f;
+        [Tooltip("How fast stick / arrow-key turning ramps up and down (per second). Mouse is never smoothed.")]
+        [SerializeField] float rateEase = 18f;
         [SerializeField] float sensitivity = 1f;
         [SerializeField] bool invertY;
         [SerializeField] float distance = 4.5f;
@@ -29,6 +31,7 @@ namespace Aethvirse.Cameras
         CinemachineCamera _camera;
         CinemachineOrbitalFollow _orbit;
         GameInput _input;
+        Vector2 _rate;
 
         /// <summary>Set by the player while sprinting.</summary>
         public bool FovBoost { get; set; }
@@ -60,10 +63,15 @@ namespace Aethvirse.Cameras
             UpdateCursor();
             // Mouse: raw pixels to degrees, 1:1 like a shooter (no smoothing, no deltaTime: the delta
             // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.
+            // Drag (button held) also turns the camera without capturing the cursor: touchpads and
+            // pointer-lock that does not work (e.g. under Wine) still get camera control.
             Vector2 look = Vector2.zero;
-            if (Cursor.lockState == CursorLockMode.Locked)
+            if (Cursor.lockState == CursorLockMode.Locked || _input.LookDrag.IsPressed())
                 look += _input.LookPointer.ReadValue<Vector2>() * MouseDegreesPerPixel;
-            look += _input.LookStick.ReadValue<Vector2>() * (stickDegreesPerSecond * Time.deltaTime);
+            // Keys jump from 0 to 1 instantly; a short ease keeps the turn from starting with a snap.
+            _rate = Vector2.Lerp(_rate, _input.LookStick.ReadValue<Vector2>(), MovementMath.SmoothWeight(rateEase, Time.deltaTime));
+            if (_rate.sqrMagnitude < 0.00001f) _rate = Vector2.zero;
+            look += _rate * (stickDegreesPerSecond * Time.deltaTime);
             if (look != Vector2.zero) RotateBy(look * sensitivity);
 
             float fovTarget = FovBoost ? sprintFov : baseFov;

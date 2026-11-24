@@ -37,8 +37,13 @@ namespace Aethvirse.Core
                 Vector3 p = player.transform.position;
                 text += $"\n{player.DebugState}\npos {p.x:0.0} {p.y:0.0} {p.z:0.0}";
             }
-            text += "\nF3 hide · click = capture mouse · Esc = release";
-            GUI.Label(new Rect(12, 8, 520, 120), text, _style);
+            text += "\nF3 hide · camera: mouse / drag / arrow keys · click = capture, Esc = release";
+            var area = new Rect(8, 8, 620, 104);
+            // Dark backing so the text stays readable over a bright sky.
+            GUI.color = new Color(0f, 0f, 0f, 0.55f);
+            GUI.DrawTexture(area, Texture2D.whiteTexture);
+            GUI.color = Color.white;
+            GUI.Label(new Rect(area.x + 8, area.y + 4, area.width - 16, area.height - 8), text, _style);
         }
     }
 }
