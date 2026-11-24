@@ -16,7 +16,10 @@ ROOT="${AETHVIRSE_PLAY_DIR:-$HOME/Unduhan/game/AETHVIRSE/linux}"
 KEEP=2
 mkdir -p "$ROOT"
 
-latest_local() { ls -1d "$ROOT"/*/ 2>/dev/null | sort -V | tail -1; }
+# The player binary is AETHVIRSE (GameCI) or AETHVIRSE.x86_64 (Unity default naming).
+game_binary() { for f in "$1/AETHVIRSE" "$1/AETHVIRSE.x86_64"; do [[ -f "$f" ]] && { echo "$f"; return; }; done; }
+
+latest_local() { ls -1d "$ROOT"/*/ 2>/dev/null | sort -V | tail -1 | sed "s:/$::"; }
 
 if [[ "${1:-}" == "--offline" ]]; then
 	DIR="$(latest_local)"
@@ -27,8 +30,8 @@ else
 	RUN_ID="$(gh run list -R "$REPO" --workflow build.yml --status success "${BRANCH_ARGS[@]}" -L 1 \
 		--json databaseId --jq '.[0].databaseId // empty')"
 	[[ -n "$RUN_ID" ]] || { echo "No successful build found${1:+ for branch $1}." >&2; exit 1; }
-	DIR="$ROOT/$RUN_ID/"
-	if [[ ! -x "$DIR/AETHVIRSE.x86_64" ]]; then
+	DIR="$ROOT/$RUN_ID"
+	if [[ -z "$(game_binary "$DIR")" ]]; then
 		echo "Downloading build from run $RUN_ID ..."
 		rm -rf "$DIR.part"
 		if ! gh run download "$RUN_ID" -R "$REPO" -n "$ARTIFACT" -D "$DIR.part"; then
@@ -37,12 +40,14 @@ else
 			exit 1
 		fi
 		rm -rf "$DIR" && mv "$DIR.part" "$DIR"
-		chmod +x "$DIR/AETHVIRSE.x86_64"
 	fi
 	# Keep only the newest builds (by run id).
 	ls -1d "$ROOT"/*/ | sort -V | head -n -"$KEEP" | xargs -r rm -rf
 fi
 
-echo "Starting $DIR"
+GAME="$(game_binary "$DIR")"
+[[ -n "$GAME" ]] || { echo "No game binary in $DIR" >&2; exit 1; }
+chmod +x "$GAME"
+echo "Starting $GAME"
 cd "$DIR"
-exec ./AETHVIRSE.x86_64 -logFile "$DIR/player.log"
+exec "$GAME" -logFile "$DIR/player.log"
