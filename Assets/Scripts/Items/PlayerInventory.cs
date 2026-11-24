@@ -61,6 +61,8 @@ namespace Aethvirse.Items
 
         void GiveStarterKit()
         {
+            string weaponId = Stats.ClassRegistry.StarterWeapon(GameSession.Instance.ClassId);
+            if (database.Get(weaponId) != null) starterWeapon = weaponId;
             Bag.Add(starterWeapon);
             ItemStack weapon = Bag.stacks.Find(s => s.itemId == starterWeapon);
             if (weapon != null) Bag.Equip(weapon);

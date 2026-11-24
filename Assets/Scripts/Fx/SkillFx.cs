@@ -82,6 +82,7 @@ namespace Aethvirse.Fx
         }
 
         Vector3 Pos => transform.position;
+        static Color Tint(SkillData s, float alpha) { Color c = s.iconColor; c.a = alpha; return c; }
         Vector3 Fwd => visual != null ? visual.forward : transform.forward;
         Quaternion Facing => Quaternion.LookRotation(Fwd, Vector3.up);
 
@@ -97,6 +98,24 @@ namespace Aethvirse.Fx
                 case SkillFxKind.Roar:
                     Spawn(FxMeshes.Ring, Pos + Vector3.up * 1.2f, Quaternion.identity, Vector3.one * 0.6f, Vector3.one * 6f, new Color(1f, 0.3f, 0.2f, 0.8f), 0.5f);
                     Spawn(FxMeshes.Ring, Pos + Vector3.up * 0.1f, Quaternion.identity, Vector3.one * 0.4f, Vector3.one * 4f, new Color(1f, 0.5f, 0.3f, 0.6f), 0.7f);
+                    break;
+                case SkillFxKind.Heal:
+                    for (int i = 0; i < 3; i++)
+                        Spawn(FxMeshes.Ring, Pos + Vector3.up * (0.2f + i * 0.5f), Quaternion.identity, Vector3.one * 0.9f, Vector3.one * 1.4f, Tint(s, 0.8f), 0.6f + i * 0.15f, Vector3.up * 1.5f);
+                    break;
+                case SkillFxKind.Shadow:
+                    _afterimageTime = 0.3f;
+                    Spawn(FxMeshes.Ring, Pos + Vector3.up * 0.05f, Quaternion.identity, Vector3.one * 2f, Vector3.one * 0.3f, new Color(0.2f, 0.1f, 0.3f, 0.8f), 0.4f);
+                    break;
+                case SkillFxKind.Barrier:
+                    Spawn(FxMeshes.Cylinder, Pos + Vector3.up * 1f, Quaternion.identity, new Vector3(1.2f, 1f, 1.2f), new Vector3(1.8f, 1.1f, 1.8f), Tint(s, 0.35f), 0.8f);
+                    break;
+                case SkillFxKind.TrapMark:
+                    Spawn(FxMeshes.Ring, Pos + Vector3.up * 0.05f, Quaternion.identity, Vector3.one * 0.3f, Vector3.one * s.trapRadius, Tint(s, 0.9f), 0.4f);
+                    break;
+                case SkillFxKind.Blink:
+                    _afterimageTime = 0.2f;
+                    Spawn(FxMeshes.Ring, Pos + Vector3.up * 1f, Quaternion.Euler(90f, 0f, 0f) * Facing, Vector3.one * 0.3f, Vector3.one * 1.6f, Tint(s, 0.9f), 0.25f);
                     break;
                 case SkillFxKind.SkyFall:
                     // A golden column comes down on you while you rise into the blow.
@@ -140,6 +159,37 @@ namespace Aethvirse.Fx
                     break;
                 case SkillFxKind.Charge:
                     Spawn(FxMeshes.Arc, chest + Fwd * 0.8f, Facing, Vector3.one * 0.6f, Vector3.one * 1.4f, new Color(0.85f, 0.9f, 1f, 0.8f), 0.25f);
+                    break;
+                case SkillFxKind.Nova:
+                    Spawn(FxMeshes.Ring, chest, Quaternion.identity, Vector3.one * 0.5f, Vector3.one * 6f, Tint(s, 0.9f), 0.45f);
+                    Spawn(FxMeshes.Ring, Pos + Vector3.up * 0.1f, Quaternion.identity, Vector3.one * 0.3f, Vector3.one * 5f, Tint(s, 0.6f), 0.55f);
+                    break;
+                case SkillFxKind.Pillar:
+                case SkillFxKind.Smite:
+                    Vector3 at = Pos + Fwd * 3f;
+                    Spawn(FxMeshes.Cylinder, at + Vector3.up * 6f, Quaternion.identity, new Vector3(2f, 6f, 2f), new Vector3(0.2f, 6f, 0.2f), Tint(s, 0.8f), 0.4f);
+                    Spawn(FxMeshes.Ring, at + Vector3.up * 0.1f, Quaternion.identity, Vector3.one * 0.5f, Vector3.one * 3.5f, Tint(s, 0.9f), 0.45f);
+                    break;
+                case SkillFxKind.Volley:
+                case SkillFxKind.Bolt:
+                    Spawn(FxMeshes.Ring, chest + Fwd * 0.9f, Quaternion.LookRotation(Vector3.up, Fwd) , Vector3.one * 0.2f, Vector3.one * 1.2f, Tint(s, 0.9f), 0.2f);
+                    break;
+                case SkillFxKind.Storm:
+                case SkillFxKind.Thunder:
+                    for (int i = 0; i < 6; i++)
+                    {
+                        Vector3 p = Pos + Quaternion.Euler(0f, i * 60f + Random.Range(-20f, 20f), 0f) * Vector3.forward * Random.Range(1.5f, 4.5f);
+                        Spawn(FxMeshes.Cylinder, p + Vector3.up * 5f, Quaternion.identity, new Vector3(0.25f, 5f, 0.25f), new Vector3(0.05f, 5f, 0.05f), Tint(s, 0.9f), 0.3f + i * 0.03f);
+                    }
+                    break;
+                case SkillFxKind.Frost:
+                    Spawn(FxMeshes.Ring, Pos + Vector3.up * 0.05f, Quaternion.identity, Vector3.one * 0.5f, Vector3.one * 4f, Tint(s, 0.85f), 0.5f);
+                    for (int i = 0; i < 8; i++)
+                        Spawn(FxMeshes.Cube, Pos + Quaternion.Euler(0f, i * 45f, 0f) * Vector3.forward * Random.Range(1.2f, 3.5f), Quaternion.Euler(0f, i * 45f, 25f),
+                            new Vector3(0.2f, 0.1f, 0.2f), new Vector3(0.25f, 1.4f, 0.25f), Tint(s, 1f), 0.7f);
+                    break;
+                case SkillFxKind.Spin:
+                    Spawn(FxMeshes.Ring, chest - Vector3.up * 0.2f, Quaternion.identity, Vector3.one * 1f, Vector3.one * 3.2f, Tint(s, 0.85f), 0.35f, default, 720f);
                     break;
             }
         }

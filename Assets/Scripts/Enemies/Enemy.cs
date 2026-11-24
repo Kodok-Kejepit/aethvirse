@@ -62,7 +62,7 @@ namespace Aethvirse.Enemies
         public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
         Vector3 Facing => visual.forward;
-        Transform Target => PlayerTarget.Current;
+        Transform Target => PlayerTarget.Visible;
 
         void Awake()
         {

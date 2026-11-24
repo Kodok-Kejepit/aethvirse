@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: caltrops
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: caltrops
+  displayName: Caltrops
+  description: Scatter barbed caltrops; they bite the first foes to step in.
+  kind: 8
+  isUltimate: 0
+  iconColor: {r: 0.6, g: 0.6, b: 0.65, a: 1}
+  unlockLevel: 8
+  maxLevel: 10
+  fx: 15
+  mpCost: 15
+  cooldown: 10
+  attack: {fileID: 11400000, guid: 363ff667663ce703c8828a00001b1a4c, type: 2}
+  damageMultiplier: 1.6
+  multiplierPerLevel: 0.12
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15

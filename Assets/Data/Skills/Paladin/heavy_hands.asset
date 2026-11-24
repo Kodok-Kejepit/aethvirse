@@ -30,3 +30,7 @@ MonoBehaviour:
   buffAmount: 0.04
   buffDuration: 10
   buffAmountPerLevel: 0.008
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15

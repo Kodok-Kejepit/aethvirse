@@ -33,3 +33,6 @@ guaranteed crit with +50% damage.
 
 Skill combos (Paladin): Iron Charge → Rending Slash = **Breaker** (guaranteed crit) · War Cry → Earthsplitter =
 **Fury Quake** (+50%) · Flame Edge → Earthsplitter = **Molten Rift** (+30%, extra stagger).
+
+Weapons: greatsword (Paladin) · twin daggers (Assassin, 6-hit chain) · staff (Mage: light = homing bolts,
+heavy = orb / lance / fan) · bow (Marksman: light = arrows that curve to the lock-on, heavy = piercing / spread).

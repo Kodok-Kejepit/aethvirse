@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: bow_4
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: bow_4
+  displayName: Rain Volley
+  damageMultiplier: 0.6
+  isHeavy: 0
+  element: 0
+  startup: 0.16
+  active: 0.06
+  recovery: 0.3
+  comboWindow: 0.34
+  dodgeCancel: 0.19
+  hitboxSize: {x: 1.6, y: 1.4, z: 1.6}
+  hitboxOffset: {x: 0, y: 1, z: 1}
+  knockback: 1
+  stagger: 8
+  hitStop: 0.04
+  lungeSpeed: 0
+  swing: 5
+  ranged: 1
+  projectileCount: 5
+  projectileSpread: 30
+  projectileSpeed: 36
+  projectileRange: 26
+  projectileRadius: 0.25
+  projectilePierce: 0
+  projectileColor: {r: 0.95, g: 0.9, b: 0.75, a: 1}
+  homing: 0
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 11400000, guid: 9817b472117cb341195cb7fa2ab06ea5, type: 2}

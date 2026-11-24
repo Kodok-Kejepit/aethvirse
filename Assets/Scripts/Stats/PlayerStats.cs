@@ -53,6 +53,7 @@ namespace Aethvirse.Stats
         void Awake()
         {
             Current = this;
+            UseClass(World.GameSession.Instance.ClassId);
             Progression = new Progression(tuning);
             EnsureSkillsUnlocked();
             Recompute(refill: true);
@@ -100,9 +101,22 @@ namespace Aethvirse.Stats
             p.mana = Mana.Ratio;
         }
 
+        /// <summary>Switches to a class by id (New Game choice, saves); keeps the scene default if unknown.</summary>
+        void UseClass(string id)
+        {
+            ClassData c = ClassRegistry.Instance != null ? ClassRegistry.Instance.Get(id) : null;
+            if (c != null) classData = c;
+            if (combat != null) combat.SetClass(classData);
+        }
+
         /// <summary>Applies the player's part of a save (after the scene loaded).</summary>
         public void Restore(Save.SaveData.PlayerSection p)
         {
+            if (!string.IsNullOrEmpty(p.classId) && p.classId != classData.id)
+            {
+                World.GameSession.Instance.ClassId = p.classId;
+                UseClass(p.classId);
+            }
             if (p.progression != null)
             {
                 Progression = p.progression;

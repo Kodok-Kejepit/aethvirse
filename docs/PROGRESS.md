@@ -12,7 +12,7 @@ e.g. the combo-flame style, come then).
 | P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | done (v0.5) |
 | P1-5 | Items, inventory, equipment, loot, shop, crafting | done (v0.5) |
 | P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | done |
-| P1-7 | Four classes with many skills each | |
+| P1-7 | Four classes with many skills each | done |
 | P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | |
 | P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | |
 | P1-10 | Jobs, hidden jobs, shadow army | |
@@ -26,6 +26,20 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-7 — Four classes (branch `p1-7-classes`)
+
+### Done
+- **Class select at New Game:** Paladin (greatsword), Assassin (twin daggers), Mage (staff, magic damage),
+  Marksman (bow). Stats, weapon combo, starter weapon and the graybox weapon follow the class; saves keep it.
+- **15 skills per class** (11 actives + ultimate + 3 passives, unlocking from level 1 to 25) and 3–4 skill combos
+  each — 60 skills in total. Every active skill of a class has its own look (test-enforced).
+- **New skill kinds:** projectiles (homing, piercing, spreads), heals, stealth (enemies lose you; first hit out of
+  it is a guaranteed crit; attacking ends it), traps (burst when an enemy steps in), plus melee / dash / AoE / buffs.
+- **Projectiles** for staves and bows: light chains of homing bolts / arrows, heavy branches with piercing lances,
+  fans and orbs; walls stop them.
+- New graybox looks: nova, pillar / smite, blink, barrier, heal rings, shadow, volley, bolt flash, trap ring,
+  storm / thunder bolts, frost spikes, spin ring — tinted with the skill's colour.
 
 ## P1-6 — Quests, dialog, academy (branch `p1-6-quests`)
 

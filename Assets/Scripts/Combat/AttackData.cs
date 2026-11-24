@@ -35,6 +35,19 @@ namespace Aethvirse.Combat
         public float lungeSpeed = 3f;
         public SwingKind swing = SwingKind.Horizontal;
 
+        [Header("Ranged (bows, staves, thrown knives)")]
+        [Tooltip("Fires projectiles at the start of the active window instead of a melee sweep.")]
+        public bool ranged;
+        public int projectileCount = 1;
+        public float projectileSpread = 10f;
+        public float projectileSpeed = 28f;
+        public float projectileRange = 26f;
+        public float projectileRadius = 0.35f;
+        public int projectilePierce;
+        public Color projectileColor = new Color(0.9f, 0.9f, 1f);
+        [Tooltip("Curves toward the lock-on target.")]
+        public bool homing;
+
         [Header("Combo graph")]
         public AttackData nextLight;
         public AttackData nextHeavy;

@@ -42,6 +42,38 @@ namespace Aethvirse.Player
         float _dodgeStartedAt = float.NegativeInfinity;
         bool _cursorWasLocked;
         bool _skillStrikeSent;
+        bool _fired;
+        /// <summary>Set by the lock-on targeter: homing projectiles curve toward it.</summary>
+        public Transform HomingTarget { get; set; }
+
+        /// <summary>The next hit is a guaranteed crit with the counter bonus (perfect dodge, stealth).</summary>
+        public void GrantCounter() => _counterTimer = counterWindow;
+
+        /// <summary>Trap skills: a ground trap that bursts with this skill's damage.</summary>
+        public void PlaceTrap(Skills.SkillData skill, int level, Vector3 at)
+        {
+            AttackData a = skill.attack;
+            if (a == null) return;
+            Skills.Trap.Place(at, skill.trapRadius, skill.trapLifetime, skill.iconColor, t => BuildHit(t, a, skill, level, null), OnLanded);
+        }
+
+        void FireProjectiles()
+        {
+            _fired = true;
+            AttackData a = Current;
+            // Freeze what this volley is: it may land after the attack ended.
+            Skills.SkillData skill = CurrentSkill;
+            int level = _currentSkillLevel;
+            Skills.SkillComboData skillCombo = _currentCombo;
+            Vector3 from = _frame.position + Vector3.up * 1.2f + _frame.forward * 0.8f;
+            for (int i = 0; i < a.projectileCount; i++)
+            {
+                float offset = a.projectileCount > 1 ? Mathf.Lerp(-a.projectileSpread, a.projectileSpread, i / (a.projectileCount - 1f)) : 0f;
+                Vector3 dir = Quaternion.Euler(0f, offset, 0f) * _frame.forward;
+                Projectile.Fire(from, dir, a.projectileSpeed, a.projectileRange, a.projectileRadius, a.projectilePierce, Team.Player,
+                    a.projectileColor, t => BuildHit(t, a, skill, level, skillCombo), OnLanded, a.homing ? HomingTarget : null);
+            }
+        }
         AttackData _lastAttack;
         Transform _frame;
 
@@ -100,6 +132,24 @@ namespace Aethvirse.Player
         public bool HasAttackInput => _lightBuffer > 0f || _heavyBuffer > 0f;
 
         public void SetStats(CombatStats newStats) => stats = newStats;
+
+        /// <summary>The class decides the weapon combo and the graybox weapon's shape.</summary>
+        public void SetClass(Stats.ClassData c)
+        {
+            if (c.combo != null) combo = c.combo;
+            if (weaponPivot == null) return;
+            Transform blade = weaponPivot.Find("Blade");
+            if (blade == null) return;
+            (Vector3 scale, Vector3 pos) look = c.id switch
+            {
+                "phantom" => (new Vector3(0.05f, 0.08f, 0.5f), new Vector3(0f, 0f, 0.3f)),
+                "arcanist" => (new Vector3(0.06f, 0.06f, 1.8f), new Vector3(0f, 0f, 0.4f)),
+                "ranger" => (new Vector3(0.05f, 1.3f, 0.08f), new Vector3(0f, 0f, 0.25f)),
+                _ => (new Vector3(0.08f, 0.16f, 1.3f), new Vector3(0f, 0f, 0.75f)),
+            };
+            blade.localScale = look.scale;
+            blade.localPosition = look.pos;
+        }
         /// <summary>Share of damage healed back (set by PlayerStats from gear).</summary>
         public float Lifesteal { get; set; }
         Damageable _self;
@@ -141,6 +191,7 @@ namespace Aethvirse.Player
             _pendingCombo = null;
             _hits.Begin();
             _skillStrikeSent = false;
+            _fired = false;
             return Current;
         }
 
@@ -152,6 +203,11 @@ namespace Aethvirse.Player
             {
                 _skillStrikeSent = true;
                 SkillStrike?.Invoke(CurrentSkill);
+            }
+            if (Current.ranged)
+            {
+                if (!_fired) FireProjectiles();
+                return;
             }
             _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize, Strike);
         }
@@ -169,17 +225,22 @@ namespace Aethvirse.Player
 
         void Strike(Damageable target)
         {
-            AttackData a = Current;
+            DamageInfo info = BuildHit(target, Current, CurrentSkill, _currentSkillLevel, _currentCombo);
+            if (target.Receive(info)) OnLanded(target, info);
+        }
+
+        DamageInfo BuildHit(Damageable target, AttackData a, Skills.SkillData skill, int skillLevel, Skills.SkillComboData skillCombo)
+        {
             bool counter = CounterReady;
-            float multiplier = CurrentSkill != null ? CurrentSkill.MultiplierAt(_currentSkillLevel) : a.damageMultiplier;
+            float multiplier = skill != null ? skill.MultiplierAt(skillLevel) : a.damageMultiplier;
             float bonus = counter ? counterBonus : 1f;
             bool forceCrit = counter;
             float extraStagger = 0f;
-            if (_currentCombo != null)
+            if (skillCombo != null)
             {
-                bonus *= _currentCombo.bonusMultiplier;
-                forceCrit |= _currentCombo.forceCrit;
-                extraStagger = _currentCombo.extraStagger;
+                bonus *= skillCombo.bonusMultiplier;
+                forceCrit |= skillCombo.forceCrit;
+                extraStagger = skillCombo.extraStagger;
             }
             DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, a.element, _rng,
                 forceCrit: forceCrit, bonusMult: bonus);
@@ -191,10 +252,13 @@ namespace Aethvirse.Player
             Vector3 push = target.transform.position - transform.position;
             push.y = 0f;
             info.knockback = push.normalized * a.knockback;
+            return info;
+        }
 
-            if (!target.Receive(info)) return;
+        void OnLanded(Damageable target, DamageInfo info)
+        {
             if (Lifesteal > 0f && _self != null) _self.Health.Heal(Mathf.Max(1, Mathf.RoundToInt(info.amount * Lifesteal)));
-            if (counter) _counterTimer = 0f;
+            if (CounterReady) _counterTimer = 0f;
             Tracker.RegisterHit(Now);
             ComboChanged?.Invoke(Tracker.Count, Tracker.Rank(Now));
             DamageNumbers.Spawn(target.transform.position + Vector3.up * 1.8f, info.amount, info.isCrit, info.element, false);

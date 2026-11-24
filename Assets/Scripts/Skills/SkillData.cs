@@ -5,10 +5,12 @@ using UnityEngine;
 namespace Aethvirse.Skills
 {
     /// <summary>MELEE/DASH/AOE use <see cref="SkillData.attack"/> as timeline + hitbox; BUFF is instant; PASSIVE is always on.</summary>
-    public enum SkillKind { Melee, Dash, Aoe, Buff, Passive }
+    /// <summary>Append only: assets store the number.</summary>
+    public enum SkillKind { Melee, Dash, Aoe, Buff, Passive, Projectile, Heal, Stealth, Trap }
 
     /// <summary>The look of a skill (owner: every skill must move and look different).</summary>
-    public enum SkillFxKind { None, Charge, Cleave, FlameArc, GroundSplit, Roar, SkyFall }
+    /// <summary>Append only. Generic looks are tinted with the skill's icon colour.</summary>
+    public enum SkillFxKind { None, Charge, Cleave, FlameArc, GroundSplit, Roar, SkyFall, Nova, Pillar, Blink, Barrier, Heal, Shadow, Volley, Bolt, TrapMark, Storm, Frost, Thunder, Spin, Smite }
 
     /// <summary>An active or passive skill (port of the Godot SkillData).</summary>
     [CreateAssetMenu(menuName = "AETHVIRSE/Skill", fileName = "Skill")]
@@ -42,10 +44,18 @@ namespace Aethvirse.Skills
         public float buffDuration = 10f;
         public float buffAmountPerLevel = 0.02f;
 
+        [Header("Heal / stealth / trap")]
+        [Tooltip("Heal: share of max HP restored (0.25 = 25%).")]
+        public float healShare = 0.25f;
+        [Tooltip("Stealth: seconds unseen; the first hit out of it is a guaranteed crit.")]
+        public float stealthDuration = 5f;
+        [Tooltip("Trap: radius and how long it waits for prey.")]
+        public float trapRadius = 2.5f;
+        public float trapLifetime = 15f;
         public float MultiplierAt(int level) => damageMultiplier + multiplierPerLevel * (Mathf.Max(level, 1) - 1);
         public float BuffAt(int level) => buffAmount + buffAmountPerLevel * (Mathf.Max(level, 1) - 1);
         public bool IsPassive => kind == SkillKind.Passive;
-        public bool IsInstant => kind == SkillKind.Buff;
-        public bool IsDamaging => (kind == SkillKind.Melee || kind == SkillKind.Dash || kind == SkillKind.Aoe) && attack != null;
+        public bool IsInstant => kind == SkillKind.Buff || kind == SkillKind.Heal || kind == SkillKind.Stealth || kind == SkillKind.Trap;
+        public bool IsDamaging => (kind == SkillKind.Melee || kind == SkillKind.Dash || kind == SkillKind.Aoe || kind == SkillKind.Projectile) && attack != null;
     }
 }

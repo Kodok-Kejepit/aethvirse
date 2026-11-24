@@ -29,6 +29,8 @@ MonoBehaviour:
   hpScale: 0.8
   attackScale: 1.15
   xpReward: 20
+  goldReward: 5
+  dropsLoot: 1
   walkSpeed: 1.6
   chaseSpeed: 5
   aggroRadius: 12

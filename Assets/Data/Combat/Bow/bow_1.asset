@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: bow_1
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: bow_1
+  displayName: Quick Shot
+  damageMultiplier: 0.75
+  isHeavy: 0
+  element: 0
+  startup: 0.08
+  active: 0.04
+  recovery: 0.18
+  comboWindow: 0.192
+  dodgeCancel: 0.099999994
+  hitboxSize: {x: 1.6, y: 1.4, z: 1.6}
+  hitboxOffset: {x: 0, y: 1, z: 1}
+  knockback: 1
+  stagger: 6
+  hitStop: 0.03
+  lungeSpeed: 0
+  swing: 3
+  ranged: 1
+  projectileCount: 1
+  projectileSpread: 0
+  projectileSpeed: 42
+  projectileRange: 34
+  projectileRadius: 0.22
+  projectilePierce: 0
+  projectileColor: {r: 0.95, g: 0.9, b: 0.75, a: 1}
+  homing: 1
+  nextLight: {fileID: 11400000, guid: 8a0a13ccdad13d15ab4c19e8c3b5e081, type: 2}
+  nextHeavy: {fileID: 11400000, guid: a7c2106e1a0a67c2989663fe889a163f, type: 2}

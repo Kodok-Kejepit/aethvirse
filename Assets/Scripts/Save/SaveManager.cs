@@ -111,6 +111,7 @@ namespace Aethvirse.Save
             if (data == null) return false;
             GameSession.Instance.Restore(data.world.clock, data.world.weather, data.world.flags, data.world.gold, data.playtime, data.world.region);
             GameSession.Instance.AcademyPoints = data.world.academyPoints;
+            if (!string.IsNullOrEmpty(data.player.classId)) GameSession.Instance.ClassId = data.player.classId;
             GameSession.Instance.CodexPoints = data.world.codexPoints;
             GameSession.Instance.PenaltyPending = data.world.penaltyPending;
             Quests.QuestSystem.Instance.Restore(data.world.quests);

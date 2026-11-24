@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 855c53348a9fa50cb8dc405f94aafbca, type: 3}
+  m_Name: death_blossom
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
+  id: death_blossom
+  displayName: Death Blossom
+  description: Spin through a circle of blades.
+  kind: 2
+  isUltimate: 0
+  iconColor: {r: 0.9, g: 0.4, b: 0.6, a: 1}
+  unlockLevel: 10
+  maxLevel: 10
+  fx: 19
+  mpCost: 25
+  cooldown: 9
+  attack: {fileID: 11400000, guid: aa322d523a45bc3b3827220713d55815, type: 2}
+  damageMultiplier: 2.4
+  multiplierPerLevel: 0.15
+  buffStat: 0
+  buffAmount: 0.2
+  buffDuration: 10
+  buffAmountPerLevel: 0.02
+  healShare: 0.25
+  stealthDuration: 5
+  trapRadius: 2.5
+  trapLifetime: 15

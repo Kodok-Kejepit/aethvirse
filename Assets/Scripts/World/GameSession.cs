@@ -42,6 +42,8 @@ namespace Aethvirse.World
             return f;
         }
 
+        /// <summary>The class chosen at New Game (ClassData.id).</summary>
+        public string ClassId { get; set; } = "vanguard";
         public int AcademyPoints { get; set; }
         public int CodexPoints { get; set; }
         /// <summary>A missed daily quest waits to be paid for in the Penalty Zone.</summary>
