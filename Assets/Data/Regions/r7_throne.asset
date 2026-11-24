@@ -20,6 +20,7 @@ MonoBehaviour:
   levelMax: 350
   requiredRank: 5
   hidden: 0
+  requiredFlag: journal_r6_fracture_full
   palette: {r: 0.2, g: 0.18, b: 0.22, a: 1}
   weather:
     entries:

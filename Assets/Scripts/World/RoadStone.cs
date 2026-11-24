@@ -29,7 +29,8 @@ namespace Aethvirse.World
             GameSession s = GameSession.Instance;
             if (!WorldAtlas.IsOpen(r, AcademyRank.For(s.AcademyPoints), s.Flags))
             {
-                Codex.Notify($"Mist covers the road. (Academy rank {AcademyRank.Name(r.requiredRank)} needed)", CodexTone.Warning);
+                bool rankOk = AcademyRank.For(s.AcademyPoints) >= r.requiredRank;
+                Codex.Notify(rankOk ? "Mist covers the road. The journal of this land is not yet complete." : $"Mist covers the road. (Academy rank {AcademyRank.Name(r.requiredRank)} needed)", CodexTone.Warning);
                 return;
             }
             SceneTravel.Go(r.scene, null);

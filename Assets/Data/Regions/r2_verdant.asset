@@ -20,6 +20,7 @@ MonoBehaviour:
   levelMax: 100
   requiredRank: 1
   hidden: 0
+  requiredFlag: journal_r1_ashfall_full
   palette: {r: 0.32, g: 0.5, b: 0.3, a: 1}
   weather:
     entries:

@@ -20,6 +20,7 @@ MonoBehaviour:
   levelMax: 300
   requiredRank: 5
   hidden: 0
+  requiredFlag: journal_r5_archive_full
   palette: {r: 0.35, g: 0.3, b: 0.45, a: 1}
   weather:
     entries:

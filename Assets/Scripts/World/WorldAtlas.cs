@@ -64,6 +64,7 @@ namespace Aethvirse.World
 
         /// <summary>Road open: rank reached and (later) the previous journal page full.</summary>
         public static bool IsOpen(RegionData r, int academyRank, WorldFlags flags) =>
-            r != null && academyRank >= r.requiredRank && (!r.hidden || flags.Has($"region_{r.id}_found"));
+            r != null && academyRank >= r.requiredRank && (!r.hidden || flags.Has($"region_{r.id}_found"))
+            && (string.IsNullOrEmpty(r.requiredFlag) || flags.Has(r.requiredFlag));
     }
 }

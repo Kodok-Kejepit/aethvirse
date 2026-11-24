@@ -17,6 +17,8 @@ namespace Aethvirse.World
         public int requiredRank;
         [Tooltip("Hidden regions never show on maps or road signs.")]
         public bool hidden;
+        [Tooltip("World flag also needed (the previous region's Mystery Journal page full).")]
+        public string requiredFlag = "";
         public Color palette = new Color(0.45f, 0.45f, 0.45f);
         public WeatherTable weather = new WeatherTable();
         public List<WaystoneInfo> waystones = new List<WaystoneInfo>();

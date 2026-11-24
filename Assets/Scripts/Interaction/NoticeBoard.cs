@@ -12,7 +12,14 @@ namespace Aethvirse.Interaction
     public sealed class NoticeBoard : MonoBehaviour
     {
         [TextArea] [SerializeField] string text = "";
+        [Tooltip("Optional: reading this counts as a hint for a secret (journal ◇).")]
+        [SerializeField] string hintSecret = "";
+        [SerializeField] int hintIndex;
 
-        void Awake() => GetComponent<Interactable>().Used += _ => Codex.Notify(text, CodexTone.Info);
+        void Awake() => GetComponent<Interactable>().Used += _ =>
+        {
+            Codex.Notify(text, CodexTone.Info);
+            if (!string.IsNullOrEmpty(hintSecret)) Secrets.SecretSystem.Instance.Hint(hintSecret, hintIndex);
+        };
     }
 }

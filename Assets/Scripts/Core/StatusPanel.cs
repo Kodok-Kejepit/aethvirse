@@ -96,6 +96,35 @@ namespace Aethvirse.Core
             }
         }
 
+        /// <summary>Mystery Journal (§9.5): one page per region; found ✦, hinted ◇ (hint text), unknown ✕ — never answers.</summary>
+        void DrawJournal(float s)
+        {
+            var db = Secrets.SecretDatabase.Instance;
+            var atlas = World.WorldAtlas.Instance;
+            if (db == null || atlas == null) return;
+            var state = Secrets.SecretSystem.Instance.State;
+            GUILayout.Space(14 * s);
+            GUILayout.Label("Mystery Journal", _title);
+            foreach (World.RegionData r in atlas.AllRegions())
+            {
+                var (found, total) = db.Progress(r.id, state);
+                if (total == 0) continue;
+                bool visited = World.GameSession.Instance.Flags.Has(World.Waystone.Flag(r.id + "_gate")) || found > 0;
+                if (!visited) continue;
+                GUILayout.Label($"{r.displayName} — lines revealed {found}/{total}", _text);
+                var page = db.PageFor(r.id);
+                if (page != null) GUILayout.Label("   " + page.synopsis, _text);
+                foreach (Secrets.SecretData sec in db.InRegion(r.id))
+                {
+                    if (state.IsFound(sec.id)) { GUILayout.Label("   [*] " + sec.title, _text); continue; }
+                    bool any = false;
+                    for (int i = 0; i < sec.hints.Count; i++)
+                        if (state.HintSeen(sec.id, i)) { GUILayout.Label("   [?] " + sec.hints[i], _text); any = true; }
+                    if (!any) GUILayout.Label("   [ ] ???", _text);
+                }
+            }
+        }
+
         void OnGUI()
         {
             if (!_open || stats == null) return;
@@ -146,6 +175,7 @@ namespace Aethvirse.Core
             GUILayout.EndHorizontal();
 
             DrawJobs(s);
+            DrawJournal(s);
 
             GUILayout.Space(14 * s);
             GUILayout.Label("Skills", _title);

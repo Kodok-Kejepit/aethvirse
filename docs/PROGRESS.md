@@ -16,7 +16,7 @@ e.g. the combo-flame style, come then).
 | P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | done (streaming: per-region scenes for now) |
 | P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | done |
 | P1-10 | Jobs, hidden jobs, shadow army | done |
-| P1-11 | Secrets, Mystery Journal, puzzles | |
+| P1-11 | Secrets, Mystery Journal, puzzles | done (35 secrets; target 120+) |
 | P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
 | P1-13 | Audio, localization (ID/EN), settings, quality presets | |
 
@@ -26,6 +26,22 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-11 — Secrets and the Mystery Journal (branch `p1-11-secrets`)
+
+### Done
+- **Secrets framework** (data-driven): category (room, sealed mission, puzzle, chest, item, lore, anomaly), at least two
+  hints each, conditions (night, weather, hour, items, flags …) or a flag that finds it, rewards. Found at their
+  **SecretSpot** (walk in or use it), by **puzzles** (ordered bells; wrong step resets), or **cracked walls** (only heavy
+  hits break them). A faint shimmer shows within your Sense range (higher SEN = further).
+- **Mystery Journal** (Status → C): one page per region with a cryptic synopsis, "lines revealed x/y", entries found
+  [*] / hinted [?] (hint text) / unknown [ ]. Hints come from notes in the world.
+- **Page full → "Every line has been written." → [ SYSTEM UPDATE ]** and the road to the next region opens (the
+  STORY rule: mist until the page is complete). The internal word "seal" never shows (test-enforced).
+- **35 secrets**: Ashfall's five come from the public prologue (the breathing drain in the rain, the bread seller who
+  waits, the small gate of eight years ago, the humming that fades, the room the ash closed off); every other
+  region has a night secret, a weather secret, a bell puzzle, a hollow wall and an offering.
+- Test cheat **F10**: find every secret of the current region (`reveal_secrets`). Saves v6 keep secrets and hints.
 
 ## P1-10 — Jobs and the shadow army (branch `p1-10-jobs`)
 

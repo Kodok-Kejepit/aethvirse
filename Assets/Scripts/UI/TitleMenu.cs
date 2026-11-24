@@ -31,6 +31,7 @@ namespace Aethvirse.UI
             GameSession.Instance.ResetForNewGame();
             GameSession.Instance.ClassId = classId;
             Quests.QuestSystem.Instance.ResetForNewGame();
+            Secrets.SecretSystem.Instance.ResetForNewGame();
             SaveManager.TakePending();
             SceneManager.LoadScene(Core.BootLoader.NewGameScene);
         }

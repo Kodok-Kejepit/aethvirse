@@ -20,6 +20,7 @@ MonoBehaviour:
   levelMax: 200
   requiredRank: 3
   hidden: 0
+  requiredFlag: journal_r3_dunes_full
   palette: {r: 0.8, g: 0.85, b: 0.9, a: 1}
   weather:
     entries:
