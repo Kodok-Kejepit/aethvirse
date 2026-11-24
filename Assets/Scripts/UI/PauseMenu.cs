@@ -16,7 +16,7 @@ namespace Aethvirse.UI
         bool _open;
         bool _cursorWasLocked;
         CursorLockMode _cursorBefore;
-        enum Page { Main, Save, Load }
+        enum Page { Main, Save, Load, Settings }
         Page _page;
         GUIStyle _title, _button, _text;
 
@@ -75,25 +75,30 @@ namespace Aethvirse.UI
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), Texture2D.whiteTexture);
             GUI.color = Color.white;
             float w = 560 * s, x = (Screen.width - w) * 0.5f, y = Screen.height * 0.18f, h = 64 * s, gap = 14 * s;
-            GUI.Label(new Rect(0, y, Screen.width, 70 * s), _page == Page.Main ? "PAUSED" : _page == Page.Save ? "SAVE" : "LOAD", _title);
+            GUI.Label(new Rect(0, y, Screen.width, 70 * s), _page == Page.Main ? Core.Loc.T("paused") : _page == Page.Save ? Core.Loc.T("save") : _page == Page.Load ? Core.Loc.T("load") : Core.Loc.T("settings"), _title);
             y += 100 * s;
 
             switch (_page)
             {
                 case Page.Main:
-                    if (GUI.Button(new Rect(x, y, w, h), "Resume", _button)) SetOpen(false);
+                    if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("resume"), _button)) SetOpen(false);
                     y += h + gap;
-                    if (GUI.Button(new Rect(x, y, w, h), "Save", _button)) _page = Page.Save;
+                    if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("save"), _button)) _page = Page.Save;
                     y += h + gap;
-                    if (GUI.Button(new Rect(x, y, w, h), "Load", _button)) _page = Page.Load;
+                    if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("load"), _button)) _page = Page.Load;
                     y += h + gap;
-                    if (GUI.Button(new Rect(x, y, w, h), "Return to title", _button))
+                    if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("settings"), _button)) _page = Page.Settings;
+                    y += h + gap;
+                    if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("title"), _button))
                     {
                         SetOpen(false);
                         SceneManager.LoadScene(TitleMenu.SceneName);
                     }
                     y += h + gap;
-                    if (!Application.isMobilePlatform && GUI.Button(new Rect(x, y, w, h), "Quit", _button)) Application.Quit();
+                    if (!Application.isMobilePlatform && GUI.Button(new Rect(x, y, w, h), Core.Loc.T("quit"), _button)) Application.Quit();
+                    break;
+                case Page.Settings:
+                    if (SettingsMenu.Draw(s, x, y, w)) _page = Page.Main;
                     break;
                 case Page.Save:
                     for (int slot = 1; slot <= SaveManager.ManualSlots; slot++)

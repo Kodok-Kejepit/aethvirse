@@ -272,6 +272,7 @@ namespace Aethvirse.Stats
                 EnsureSkillsUnlocked();
                 Recompute(refill: true);
                 LeveledUp?.Invoke(Progression.level);
+                Core.Sfx.LevelUp();
             }
             else Changed?.Invoke();
         }

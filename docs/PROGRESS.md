@@ -18,7 +18,7 @@ e.g. the combo-flame style, come then).
 | P1-10 | Jobs, hidden jobs, shadow army | done |
 | P1-11 | Secrets, Mystery Journal, puzzles | done (35 secrets; target 120+) |
 | P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | done (first world; later worlds = data slots) |
-| P1-13 | Audio, localization (ID/EN), settings, quality presets | |
+| P1-13 | Audio, localization (ID/EN), settings, quality presets | done (graybox: placeholder SFX, menus localized) |
 
 The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what each system should do.
 
@@ -26,6 +26,15 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Unity 6.3 LTS project, boot scene, GameCI builds Windows + Android on push to `main`.
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
+
+## P1-13 — Settings, language, sound (branch `p1-13-settings`)
+
+### Done
+- **Settings** (Pause → Settings; saved): camera sensitivity, invert Y, camera distance, volume, graphics preset
+  Low / Medium / High / Ultra (quality level, shadow distance, LOD bias), FPS limit (VSync / 30 / 60 / 120),
+  language English / Bahasa Indonesia.
+- **Localization** table (EN / ID) used by the menus; other UI strings move into it with the Phase 2 UI.
+- **Placeholder sound** (procedural): swings, hits, dodges, kills, pickups, level-up chime, the Codex ding.
 
 ## P1-12 — Endgame of the first world (branch `p1-12-endgame`)
 
