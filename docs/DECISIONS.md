@@ -17,3 +17,8 @@ Technical decisions for the Unity version of AETHVIRSE. The Godot prototype's de
 - `com.unity.inputsystem` 1.20.1. Active input handling = Input System only (old `Input` class is off).
 - Actions-based input (no hard-coded keys) covers keyboard/mouse, gamepad and touch, and supports
   rebinding (master prompt §5).
+
+## Camera: Cinemachine (2026-11-24, owner approved)
+- `com.unity.cinemachine` 3.1.8 (pulls in `com.unity.splines`). Third-person orbit camera with
+  collision, lock-on framing (target group), shake (impulse) and FOV changes come from Cinemachine
+  instead of a hand-written spring arm (master prompt §5).
