@@ -4,6 +4,7 @@
 #   tools/play.sh                 newest successful CI build (any branch)
 #   tools/play.sh <branch>        newest successful CI build of that branch
 #   tools/play.sh --offline       run the last downloaded build again
+#   tools/play.sh [...] -- ARGS   pass ARGS to the game, e.g. `tools/play.sh -- -touch-ui`
 #
 # Downloads the native Linux build (artifact AETHVIRSE-StandaloneLinux64) from GitHub Actions
 # into ~/Unduhan/game/AETHVIRSE/linux/<run id>/ once, keeps the two newest, and starts it.
@@ -15,6 +16,15 @@ ARTIFACT="AETHVIRSE-StandaloneLinux64"
 ROOT="${AETHVIRSE_PLAY_DIR:-$HOME/Unduhan/game/AETHVIRSE/linux}"
 KEEP=2
 mkdir -p "$ROOT"
+
+# Split our arguments from the game's (everything after --).
+OURS=()
+GAME_ARGS=()
+while [[ $# -gt 0 ]]; do
+	if [[ "$1" == "--" ]]; then shift; GAME_ARGS=("$@"); break; fi
+	OURS+=("$1"); shift
+done
+set -- "${OURS[@]}"
 
 # The player binary is AETHVIRSE (GameCI) or AETHVIRSE.x86_64 (Unity default naming).
 game_binary() { for f in "$1/AETHVIRSE" "$1/AETHVIRSE.x86_64"; do [[ -f "$f" ]] && { echo "$f"; return; }; done; }
@@ -50,4 +60,4 @@ GAME="$(game_binary "$DIR")"
 chmod +x "$GAME"
 echo "Starting $GAME"
 cd "$DIR"
-exec "$GAME" -logFile "$DIR/player.log"
+exec "$GAME" -logFile "$DIR/player.log" "${GAME_ARGS[@]}"

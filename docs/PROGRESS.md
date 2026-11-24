@@ -36,8 +36,11 @@ native Linux build.
 6. Fall recovery: walk off the edge of the 120 m ground; you land back on the last safe spot.
 7. Climb the tower ramp and jump down 8 m (no fall damage yet; health comes in M2).
 
+- **Touch controls** (phones, or `-touch-ui` on PC): floating joystick on the left 45%, camera drag on the
+  rest, Jump and Dash buttons (holding Dash after the dash keeps sprinting), safe-area aware. They feed a
+  virtual gamepad, so gameplay code has no touch special cases.
+
 ### Not yet / next
-- Touch controls (floating joystick, camera drag, buttons) for Android.
 - Hero model + animations (the body is a capsule with a visor that shows facing).
 - Camera options (sensitivity, invert Y, distance) are fields on `PlayerCameraRig`; the Settings menu comes later.
 - Camera shake and lock-on come with combat (M2).

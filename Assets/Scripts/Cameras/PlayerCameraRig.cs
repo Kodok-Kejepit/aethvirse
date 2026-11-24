@@ -1,4 +1,5 @@
 using Aethvirse.Input;
+using Aethvirse.Input.Touch;
 using Aethvirse.Player;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -58,15 +59,22 @@ namespace Aethvirse.Cameras
             _camera.PreviousStateIsValid = false;
         }
 
+        void Start() => TouchControls.CreateIfNeeded(this);
+
+        /// <summary>Turns the camera by degrees (x right, y up). Used by touch drag.</summary>
+        public void AddLookDegrees(Vector2 degrees) => RotateBy(degrees * sensitivity);
+
         void Update()
         {
-            UpdateCursor();
+            // With touch controls the screen is for fingers: no cursor capture, no mouse drag.
+            bool touch = TouchControls.IsActive;
+            if (!touch) UpdateCursor();
             // Mouse: raw pixels to degrees, 1:1 like a shooter (no smoothing, no deltaTime: the delta
             // is already "movement since last frame"). Stick: a rate, so it scales with deltaTime.
             // Drag (button held) also turns the camera without capturing the cursor: touchpads and
             // pointer-lock that does not work (e.g. under Wine) still get camera control.
             Vector2 look = Vector2.zero;
-            if (Cursor.lockState == CursorLockMode.Locked || _input.LookDrag.IsPressed())
+            if (!touch && (Cursor.lockState == CursorLockMode.Locked || _input.LookDrag.IsPressed()))
                 look += _input.LookPointer.ReadValue<Vector2>() * MouseDegreesPerPixel;
             // Keys jump from 0 to 1 instantly; a short ease keeps the turn from starting with a snap.
             _rate = Vector2.Lerp(_rate, _input.LookStick.ReadValue<Vector2>(), MovementMath.SmoothWeight(rateEase, Time.deltaTime));
