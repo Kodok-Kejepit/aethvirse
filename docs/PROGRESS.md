@@ -1,5 +1,25 @@
 # Progress (Unity)
 
+## Phase plan (owner, 2026-11-24)
+**Phase 1 — every system, graybox** (now): the remaining Godot systems plus the academy start, a
+galaxy → planet → region world, many more skills per class and bigger dungeons. Milestones merge to `main`
+when CI is green. **Phase 2 — visuals** (later): HD / realistic look, real VFX and UI art (owner references,
+e.g. the combo-flame style, come then).
+
+| # | Phase 1 milestone | Status |
+|---|---|---|
+| M1–M3 | Movement, combat, stats & skills | done |
+| P1-4 | Core services: game state, save/load (3 slots + autosave), Codex notifications, clock & weather, interaction, pause | next |
+| P1-5 | Items, inventory, equipment, loot, shop, crafting | |
+| P1-6 | Quests, dialog, NPCs, daily quest + Penalty Zone, academy hub & ranks | |
+| P1-7 | Four classes with many skills each | |
+| P1-8 | World: galaxy/planet/region data, streaming, regions I–VII, waystones, dynamic Gates | |
+| P1-9 | Gates & dungeons: abstract room/corridor generator, Red/Double Gates, bosses | |
+| P1-10 | Jobs, hidden jobs, shadow army | |
+| P1-11 | Secrets, Mystery Journal, puzzles | |
+| P1-12 | Endgame: Hollow Throne, [ ??? ], planets & galaxies, the final war | |
+| P1-13 | Audio, localization (ID/EN), settings, quality presets | |
+
 The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what each system should do.
 
 ## M0 — Setup (2026-11-22 → 11-24)
@@ -7,7 +27,7 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
-## M3 — Stats & skills (branch `m3-stats-skills`) — in progress
+## M3 — Stats & skills (branch `m3-stats-skills`) — done 2026-11-24
 
 ### Done
 - **Stats** (unit tested against the Balancing sheet): XP curve `round(100 × L^1.8)`, 5 stat points + 1 skill point
