@@ -7,7 +7,7 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
-## M1 — Core movement (branch `m1-core-movement`) — in progress
+## M1 — Core movement (branch `m1-core-movement`) — done 2026-11-24, approved by owner (PC + phone)
 
 ### Done
 - **Player** (`PlayerController`, CharacterController): camera-relative walk / run / sprint with eased
@@ -39,6 +39,8 @@ native Linux build.
 - **Touch controls** (phones, or `-touch-ui` on PC): floating joystick on the left 45%, camera drag on the
   rest, Jump and Dash buttons (holding Dash after the dash keeps sprinting), safe-area aware. They feed a
   virtual gamepad, so gameplay code has no touch special cases.
+
+- Phones are landscape only (left or right side up).
 
 ### Not yet / next
 - Hero model + animations (the body is a capsule with a visor that shows facing).
