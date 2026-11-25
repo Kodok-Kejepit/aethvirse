@@ -13,6 +13,8 @@ namespace Aethvirse.Core
         public static int Quality { get => PlayerPrefs.GetInt("quality", Application.isMobilePlatform ? 0 : 2); set { PlayerPrefs.SetInt("quality", value); Apply(); } }
         /// <summary>0 = monitor (VSync) · 30 · 60 · 120.</summary>
         public static int FpsCap { get => PlayerPrefs.GetInt("fps", Application.isMobilePlatform ? 60 : 0); set { PlayerPrefs.SetInt("fps", value); Apply(); } }
+        /// <summary>PC: windowed instead of fullscreen (the screenshot tool uses it too).</summary>
+        public static bool Windowed { get => PlayerPrefs.GetInt("windowed", 0) == 1 || System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-windowed") >= 0; set { PlayerPrefs.SetInt("windowed", value ? 1 : 0); Changed?.Invoke(); } }
         public static string Language { get => PlayerPrefs.GetString("lang", Application.systemLanguage == SystemLanguage.Indonesian ? "id" : "en"); set { PlayerPrefs.SetString("lang", value); Changed?.Invoke(); } }
 
         public static event System.Action Changed;
