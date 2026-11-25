@@ -176,6 +176,11 @@ public static class RegionBuilder
         catalog.enemies.Add(Ranged(E("choir_lancer", "Choir Lancer", new Color(0.95f, 0.9f, 0.6f), 1.1f, 1.2f, 2f, 4.5f, 0.75f, 1.3f, 6f, 0f, 13f, 35f), 3, 18f, 12f, 9f, new Color(1f, 0.95f, 0.7f)));
         catalog.enemies.Add(E("halo_warden", "Halo Warden", new Color(0.8f, 0.75f, 0.5f), 1.7f, 2.6f, 2.1f, 3f, 0.9f, 1.5f, 12f, 5f, 2.8f, 95f));
         catalog.enemies.Add(E("the_god", "[ ??? ]", new Color(1f, 0.97f, 0.88f), 2f, 4f, 2.4f, 5f, 0.6f, 0.9f, 15f, 9f, 3.4f, 300f));
+        // Duel rivals (Interaction.DuelRing): humanoid-sized, quick, they read your attacks.
+        catalog.enemies.Add(E("rival_kaelen", "Kaelen Dray", new Color(0.45f, 0.8f, 0.6f), 1f, 1f, 1.1f, 6.5f, 0.4f, 0.8f, 5f, 0f, 2.2f, 60f));
+        catalog.enemies.Add(E("rival_ilyra", "Ilyra Vance", new Color(0.4f, 0.25f, 0.6f), 0.95f, 0.9f, 1.2f, 7f, 0.35f, 0.7f, 4f, 0f, 2f, 50f));
+        catalog.enemies.Add(E("rival_torvald", "Torvald Ash", new Color(0.7f, 0.5f, 0.3f), 1.25f, 1.4f, 1.3f, 4.5f, 0.7f, 1.2f, 9f, 3f, 2.6f, 120f));
+        catalog.enemies.Add(E("rival_echo", "[ Your Name ]", new Color(0.92f, 0.92f, 0.97f), 1f, 1.2f, 1.3f, 7f, 0.35f, 0.7f, 6f, 0f, 2.2f, 80f));
         // Mimics: chests with teeth (Items.Chest).
         catalog.enemies.Add(E("mimic", "Mimic", new Color(0.55f, 0.4f, 0.2f), 1.1f, 2.2f, 1.6f, 5.5f, 0.45f, 0.9f, 6f, 2f, 2.2f, 60f));
         // Allies in the war (they become minions on the hero's side).

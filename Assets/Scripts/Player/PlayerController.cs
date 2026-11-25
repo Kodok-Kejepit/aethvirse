@@ -101,6 +101,11 @@ namespace Aethvirse.Player
             TickTimers(dt);
             stamina.Tick(dt);
             _stateElapsed += dt;
+            if (combat != null)
+            {
+                combat.Airborne = !Grounded;
+                combat.LockedOn = lockOn != null && lockOn.Target != null;
+            }
             switch (State)
             {
                 case PlayerState.Idle: UpdateGround(dt, moving: false); break;

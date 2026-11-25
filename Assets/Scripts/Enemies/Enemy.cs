@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Aethvirse.Enemies
 {
-    public enum EnemyState { Idle, Chase, Attack, Hurt, Return, Dead }
+    public enum EnemyState { Idle, Chase, Attack, Hurt, Return, Dead, Airborne }
 
     /// <summary>
     /// Graybox melee enemy (port of the Godot Enemy + states): patrols home, chases inside the aggro
@@ -158,6 +158,7 @@ namespace Aethvirse.Enemies
         public void MakeBoss(float hpMult, float atkMult, float sizeMult)
         {
             _damageable.Health.SetMax(Mathf.RoundToInt(_damageable.Health.maxHealth * hpMult), refill: true);
+            _launchImmune = true;
             _damageable.Stats.attack *= atkMult;
             visual.localScale *= sizeMult;
             _body.radius *= sizeMult;
@@ -223,6 +224,7 @@ namespace Aethvirse.Enemies
                 case EnemyState.Hurt: UpdateHurt(dt); break;
                 case EnemyState.Return: UpdateReturn(dt); break;
                 case EnemyState.Dead: UpdateDead(dt); break;
+                case EnemyState.Airborne: UpdateAirborne(dt); break;
             }
         }
 
@@ -312,6 +314,38 @@ namespace Aethvirse.Enemies
             else Stop(dt);
             Move(dt);
             if (_stateTime >= activeEnd + data.attackRecovery) SetState(EnemyState.Chase);
+        }
+
+        // --- Aerial (launched / juggled) ----------------------------------------------------------
+
+        /// <summary>Big bodies and bosses cannot be thrown.</summary>
+        public bool CanBeLaunched => !_launchImmune && data.size < 1.6f;
+        bool _launchImmune;
+        const float JuggleFloat = 3.5f;
+        const float JuggleGravity = 0.45f;
+
+        void Launch(float speed)
+        {
+            if (State == EnemyState.Attack) SetState(EnemyState.Chase);
+            ShowTelegraph(0f);
+            _velocity.y = speed;
+            SetState(EnemyState.Airborne);
+        }
+
+        void UpdateAirborne(float dt)
+        {
+            _velocity = MovementMath.ApproachHorizontal(_velocity, Vector3.zero, 4f, dt);
+            // Recently hit: it hangs (the juggle); otherwise it falls normally.
+            float g = _sinceHit < 0.6f ? _gravity * JuggleGravity : _gravity;
+            _velocity.y -= g * dt;
+            visual.localRotation = Quaternion.Euler(-35f, visual.localEulerAngles.y, 0f);
+            if (_body.enabled) _body.Move(_velocity * dt);
+            if (_stateTime > 0.15f && _body.isGrounded && _velocity.y <= 0f)
+            {
+                // Lands hard: knocked down for a moment.
+                _velocity = Vector3.zero;
+                SetState(EnemyState.Hurt);
+            }
         }
 
         void UpdateHurt(float dt)
@@ -430,6 +464,18 @@ namespace Aethvirse.Enemies
             _flash = FlashTime;
             _velocity += new Vector3(info.knockback.x, 0f, info.knockback.z);
             if (_damageable.IsDead) return;
+            if (State == EnemyState.Airborne)
+            {
+                // Juggle: every hit keeps it up; a spike drives it down.
+                _velocity.y = info.launch < 0f ? info.launch : Mathf.Max(_velocity.y, info.launch > 0f ? info.launch : JuggleFloat);
+                return;
+            }
+            if (info.launch > 0f && CanBeLaunched)
+            {
+                _poise = 0f;
+                Launch(info.launch);
+                return;
+            }
             if (_poise >= data.poise)
             {
                 _poise = 0f;

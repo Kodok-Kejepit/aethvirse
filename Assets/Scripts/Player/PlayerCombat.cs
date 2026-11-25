@@ -174,13 +174,28 @@ namespace Aethvirse.Player
         public bool CanCancelIntoSkill => Current != null && CurrentSkill == null;
 
         /// <summary>Picks the next attack from the buffered input (heavy wins) into <see cref="Pending"/>.</summary>
+        /// <summary>Set by the controller every frame: in the air (air chain) / locked on (launcher).</summary>
+        public bool Airborne { get; set; }
+        public bool LockedOn { get; set; }
+
+        /// <summary>The plunge lands: one shockwave around the hero.</summary>
+        public void SlamImpact()
+        {
+            if (Current == null || _frame == null) return;
+            _hits.Begin();
+            _hits.Sweep(_frame, new Vector3(0f, 0.6f, 0f), new Vector3(6f, 2f, 6f), Strike);
+            if (impulse != null) impulse.GenerateImpulse(heavyShake * 1.4f);
+        }
+
         public bool ConsumeAttack()
         {
             if (!HasAttackInput || combo == null || _input.SkillModifier.IsPressed()) return false;
             bool heavy = _heavyBuffer > 0f;
             _lightBuffer = _heavyBuffer = 0f;
             AttackData previous = Current != null && CurrentSkill == null ? Current : (_chainTimer > 0f ? _lastAttack : null);
-            Pending = combo.ResolveNext(previous, heavy);
+            if (Airborne && combo.airLightStart != null) Pending = combo.ResolveAir(previous, heavy);
+            else if (heavy && LockedOn && previous == null && combo.launcher != null) Pending = combo.launcher;
+            else Pending = combo.ResolveNext(previous, heavy);
             PendingSkill = null;
             _pendingCombo = null;
             return Pending != null;
@@ -260,6 +275,7 @@ namespace Aethvirse.Player
             DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, element, _rng,
                 forceCrit: forceCrit, bonusMult: bonus);
             info.isHeavy = a.isHeavy;
+            info.launch = a.launch;
             info.stagger = (a.stagger + extraStagger) * Skills.RuneMath.StaggerFactor(rune);
             info.hitStop = a.hitStop;
             info.source = gameObject;

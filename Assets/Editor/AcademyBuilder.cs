@@ -71,6 +71,13 @@ public static class AcademyBuilder
         for (int i = 0; i < ids.Length; i++) list.GetArrayElementAtIndex(i).stringValue = ids[i];
         so.ApplyModifiedPropertiesWithoutUndo();
 
+        // Duel ring east of the training ground.
+        GameObject ring = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "DuelRing", world, new Vector3(20f, 0.03f, -28f), new Vector3(14f, 0.03f, 14f), PlaygroundBuilder.MakeMaterial("DuelRing", new Color(0.45f, 0.2f, 0.2f)));
+        Object.DestroyImmediate(ring.GetComponent<Collider>());
+        GameObject duelBoard = PlaygroundBuilder.Primitive(PrimitiveType.Cube, "DuelBoard", world, new Vector3(20f, 1.4f, -36f), new Vector3(2.4f, 1.6f, 0.2f), PlaygroundBuilder.MakeMaterial("Wood", new Color(0.5f, 0.36f, 0.22f)));
+        duelBoard.AddComponent<Interactable>();
+        duelBoard.AddComponent<DuelRing>();
+
         GameObject expedition = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "ExpeditionGate", world, new Vector3(0f, 2f, -44f), new Vector3(4f, 0.15f, 4f), gate);
         expedition.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
         expedition.AddComponent<Interactable>().Prompt = "Expedition Gate: Ashfall Outskirts";

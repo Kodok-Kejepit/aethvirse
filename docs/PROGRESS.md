@@ -27,6 +27,19 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-18 — Aerial combat and rival duels (branch `p1-16-next`)
+
+### Done
+- **Launcher → juggle → plunge (§6)** for all four weapons: heavy from neutral while locked on throws light
+  enemies up; jump after it and the air chain (three hanging strikes; staff and bow shoot) keeps them up; heavy in
+  the air plunges and ends in a shockwave that spikes juggled foes down. Big bodies, bosses and elites cannot be
+  thrown. Launched enemies tumble, hang while being hit, and are knocked down when they land.
+- **Duel ring at the academy** (east of the training ground): Kaelen Dray (wind, dashes and blade volleys),
+  Ilyra Vance (shadow, blinks behind you), Torvald Ash the champion (earth novas). Rivals side-step your swings,
+  telegraph their skills (red marks), speak at half health and scale to your level. First wins pay academy
+  points, XP and a reward (Kaelen's Spare Sword, the Umbral Rune, an Ashwalker piece). After the champion, a
+  fourth name appears on the board — yours.
+
 ## P1-17 — Gear depth: sets, gems, enchants, reforge, stash, mimics (branch `p1-16-next`)
 
 ### Done
