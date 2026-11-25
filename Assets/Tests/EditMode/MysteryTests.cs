@@ -22,9 +22,10 @@ namespace Aethvirse.Tests
             var items = AssetDatabase.LoadAssetAtPath<Items.ItemDatabase>("Assets/Data/Items/ItemDatabase.asset");
             var atlas = AssetDatabase.LoadAssetAtPath<World.WorldAtlas>("Assets/Resources/WorldAtlas.asset");
             int locks = 0;
-            foreach (World.RegionData r in atlas.AllRegions())
+            // Names first: opening a scene unloads the loose atlas objects.
+            var regions = atlas.AllRegions().Where(x => !x.hidden && !string.IsNullOrEmpty(x.scene)).Select(x => (id: x.id, scene: x.scene)).ToList();
+            foreach (var r in regions)
             {
-                if (r.hidden || string.IsNullOrEmpty(r.scene)) continue;
                 UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/Regions/{r.scene}.unity");
                 CipherLock lk = UnityEngine.Object.FindFirstObjectByType<CipherLock>();
                 Assert.That(lk, Is.Not.Null, r.id + ": a cipher lock");
