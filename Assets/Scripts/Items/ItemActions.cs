@@ -52,7 +52,32 @@ namespace Aethvirse.Items
             if (rng.NextDouble() < PotionChance) Add(drops, db, "potion_small", 1);
             if (rng.NextDouble() < BoxChance[(int)tier]) Add(drops, db, "mystery_box", 1);
             if (rng.NextDouble() < RuneChance[(int)tier]) AddRune(drops, db, rng);
+            if (rng.NextDouble() < GemChance[(int)tier])
+            {
+                // Grade by tier: normal enemies chip, bosses can drop royal gems.
+                int grade = Mathf.Min(4, 1 + (int)tier + (rng.NextDouble() < 0.15 ? 1 : 0));
+                string[] types = { "ruby", "emerald", "sapphire", "diamond", "topaz", "onyx", "bloodstone" };
+                Add(drops, db, $"gem_{types[rng.Next(types.Length)]}_{grade}", 1);
+            }
+            if (rng.NextDouble() < ScrollChance[(int)tier]) AddRandom(drops, db, rng, i => i.kind == ItemKind.EnchantScroll && i.rarity <= Rarity.Epic);
+            if (rng.NextDouble() < SetChance[(int)tier]) AddRandom(drops, db, rng, i => !string.IsNullOrEmpty(i.setId) && i.minLevel <= level + 10);
+            if (rng.NextDouble() < UniqueChance[(int)tier]) AddRandom(drops, db, rng, i => i.id.StartsWith("u_") && i.minLevel <= level + 10);
             return drops;
+        }
+
+        // Chances by tier (normal, elite, boss).
+        public static readonly float[] GemChance = { 0.025f, 0.15f, 0.6f };
+        public static readonly float[] ScrollChance = { 0.003f, 0.04f, 0.2f };
+        public static readonly float[] SetChance = { 0.002f, 0.03f, 0.25f };
+        public static readonly float[] UniqueChance = { 0.0005f, 0.008f, 0.08f };
+
+        static void AddRandom(List<ItemStack> list, ItemDatabase db, System.Random rng, System.Predicate<ItemData> match)
+        {
+            var pool = new List<ItemData>();
+            foreach (ItemData i in db.items) if (i != null && match(i)) pool.Add(i);
+            if (pool.Count == 0) return;
+            ItemData pick = pool[rng.Next(pool.Count)];
+            list.Add(ItemStack.Make(pick.id, 1, pick));
         }
 
         /// <summary>Runes are rare drops: elites and bosses far more often (normal, elite, boss).</summary>
@@ -155,6 +180,55 @@ namespace Aethvirse.Items
             wallet.SpendGold(r.goldCost);
             inv.Add(r.output, r.outputCount);
             Core.GameEvents.RaiseCrafted(r.output);
+            return true;
+        }
+
+        // --- Gems, enchants, reforging ------------------------------------------------------------
+
+        /// <summary>Puts a gem from the bag into a free socket of a gear copy.</summary>
+        public static bool SocketGem(Inventory bag, ItemStack gear, string gemId)
+        {
+            ItemData gem = bag.Db?.Get(gemId);
+            if (gem == null || gem.kind != ItemKind.Gem || gear.gems.Count >= gear.sockets) return false;
+            if (!bag.Remove(gemId, 1)) return false;
+            gear.gems.Add(gemId);
+            bag.NotifyChanged();
+            return true;
+        }
+
+        /// <summary>Pulling gems out costs gold; the gems come back.</summary>
+        public static int UnsocketCost(ItemStack gear) => 100 * gear.gems.Count * (1 + Mathf.Max(0, gear.rarity));
+
+        public static bool UnsocketAll(Inventory bag, ItemStack gear, IWallet wallet)
+        {
+            if (gear.gems.Count == 0 || !wallet.SpendGold(UnsocketCost(gear))) return false;
+            foreach (string g in gear.gems) bag.Add(g);
+            gear.gems.Clear();
+            bag.NotifyChanged();
+            return true;
+        }
+
+        /// <summary>Applies an enchant scroll (weapon scrolls on weapons, armour scrolls on the rest). Replaces the old enchant.</summary>
+        public static bool Enchant(Inventory bag, ItemStack gear, ItemData gearItem, string scrollId)
+        {
+            ItemData scroll = bag.Db?.Get(scrollId);
+            if (scroll == null || scroll.kind != ItemKind.EnchantScroll || !gearItem.IsEquipment) return false;
+            if (scroll.enchantWeapon != (gearItem.slot == EquipSlot.Weapon)) return false;
+            if (!bag.Remove(scrollId, 1)) return false;
+            gear.enchant = scrollId;
+            bag.NotifyChanged();
+            return true;
+        }
+
+        public static int ReforgeCost(ItemStack gear) => 150 * (1 + Mathf.Max(0, gear.rarity)) * (1 + Mathf.Max(0, gear.rarity));
+
+        /// <summary>Rerolls the affixes of a generated copy for gold and 2 scrap (rarity, level, sockets stay).</summary>
+        public static bool Reforge(Inventory bag, ItemStack gear, LootRules rules, IWallet wallet, System.Random rng)
+        {
+            if (gear.rarity < 0 || bag.CountOf("scrap_metal") < 2 || !wallet.SpendGold(ReforgeCost(gear))) return false;
+            bag.Remove("scrap_metal", 2);
+            new EquipmentGenerator(bag.Db, rules, rng).RollAffixes(gear, gear.rarity);
+            bag.NotifyChanged();
             return true;
         }
     }

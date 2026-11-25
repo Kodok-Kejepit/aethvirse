@@ -27,6 +27,31 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-17 — Gear depth: sets, gems, enchants, reforge, stash, mimics (branch `p1-16-next`)
+
+### Done
+- **329 items** (was 36): hunter gear in nine level bands across all worlds (Thornwarden Lv 50 → Seraphic Lv 700;
+  12 pieces each incl. greatsword, twinfangs, staff, longbow), 8 named **gear sets** × 6 pieces, 28 gems,
+  14 enchant scrolls, 20 named uniques with their own story (Blade of the Cinder Seat, Nyra's Reading Lamp, Hammer
+  That Split the World, The First Line's Quill …), 14 region materials, more potions and food, 24 skill books,
+  28 runes. Drops pick bases from your level band.
+- **Gear sets** (2 / 4 / 6-piece bonuses): Ashwalker, Verdant Oath, Dunestrider, Frostveil Regalia, Drowned
+  Archivist, Fracture Knight, Hollow Regent, Echo of the First Vanguard (Mythic). Set pieces drop from elites and
+  bosses near your level; the Bag shows the set, worn count and which bonuses are active.
+- **Gems**: Ruby / Emerald / Sapphire / Diamond / Topaz / Onyx / Bloodstone in four grades (Chipped → Royal);
+  three fuse into the next grade (Craft). Generated gear rolls 0–3 sockets by rarity; unsocket for gold.
+- **Enchant scrolls**: eight weapon enchants turn normal attacks into an element (Kindling Steel = Fire … the
+  Mythic Scroll That Was Never Written = Void) and set up reactions; six armour enchants (DEF, HP, speed,
+  cooldowns, attack speed, crit). Crafted from region materials.
+- **Reforge**: reroll a generated item's affixes for gold + 2 scrap (rarity, level and sockets stay).
+- New affixes: Savage (ATK%), Bastion (DEF%), Hale (HP%), of Haste (CDR), of the Gale (attack speed), of the Fox
+  (move speed), of Ruin's Edge (crit damage).
+- **Stash** (200 slots): every save crystal opens it; saved with the player.
+- **Chests and mimics**: six chests per region refill daily; one in five is a mimic (decided per day) that fights
+  back and drops loot like a boss.
+- Recipes and Quartermaster stock now live in the item database (more stock: mana draughts, royal potions, gems,
+  scrolls).
+
 ## P1-16 — Runes, secret skills, job skill names (branch `p1-16-next`)
 
 ### Done

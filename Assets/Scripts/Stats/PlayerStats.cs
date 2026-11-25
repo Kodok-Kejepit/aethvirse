@@ -195,6 +195,7 @@ namespace Aethvirse.Stats
             {
                 p.inventory = inventory.Bag;
                 p.hasInventory = true;
+                p.stash = inventory.Stash;
             }
             p.mana = Mana.Ratio;
         }
@@ -232,6 +233,7 @@ namespace Aethvirse.Stats
             Jobs = reg != null ? reg.Lineage(JobId) : new List<global::Aethvirse.Jobs.JobData>();
             for (int i = 0; i < SlotCount; i++) Slots[i] = p.slots != null && i < p.slots.Length ? p.slots[i] : null;
             if (inventory != null && p.hasInventory) inventory.Restore(p.inventory);
+            if (inventory != null) inventory.RestoreStash(p.stash);
             EnsureSkillsUnlocked();
             Recompute(refill: true);
             if (damageable != null && p.health < 1f)
@@ -286,6 +288,15 @@ namespace Aethvirse.Stats
                 d.defense += inventory.EquipmentDefense();
                 d.critChance = Mathf.Min(tuning.critCap, d.critChance + inventory.EquipmentBonus(Items.StatKeys.Crit));
                 Lifesteal = inventory.EquipmentBonus(Items.StatKeys.Lifesteal);
+                // Percent bonuses from sets, gems and enchants.
+                d.attack *= 1f + inventory.EquipmentBonus(Items.StatKeys.AtkPct);
+                d.magicAttack *= 1f + inventory.EquipmentBonus(Items.StatKeys.AtkPct);
+                d.defense *= 1f + inventory.EquipmentBonus(Items.StatKeys.DefPct);
+                d.maxHp = Mathf.RoundToInt(d.maxHp * (1f + inventory.EquipmentBonus(Items.StatKeys.HpPct)));
+                d.cooldownReduction = Mathf.Min(0.5f, d.cooldownReduction + inventory.EquipmentBonus(Items.StatKeys.Cdr));
+                d.attackSpeed += inventory.EquipmentBonus(Items.StatKeys.Aspd);
+                d.moveSpeed += inventory.EquipmentBonus(Items.StatKeys.Mspd);
+                d.critDamage += inventory.EquipmentBonus(Items.StatKeys.CritDmg);
             }
             float atkBonus = _buffs.Total(BuffStat.Attack) + PassiveTotal(BuffStat.Attack) + jobAtk;
             d.attack *= 1f + atkBonus;
@@ -301,6 +312,7 @@ namespace Aethvirse.Stats
             {
                 combat.SetStats(combatStats);
                 combat.Lifesteal = Lifesteal;
+                combat.WeaponElement = gear ? inventory.WeaponElement() : ElementType.Physical;
             }
             if (damageable != null)
             {

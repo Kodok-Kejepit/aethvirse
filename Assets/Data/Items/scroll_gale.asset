@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a604c67bd78838c817015a9a64f52c, type: 3}
+  m_Name: scroll_gale
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Items.ItemData
+  id: scroll_gale
+  displayName: Scroll of the Gale Edge
+  description: The blade whistles. Normal attacks become Wind.
+  kind: 12
+  rarity: 2
+  maxStack: 10
+  sellPrice: 300
+  canSell: 1
+  slot: 0
+  attack: 0
+  attackPerLevel: 0
+  defense: 0
+  defensePerLevel: 0
+  statBonuses: []
+  isDropBase: 0
+  onHitPoison: 0
+  healAmount: 0
+  manaAmount: 0
+  identifiesItems: 0
+  opensMysteryBox: 0
+  unidentified: 0
+  unidentifiedName: ???
+  unidentifiedDescription: 
+  cursed: 0
+  curseHpFraction: 0
+  curseInterval: 5
+  evolveKills: 0
+  evolvesInto: 
+  hiddenEffect: 
+  setId: 
+  minLevel: 1
+  gemStat: aspd
+  gemValue: 0.05
+  enchantWeapon: 1
+  enchantElement: 3
+  teachesSkill: 
+  runeId: 

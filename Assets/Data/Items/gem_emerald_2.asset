@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a604c67bd78838c817015a9a64f52c, type: 3}
+  m_Name: gem_emerald_2
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Items.ItemData
+  id: gem_emerald_2
+  displayName: Flawed Emerald
+  description: Green, and quick to catch the light. Socket it into gear with a free
+    socket. Three of a grade fuse into the next.
+  kind: 11
+  rarity: 2
+  maxStack: 20
+  sellPrice: 160
+  canSell: 1
+  slot: 0
+  attack: 0
+  attackPerLevel: 0
+  defense: 0
+  defensePerLevel: 0
+  statBonuses: []
+  isDropBase: 0
+  onHitPoison: 0
+  healAmount: 0
+  manaAmount: 0
+  identifiesItems: 0
+  opensMysteryBox: 0
+  unidentified: 0
+  unidentifiedName: ???
+  unidentifiedDescription: 
+  cursed: 0
+  curseHpFraction: 0
+  curseInterval: 5
+  evolveKills: 0
+  evolvesInto: 
+  hiddenEffect: 
+  setId: 
+  minLevel: 1
+  gemStat: agi
+  gemValue: 6.8999996
+  enchantWeapon: 0
+  enchantElement: 0
+  teachesSkill: 
+  runeId: 

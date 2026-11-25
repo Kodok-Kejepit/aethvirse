@@ -1,6 +1,7 @@
 // Writes the item database (port of the Godot data/items/*.tres), loot rules, recipes and shop stock.
 // Assets are updated in place, so references keep working.
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using Aethvirse.Items;
 using UnityEditor;
@@ -12,7 +13,7 @@ public static class ItemDataBuilder
     public const string DatabasePath = Dir + "/ItemDatabase.asset";
     public const string RulesPath = "Assets/Data/Balancing/LootRules.asset";
 
-    static ItemDatabase _db;
+    internal static ItemDatabase _db;
 
     [MenuItem("AETHVIRSE/Build Item Data")]
     public static void Build()
@@ -88,6 +89,9 @@ public static class ItemDataBuilder
         Costume("costume_wings_of_dawn", "Wings of Dawn", Rarity.Legendary);
         Costume("costume_void_halo", "Halo of the Unwritten", Rarity.Mythic);
 
+        ItemContent.Build();
+        _db.recipes = Recipes();
+        _db.stock = QuartermasterStock();
         EditorUtility.SetDirty(_db);
         AssetDatabase.SaveAssets();
         Debug.Log($"AETHVIRSE: item data built ({_db.items.Count} items)");
@@ -99,7 +103,7 @@ public static class ItemDataBuilder
         new Recipe { id = "potion_small", inputIds = { "herb" }, inputCounts = { 2 }, output = "potion_small" },
         new Recipe { id = "potion_large", inputIds = { "potion_small", "herb" }, inputCounts = { 2, 3 }, output = "potion_large" },
         new Recipe { id = "mystery_box", inputIds = { "scrap_metal" }, inputCounts = { 12 }, output = "mystery_box", goldCost = 200 },
-    };
+    }.Concat(ItemContent.Recipes()).ToList();
 
     public static List<ShopEntry> QuartermasterStock() => new List<ShopEntry>
     {
@@ -107,9 +111,17 @@ public static class ItemDataBuilder
         new ShopEntry { itemId = "potion_large", price = 80 },
         new ShopEntry { itemId = "bread", price = 5 },
         new ShopEntry { itemId = "codex_identify_scroll", price = 60 },
+        new ShopEntry { itemId = "mana_draught", price = 30 },
+        new ShopEntry { itemId = "mana_draught_greater", price = 110 },
+        new ShopEntry { itemId = "potion_royal", price = 400 },
+        new ShopEntry { itemId = "canteen_stew", price = 12 },
+        new ShopEntry { itemId = "gem_ruby_1", price = 150 },
+        new ShopEntry { itemId = "gem_diamond_1", price = 150 },
+        new ShopEntry { itemId = "scroll_warding", price = 900 },
+        new ShopEntry { itemId = "scroll_kindling", price = 1200 },
     };
 
-    static ItemData Item(string id, string name, ItemKind kind, Rarity rarity, int maxStack, int price, string desc)
+    internal static ItemData Item(string id, string name, ItemKind kind, Rarity rarity, int maxStack, int price, string desc)
     {
         var i = LoadOrCreate<ItemData>($"{Dir}/{id}.asset");
         // Reset to defaults so a rebuild never keeps stale fields.
@@ -127,7 +139,7 @@ public static class ItemDataBuilder
         return i;
     }
 
-    static ItemData Weapon(string id, string name, Rarity rarity, float atk, float atkPerLevel, int price, string desc)
+    internal static ItemData Weapon(string id, string name, Rarity rarity, float atk, float atkPerLevel, int price, string desc)
     {
         ItemData i = Item(id, name, ItemKind.Weapon, rarity, 1, price, desc);
         i.slot = EquipSlot.Weapon;
@@ -148,7 +160,7 @@ public static class ItemDataBuilder
         if (bonus.HasValue) i.statBonuses.Add(bonus.Value);
     }
 
-    static ItemData Gear(string id, string name, EquipSlot slot, Rarity rarity, int price, string desc, params StatBonus[] bonuses)
+    internal static ItemData Gear(string id, string name, EquipSlot slot, Rarity rarity, int price, string desc, params StatBonus[] bonuses)
     {
         ItemData i = Item(id, name, ItemKind.Accessory, rarity, 1, price, desc);
         i.slot = slot;

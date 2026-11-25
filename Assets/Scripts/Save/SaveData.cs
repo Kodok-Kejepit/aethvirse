@@ -33,6 +33,8 @@ namespace Aethvirse.Save
             public List<int> skillLevels = new List<int>();
             /// <summary>Secret skills learned from books.</summary>
             public List<string> secretSkills = new List<string>();
+            /// <summary>The vault at save crystals.</summary>
+            public Items.Inventory stash;
             /// <summary>Socketed runes: skill id → rune item id (parallel lists).</summary>
             public List<string> runeSkills = new List<string>();
             public List<string> runeItems = new List<string>();

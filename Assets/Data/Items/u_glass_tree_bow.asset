@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a604c67bd78838c817015a9a64f52c, type: 3}
+  m_Name: u_glass_tree_bow
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Items.ItemData
+  id: u_glass_tree_bow
+  displayName: Bow of the Glass Tree
+  description: Cut from a branch that sang. The string still hums.
+  kind: 2
+  rarity: 4
+  maxStack: 1
+  sellPrice: 1700
+  canSell: 1
+  slot: 1
+  attack: 0
+  attackPerLevel: 6.6
+  defense: 0
+  defensePerLevel: 0
+  statBonuses:
+  - stat: agi
+    value: 22
+  - stat: crit
+    value: 0.06
+  isDropBase: 0
+  onHitPoison: 0
+  healAmount: 0
+  manaAmount: 0
+  identifiesItems: 0
+  opensMysteryBox: 0
+  unidentified: 0
+  unidentifiedName: ???
+  unidentifiedDescription: 
+  cursed: 0
+  curseHpFraction: 0
+  curseInterval: 5
+  evolveKills: 0
+  evolvesInto: 
+  hiddenEffect: 
+  setId: 
+  minLevel: 410
+  gemStat: 
+  gemValue: 0
+  enchantWeapon: 0
+  enchantElement: 0
+  teachesSkill: 
+  runeId: 

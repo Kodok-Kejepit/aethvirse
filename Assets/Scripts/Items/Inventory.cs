@@ -12,6 +12,10 @@ namespace Aethvirse.Items
     public sealed class Inventory
     {
         public const int Capacity = 60;
+        public const int StashCapacity = 200;
+        /// <summary>0 = a normal bag (60); the stash sets 200.</summary>
+        public int capacity;
+        public int Cap => capacity > 0 ? capacity : Capacity;
 
         [Serializable]
         public sealed class Equipped
@@ -50,7 +54,7 @@ namespace Aethvirse.Items
                     if (left == 0) break;
                 }
             }
-            while (left > 0 && stacks.Count < Capacity)
+            while (left > 0 && stacks.Count < Cap)
             {
                 int moved = Mathf.Min(left, Mathf.Max(1, item.maxStack));
                 stacks.Add(ItemStack.Make(itemId, moved, item));
@@ -63,7 +67,7 @@ namespace Aethvirse.Items
         /// <summary>Adds a unique copy (generated gear). False when the bag is full.</summary>
         public bool AddStack(ItemStack stack)
         {
-            if (stacks.Count >= Capacity) return false;
+            if (stacks.Count >= Cap) return false;
             stacks.Add(stack);
             Changed?.Invoke();
             return true;

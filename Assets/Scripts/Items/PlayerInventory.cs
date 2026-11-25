@@ -27,8 +27,10 @@ namespace Aethvirse.Items
         public Inventory Bag { get; private set; }
         public ItemDatabase Database => database;
         public LootRules Rules => rules;
-        public IReadOnlyList<Recipe> Recipes => recipes;
-        public IReadOnlyList<ShopEntry> QuartermasterStock => quartermasterStock;
+        public IReadOnlyList<Recipe> Recipes => database != null && database.recipes.Count > 0 ? database.recipes : recipes;
+        public IReadOnlyList<ShopEntry> QuartermasterStock => database != null && database.stock.Count > 0 ? database.stock : quartermasterStock;
+        /// <summary>The vault at save crystals (200 slots), saved with the player.</summary>
+        public Inventory Stash { get; private set; }
         public readonly System.Random Rng = new System.Random();
 
         public int Gold => GameSession.Instance.Gold;
@@ -46,6 +48,7 @@ namespace Aethvirse.Items
         {
             Current = this;
             Bag = new Inventory(database);
+            Stash = new Inventory(database) { capacity = Inventory.StashCapacity };
             GiveStarterKit();
             _stats = GetComponent<PlayerStats>();
             _health = GetComponent<Damageable>();
@@ -110,9 +113,35 @@ namespace Aethvirse.Items
             foreach (Inventory.Equipped e in Bag.equipped)
             {
                 ItemData item = database.Get(e.stack.itemId);
-                if (item != null && e.stack.identified) total += ItemStats.Bonus(e.stack, item, stat, rules);
+                if (item != null && e.stack.identified) total += ItemStats.Bonus(e.stack, item, stat, rules, database);
             }
+            var sets = GearSetDatabase.Instance;
+            if (sets != null) total += sets.Bonus(stat, SetCounts());
             return total;
+        }
+
+        /// <summary>How many pieces of each gear set are worn.</summary>
+        public Dictionary<string, int> SetCounts()
+        {
+            var counts = new Dictionary<string, int>();
+            foreach (Inventory.Equipped e in Bag.equipped)
+            {
+                ItemData item = database.Get(e.stack.itemId);
+                if (item == null || string.IsNullOrEmpty(item.setId)) continue;
+                counts.TryGetValue(item.setId, out int n);
+                counts[item.setId] = n + 1;
+            }
+            return counts;
+        }
+
+        /// <summary>Normal attacks take the weapon enchant's element.</summary>
+        public Combat.ElementType WeaponElement() => ItemStats.EnchantElement(Bag.GetEquipped(EquipSlot.Weapon), database);
+
+        public void RestoreStash(Inventory stash)
+        {
+            Stash = stash ?? new Inventory();
+            Stash.capacity = Inventory.StashCapacity;
+            Stash.Db = database;
         }
 
         public StatBlock EquipmentStats() => new StatBlock(EquipmentBonus(StatKeys.Str), EquipmentBonus(StatKeys.Agi),

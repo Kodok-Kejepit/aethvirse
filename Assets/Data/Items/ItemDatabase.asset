@@ -49,6 +49,247 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9dd04da65ba5a35ea8344c2eaf6d991e, type: 2}
   - {fileID: 11400000, guid: 56f5a1ef4de76a306b5f2be01977b4c2, type: 2}
   - {fileID: 11400000, guid: af6b39a52ee9f738391e0353aa506f22, type: 2}
+  - {fileID: 11400000, guid: 17050a1d974bda97b9df4b8399e3ea24, type: 2}
+  - {fileID: 11400000, guid: dde596a1042bf6b1d9f8ca50130dac0c, type: 2}
+  - {fileID: 11400000, guid: 871c20d8ac977003ba7c871b16d76cb9, type: 2}
+  - {fileID: 11400000, guid: 4443358860c1b1a76a36e466436f8798, type: 2}
+  - {fileID: 11400000, guid: 6958064e415a42d18a9dd4cf395d99d6, type: 2}
+  - {fileID: 11400000, guid: d4648aca4fe6b3b98a96a3b13606b788, type: 2}
+  - {fileID: 11400000, guid: df8d9b305f5a7a6eba39f2e43ab7624f, type: 2}
+  - {fileID: 11400000, guid: 4deaa845afa4115e698f3c095781de9d, type: 2}
+  - {fileID: 11400000, guid: 0319bae757975c78589b6368e1a3ca35, type: 2}
+  - {fileID: 11400000, guid: ab1f214cce8adde09aa0aeffbcabd66d, type: 2}
+  - {fileID: 11400000, guid: 29b588329082f42de9e4457283ee8c82, type: 2}
+  - {fileID: 11400000, guid: 52e8d10032a1fac4cadcc44806fac82e, type: 2}
+  - {fileID: 11400000, guid: f6b4a01b2cac965c899131472842a126, type: 2}
+  - {fileID: 11400000, guid: d1c8a4842c53a76fa8237584eb8bf004, type: 2}
+  - {fileID: 11400000, guid: 8a837868d617e38eb9e90b0ef612cd91, type: 2}
+  - {fileID: 11400000, guid: 290b3166c63994177b236a166c9a1dc1, type: 2}
+  - {fileID: 11400000, guid: 5c7646371b21425858e017edb2b0821a, type: 2}
+  - {fileID: 11400000, guid: 6b3e7781e5fb83b63b9b0eb33403d78b, type: 2}
+  - {fileID: 11400000, guid: 06dd55d644228cb8fbf2057a3472d527, type: 2}
+  - {fileID: 11400000, guid: 9a32ec485bd81576aa1cb7f302552a84, type: 2}
+  - {fileID: 11400000, guid: 541416fd532bbb70cbbb57dedb02354f, type: 2}
+  - {fileID: 11400000, guid: f4eedf703d5acef03acab4f940c58ade, type: 2}
+  - {fileID: 11400000, guid: cdee31b70b078bb20a56d10152188a62, type: 2}
+  - {fileID: 11400000, guid: 6e03a39305de0002db9dee60c180171c, type: 2}
+  - {fileID: 11400000, guid: da2bf6d4166721b12a10ca579fd513f9, type: 2}
+  - {fileID: 11400000, guid: 672a4f609fc82308eb74505469933261, type: 2}
+  - {fileID: 11400000, guid: 7ac8c69663e0685c1801141630c77e2f, type: 2}
+  - {fileID: 11400000, guid: b8c033f9ca731943787ca2ed9a51eefc, type: 2}
+  - {fileID: 11400000, guid: a395bf3d515f3579eacf41c819dd9c22, type: 2}
+  - {fileID: 11400000, guid: b98b2a21e59ae860295a3352442aba6d, type: 2}
+  - {fileID: 11400000, guid: 926a4df3ec087713e9e7800967e09195, type: 2}
+  - {fileID: 11400000, guid: 7cdc5d90d6f49ee729459712e9bb32ae, type: 2}
+  - {fileID: 11400000, guid: 145af9cfc565155ce9e1b263570d419a, type: 2}
+  - {fileID: 11400000, guid: 9ce9251f77a073ce28cb9702905489bd, type: 2}
+  - {fileID: 11400000, guid: 017086973cd6596639748d2f99a32e82, type: 2}
+  - {fileID: 11400000, guid: 84c493a8c8546b794a1386e22082a7ae, type: 2}
+  - {fileID: 11400000, guid: 0add0f31bf2d9130eb096481d99e9a0a, type: 2}
+  - {fileID: 11400000, guid: 1d6d61c5ea5ee5bde9d4f799c1ee070f, type: 2}
+  - {fileID: 11400000, guid: 125ee1229a57d98379dedc292e2b78c7, type: 2}
+  - {fileID: 11400000, guid: a2513500ab43ef67698cdcb976cc8de5, type: 2}
+  - {fileID: 11400000, guid: 068af99d0a5f9e79daef9d525bd34bba, type: 2}
+  - {fileID: 11400000, guid: 9bbbcdb8e4fef2c5d8cf98bef6e407d4, type: 2}
+  - {fileID: 11400000, guid: e56ff4501a7ba1e8ab63695fbe947a20, type: 2}
+  - {fileID: 11400000, guid: f51607f30d7f4980da1f16e7aea72bd3, type: 2}
+  - {fileID: 11400000, guid: 890e9590470e4ac0782064c16bdf2da5, type: 2}
+  - {fileID: 11400000, guid: 1fcde0d113fb5d2469dcaed3567704df, type: 2}
+  - {fileID: 11400000, guid: 830a230e7dbbc6802b0f015be8a2ee90, type: 2}
+  - {fileID: 11400000, guid: 9cc57f47fc040c617b48b8be83dec0ad, type: 2}
+  - {fileID: 11400000, guid: faf1795b63f73b0be8220b2bed85dc82, type: 2}
+  - {fileID: 11400000, guid: 4cf4af32d95ba9943a379e7aa93e3939, type: 2}
+  - {fileID: 11400000, guid: dbeda42b3cd56df7fb5c26534f0ba5b0, type: 2}
+  - {fileID: 11400000, guid: 2908424aed85ea48e9b52262698174b2, type: 2}
+  - {fileID: 11400000, guid: f43111e612890d6c78e360c0d533e9cd, type: 2}
+  - {fileID: 11400000, guid: ace0a63321ea55da7b35c1664b7122bf, type: 2}
+  - {fileID: 11400000, guid: 5d0e80a7178d53ed3b823167fd517c6b, type: 2}
+  - {fileID: 11400000, guid: 89ac383199e93566781fc7f8cf6f07c0, type: 2}
+  - {fileID: 11400000, guid: 761c1c71284a6fa4f970e5c62dd8d244, type: 2}
+  - {fileID: 11400000, guid: a097d9aa400d6ef968409159d285e968, type: 2}
+  - {fileID: 11400000, guid: cac77a9c94ce5e189a3c730379a3e58e, type: 2}
+  - {fileID: 11400000, guid: ef9c212e16e446bd8997aa8623c312a9, type: 2}
+  - {fileID: 11400000, guid: 7e75620dddd85ebb8b8c73ed46df4412, type: 2}
+  - {fileID: 11400000, guid: 06868bdc9f2b243bca21fe153d7d4bbf, type: 2}
+  - {fileID: 11400000, guid: 3a7f70a84284a26bb975d0184eeb066f, type: 2}
+  - {fileID: 11400000, guid: 81422e3551275f673883691c5e837048, type: 2}
+  - {fileID: 11400000, guid: 6e763f73492b70a63b4accaf1c77d203, type: 2}
+  - {fileID: 11400000, guid: 68c98d52466209b3b90b8b4d50dcce47, type: 2}
+  - {fileID: 11400000, guid: af3143cdefe9347b7ad9fa9904d29791, type: 2}
+  - {fileID: 11400000, guid: cf22ca39530535ddfbf43c47a475e343, type: 2}
+  - {fileID: 11400000, guid: da6a709a3fd59f9a1b7dd252b20ee51d, type: 2}
+  - {fileID: 11400000, guid: 0bc9ddfdebf19cf36bb90df00ba716cf, type: 2}
+  - {fileID: 11400000, guid: 0980ec953950177d8839cce7a56cc4bb, type: 2}
+  - {fileID: 11400000, guid: 7bccce35b3bee859baca654768db6f55, type: 2}
+  - {fileID: 11400000, guid: 4ad7c960e2c060e1391cbab113161085, type: 2}
+  - {fileID: 11400000, guid: bf7dee402c26e9213907c05b3eab9fc3, type: 2}
+  - {fileID: 11400000, guid: 9e2ef42447c52f49cb84596c969eb2fa, type: 2}
+  - {fileID: 11400000, guid: 4455e8518fbc1d0ac8fe1152bfdc147b, type: 2}
+  - {fileID: 11400000, guid: 9c9d61f43cda8ccadb44540f6b0b2ab9, type: 2}
+  - {fileID: 11400000, guid: 8cecaefe3b47eb053982d57fe2d49c97, type: 2}
+  - {fileID: 11400000, guid: ec49e3e49d8b37fa8b8d866a427d2d4a, type: 2}
+  - {fileID: 11400000, guid: 5cccbad56913cae9e9e6d3ec5b1e57b5, type: 2}
+  - {fileID: 11400000, guid: b9df8ca9a6019d754a8dc9b880df55b2, type: 2}
+  - {fileID: 11400000, guid: 3aff74997c978ecceb2c0c3e557efa9d, type: 2}
+  - {fileID: 11400000, guid: 7fabf6ad2bb53eb9b82af53edd372b19, type: 2}
+  - {fileID: 11400000, guid: a1b5bc0bd518a9768bf96b56def066fb, type: 2}
+  - {fileID: 11400000, guid: 9fdefaad263f305b887d34957e0de710, type: 2}
+  - {fileID: 11400000, guid: ddf8ae108b618959c8eb663a601f2660, type: 2}
+  - {fileID: 11400000, guid: d9c88c68954039e07a97e6e2fae72f9d, type: 2}
+  - {fileID: 11400000, guid: 308ac45abc01c5d27a8e23c11adec7f8, type: 2}
+  - {fileID: 11400000, guid: 60fcf5bc5f20ed13293c53d4fe07414e, type: 2}
+  - {fileID: 11400000, guid: 8aba6b4f42fe5034b8dd23dff71f8b4b, type: 2}
+  - {fileID: 11400000, guid: b2d09b9e8943ff6ad806a8640ff3a01a, type: 2}
+  - {fileID: 11400000, guid: 5d6d22bfd555a0d77ac6c0521fa58611, type: 2}
+  - {fileID: 11400000, guid: 3ca65c8c640def3018f36b327d6ae670, type: 2}
+  - {fileID: 11400000, guid: be997cda1c8fc4d0693a34681756bfd7, type: 2}
+  - {fileID: 11400000, guid: f7084e6385a22481ab27b3edb8ae2b94, type: 2}
+  - {fileID: 11400000, guid: 65f013390d6e13b90b0828aa9166d8e8, type: 2}
+  - {fileID: 11400000, guid: 4a9d880670824277f9c1d160cd24c326, type: 2}
+  - {fileID: 11400000, guid: acb48dbec3e754fbda88e45b6794c090, type: 2}
+  - {fileID: 11400000, guid: 202457972815f5d79a0bc414091fe6e4, type: 2}
+  - {fileID: 11400000, guid: 2722d6ea6414f42708237aed0cafd54a, type: 2}
+  - {fileID: 11400000, guid: dc47eb4b05e89a9289dff1d33f6eec26, type: 2}
+  - {fileID: 11400000, guid: 3ca917770b6198f7e85ecce6b2fb1297, type: 2}
+  - {fileID: 11400000, guid: cb226712643469213b2464c3d8dd8439, type: 2}
+  - {fileID: 11400000, guid: 9da9908d96b2a55e2b2b25ce7c371496, type: 2}
+  - {fileID: 11400000, guid: ace862dec47f4baceb2ea1f153253eab, type: 2}
+  - {fileID: 11400000, guid: 008907811aa02b5d58d33076a452da43, type: 2}
+  - {fileID: 11400000, guid: 894736bd5c05f57189f499a070dc045a, type: 2}
+  - {fileID: 11400000, guid: bf284a92fd92082568521409cf589938, type: 2}
+  - {fileID: 11400000, guid: f3af062f3a53b07dabeb84c6cbba4333, type: 2}
+  - {fileID: 11400000, guid: 061cf54664f13b3cabb0d73e5e520e81, type: 2}
+  - {fileID: 11400000, guid: ade779ca63868025381cd42a0f94d4a8, type: 2}
+  - {fileID: 11400000, guid: 54f356efcb091a774bdcb109649f9d6c, type: 2}
+  - {fileID: 11400000, guid: ce89054aecf9a0ed48f79c11bfc4b740, type: 2}
+  - {fileID: 11400000, guid: e073b1028226e1bb0ae39c093dee0270, type: 2}
+  - {fileID: 11400000, guid: ca3ca85d9d5da0187889d0c93a7c0cc0, type: 2}
+  - {fileID: 11400000, guid: 51d2b878c288046f7b354e3d36d56489, type: 2}
+  - {fileID: 11400000, guid: a15c0bd1ab3ca3ba89a5188b57ceab82, type: 2}
+  - {fileID: 11400000, guid: e77a58adadf94c186b641e80b00ad2be, type: 2}
+  - {fileID: 11400000, guid: 725222fcaff64b3e28cd62e0390fad28, type: 2}
+  - {fileID: 11400000, guid: 02725947edfaf84c7a9d5c316bdf3027, type: 2}
+  - {fileID: 11400000, guid: 8c8a552eb84f25c1583a2adaf94a86a9, type: 2}
+  - {fileID: 11400000, guid: d10d8eb7a55d0ca3b878d0fceb332152, type: 2}
+  - {fileID: 11400000, guid: b548c3e09d7aa7ec59b70282ffc0f68f, type: 2}
+  - {fileID: 11400000, guid: 360341e5c1c58ece39337a962a311af1, type: 2}
+  - {fileID: 11400000, guid: 40879a6f9781668739e766c1279311ff, type: 2}
+  - {fileID: 11400000, guid: 0e0626ef7a72d5efb96deedc5b39b0f9, type: 2}
+  - {fileID: 11400000, guid: 3503b37fb1866146caa5af9047b3a29e, type: 2}
+  - {fileID: 11400000, guid: 10a73d74cbd306369bbc714ec7b43310, type: 2}
+  - {fileID: 11400000, guid: 54127db4b24aae245b0152361415f440, type: 2}
+  - {fileID: 11400000, guid: a6d3e6ead4b9278b9b6b80ed20868281, type: 2}
+  - {fileID: 11400000, guid: b4e4060073e00df548bddeba3ae4e514, type: 2}
+  - {fileID: 11400000, guid: 03d002f5133674763ae22485592be83a, type: 2}
+  - {fileID: 11400000, guid: e80b0188e280ea513a4d24e5b9f8cdda, type: 2}
+  - {fileID: 11400000, guid: 538134656aa14b2808b737249ed6ce37, type: 2}
+  - {fileID: 11400000, guid: 16d944702e6c716b6a1ef680e61aea0c, type: 2}
+  - {fileID: 11400000, guid: 45fa9db14c2e49f25ab7e53ecb159527, type: 2}
+  - {fileID: 11400000, guid: 519c0b8efd54cb649ad639a716150fa4, type: 2}
+  - {fileID: 11400000, guid: 2b2b658e26b6ca68c967a4e337b25d85, type: 2}
+  - {fileID: 11400000, guid: f958867871582b15ea2eb9d70ff210ba, type: 2}
+  - {fileID: 11400000, guid: 034389efac34b91f8a37fb4a38733c22, type: 2}
+  - {fileID: 11400000, guid: 572dac685fb80af87be35d8ac9b55220, type: 2}
+  - {fileID: 11400000, guid: 1e00b05698dc5937ab2bd641aa622644, type: 2}
+  - {fileID: 11400000, guid: db5aec9213c1e6656993fb3387afe617, type: 2}
+  - {fileID: 11400000, guid: 911bcceecda005ae5b9943d293a2208b, type: 2}
+  - {fileID: 11400000, guid: 7b6a3aff5b6c6ccccbb9d77ebe42bc6f, type: 2}
+  - {fileID: 11400000, guid: 29f40d67c90c38a46864a9c7e17994ac, type: 2}
+  - {fileID: 11400000, guid: 29efbccc7164765d7a467b42b36511a7, type: 2}
+  - {fileID: 11400000, guid: ee404183ab44ea1a99b150e0a56ad039, type: 2}
+  - {fileID: 11400000, guid: 7d07a0d8366e786309d32bbdab660d7b, type: 2}
+  - {fileID: 11400000, guid: 01b10b5ace32acdccab0eabd1877d897, type: 2}
+  - {fileID: 11400000, guid: fdd55c6cb05d629de83633026ff576c3, type: 2}
+  - {fileID: 11400000, guid: 0194f50833d3c4384adaf438392d4ca4, type: 2}
+  - {fileID: 11400000, guid: 9d8e6ed5e99916ce2bda19d9a8947e8b, type: 2}
+  - {fileID: 11400000, guid: e570351b570f47251a728374e7376fcb, type: 2}
+  - {fileID: 11400000, guid: 3b20dfcd616954ad5b6d1e1aba381d62, type: 2}
+  - {fileID: 11400000, guid: ddf2da942c93622e5abf603d05175cb4, type: 2}
+  - {fileID: 11400000, guid: 05e5bc2e18519d04a851ed130af4d8c8, type: 2}
+  - {fileID: 11400000, guid: 73fd6acc4cc49bfc8b1680fdd1531b1a, type: 2}
+  - {fileID: 11400000, guid: bddaf241ef3f8e032bcc86cbf83acc7b, type: 2}
+  - {fileID: 11400000, guid: 4fb22d98682cf3d07bb9390096133fae, type: 2}
+  - {fileID: 11400000, guid: f1dd3b9f1895bdb1fa5496d5d2837e09, type: 2}
+  - {fileID: 11400000, guid: d68a35c6522da0c9eadf0d3be6bb89f4, type: 2}
+  - {fileID: 11400000, guid: 1c002ab955aad79c2be774bf401d9635, type: 2}
+  - {fileID: 11400000, guid: bec194b810f0be5b2839305c72b45088, type: 2}
+  - {fileID: 11400000, guid: 84df4b160326d5772b07fab3da17c0ad, type: 2}
+  - {fileID: 11400000, guid: cf0c4c9db6499a60ebe6a43003c594e0, type: 2}
+  - {fileID: 11400000, guid: 5310c316c0b0d3c2a8362f0f3edf8e16, type: 2}
+  - {fileID: 11400000, guid: d527be7fa650aeadbacf37190e87dbc0, type: 2}
+  - {fileID: 11400000, guid: ff839379c06a52a319f2591fa2a23c82, type: 2}
+  - {fileID: 11400000, guid: 1a707b987a3f98b948492f707909466a, type: 2}
+  - {fileID: 11400000, guid: 1ace02920ca7ff5299613209d34641d6, type: 2}
+  - {fileID: 11400000, guid: 8de2b342629fcdd3a8b8595b7629fe28, type: 2}
+  - {fileID: 11400000, guid: 01fb390cbef1a8c758d7537f3b2e8815, type: 2}
+  - {fileID: 11400000, guid: e7a9828c0c3f38eaa9b60eaf95533f6f, type: 2}
+  - {fileID: 11400000, guid: f7acdcb937c418c10a04f46caeebbf96, type: 2}
+  - {fileID: 11400000, guid: f518525887a1e842faaaffa130f2553c, type: 2}
+  - {fileID: 11400000, guid: f0f651be4916ebb8b9e9f858aea5c80f, type: 2}
+  - {fileID: 11400000, guid: 50d0ec60783a1b14b9517ae20d89d7b9, type: 2}
+  - {fileID: 11400000, guid: 1a728023c329e48edb9367f24624b845, type: 2}
+  - {fileID: 11400000, guid: 0240a0bbebe74964ca8530ad680ce9b8, type: 2}
+  - {fileID: 11400000, guid: 7b29808a1a61baeb385cbf37e9bf165b, type: 2}
+  - {fileID: 11400000, guid: ed3e81d5e3ffd50539846a4ffe7b8c13, type: 2}
+  - {fileID: 11400000, guid: da86df6a3728de50c98b1f62d257d38a, type: 2}
+  - {fileID: 11400000, guid: 961b2ee7a4e683fa6905910d5d9b1c3f, type: 2}
+  - {fileID: 11400000, guid: bfd2f737d984ab919b7628c720350f67, type: 2}
+  - {fileID: 11400000, guid: fc99b0aca178af362975c34bf9c3772f, type: 2}
+  - {fileID: 11400000, guid: 3301d0150f9dbd7a68e8d5215192b92c, type: 2}
+  - {fileID: 11400000, guid: 7044c4704e5a1871ca69d5298f060b2e, type: 2}
+  - {fileID: 11400000, guid: 9a5e0eddaa7129beabd9f0a947516b47, type: 2}
+  - {fileID: 11400000, guid: cdac1c2220a9e0914b5ab0c4762dc232, type: 2}
+  - {fileID: 11400000, guid: a0f93818e5de8c407848de42df655070, type: 2}
+  - {fileID: 11400000, guid: a28ca088552a97913a0dd70b6dd3a229, type: 2}
+  - {fileID: 11400000, guid: 339ae9d7f5722ff969b171a23962e3d7, type: 2}
+  - {fileID: 11400000, guid: 347bff155e3a0fd768d200ed6f77f53f, type: 2}
+  - {fileID: 11400000, guid: e46d6a62186ea4759b8b06de6c79c15c, type: 2}
+  - {fileID: 11400000, guid: 64792521031a74c03bb2d13bf9dc723c, type: 2}
+  - {fileID: 11400000, guid: a6bbf29d0358f7b6aaec92fd90aa115c, type: 2}
+  - {fileID: 11400000, guid: beaf97cb1bbfd046791345088dfa5ab0, type: 2}
+  - {fileID: 11400000, guid: 0bc78d882cf3b38938b35e68cd839bcb, type: 2}
+  - {fileID: 11400000, guid: 89e0d36e4b34f5bebbb69c4bf8a47070, type: 2}
+  - {fileID: 11400000, guid: 53297ef741a008de5ae470efa168863b, type: 2}
+  - {fileID: 11400000, guid: 09a156dc6b4883378baa949269196db3, type: 2}
+  - {fileID: 11400000, guid: 79dc3f5f4e9368db2a2e467f406c3e30, type: 2}
+  - {fileID: 11400000, guid: bb0bc9830a4076a6fb8a69017201c36d, type: 2}
+  - {fileID: 11400000, guid: 275def231b639ea7d96e465a9a4c8121, type: 2}
+  - {fileID: 11400000, guid: c5dc865af59db032c886d52d4c843269, type: 2}
+  - {fileID: 11400000, guid: fa9ce4f4e2520019185b9292e117fff1, type: 2}
+  - {fileID: 11400000, guid: cafc39ea9d2fdeeb4b0ae6df1d23c073, type: 2}
+  - {fileID: 11400000, guid: 0db9c682cc1ebaeca90e7cc29e5f17ce, type: 2}
+  - {fileID: 11400000, guid: 4212a24db89b36de4a2f913afe9e3766, type: 2}
+  - {fileID: 11400000, guid: 0321637635d7a10d89225389a6a1af20, type: 2}
+  - {fileID: 11400000, guid: e19e2cfeec233c854823c755690ddfc2, type: 2}
+  - {fileID: 11400000, guid: bb368ea777a21f05b923ba7e9352a594, type: 2}
+  - {fileID: 11400000, guid: 7aaa2b12e94cc9da4bca327cbc01c5b7, type: 2}
+  - {fileID: 11400000, guid: 7d6f4e0479001fb1f985b523ed48989f, type: 2}
+  - {fileID: 11400000, guid: c813d6263f97ff230b493bd202a1f985, type: 2}
+  - {fileID: 11400000, guid: c4c1486720b000bd09143b69d091086d, type: 2}
+  - {fileID: 11400000, guid: f2c57bbc63b49bc4e9b50b8f47b1af30, type: 2}
+  - {fileID: 11400000, guid: 627a17b270a4c2acaa1cbfe7c6498470, type: 2}
+  - {fileID: 11400000, guid: 6e6c8f2385e72e19490225b0b2d5d71b, type: 2}
+  - {fileID: 11400000, guid: baf3633f26bedca36acdcc260cb2ec14, type: 2}
+  - {fileID: 11400000, guid: 60ad5ee108225f22cb2de45979475ca2, type: 2}
+  - {fileID: 11400000, guid: b6d4743eac6497890a97564921757ab8, type: 2}
+  - {fileID: 11400000, guid: 53f57857697875400ab56551c47c87d8, type: 2}
+  - {fileID: 11400000, guid: 40cfc7e3e959de866bc014fce4eb5124, type: 2}
+  - {fileID: 11400000, guid: aceefc973998d66faa8c912372828156, type: 2}
+  - {fileID: 11400000, guid: 8ef557f6b991e5ee195cd4118d2e9f22, type: 2}
+  - {fileID: 11400000, guid: a62fb38776de149ed8d533f188390e45, type: 2}
+  - {fileID: 11400000, guid: 75268969d050d4dbba53cc080b735386, type: 2}
+  - {fileID: 11400000, guid: 3d07a44f8081edb37be4a7ad8cfd3480, type: 2}
+  - {fileID: 11400000, guid: b83157aa0ce10a6198b71126965b86c7, type: 2}
+  - {fileID: 11400000, guid: e5b953ee119a18adabb4b26b826c91fa, type: 2}
+  - {fileID: 11400000, guid: 70211cdc1576fcf30b2f29420a1f26bc, type: 2}
+  - {fileID: 11400000, guid: 3c88fc6ce68b2fbb2a153a313211689d, type: 2}
+  - {fileID: 11400000, guid: be89bd37aebdc5971a9818e9fabf9f32, type: 2}
+  - {fileID: 11400000, guid: a85911043fca765e285b1ac19c0af7c8, type: 2}
+  - {fileID: 11400000, guid: c0c6486cf5817eacea2febdebbec2bd5, type: 2}
+  - {fileID: 11400000, guid: f6a1f8839d028e88c85e257cf986ba6a, type: 2}
+  - {fileID: 11400000, guid: 3fd225a6e3ff19bf5aadb976b0b5cf59, type: 2}
+  - {fileID: 11400000, guid: 5289a6084c6d0d807bbfa0603674133b, type: 2}
+  - {fileID: 11400000, guid: 55613769972d99d43becfde1bb48c7f9, type: 2}
   - {fileID: 11400000, guid: 8c36a2070b55dad1ca230a43883083ef, type: 2}
   - {fileID: 11400000, guid: f006686d97b53bcf0b2fecb7b4fff41b, type: 2}
   - {fileID: 11400000, guid: 7be728870cf308c0fae61337833f25cc, type: 2}
@@ -101,3 +342,326 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 92810b0d7b4aa0c37965ff193f04e00e, type: 2}
   - {fileID: 11400000, guid: dd787b11ecb616caa97a55d2a85b1b16, type: 2}
   - {fileID: 11400000, guid: 794ccf440fc87dd14912d7a913f8e3fd, type: 2}
+  recipes:
+  - id: potion_small
+    inputIds:
+    - herb
+    inputCounts: 02000000
+    output: potion_small
+    outputCount: 1
+    goldCost: 0
+  - id: potion_large
+    inputIds:
+    - potion_small
+    - herb
+    inputCounts: 0200000003000000
+    output: potion_large
+    outputCount: 1
+    goldCost: 0
+  - id: mystery_box
+    inputIds:
+    - scrap_metal
+    inputCounts: 0c000000
+    output: mystery_box
+    outputCount: 1
+    goldCost: 200
+  - id: gem_ruby_2
+    inputIds:
+    - gem_ruby_1
+    inputCounts: 03000000
+    output: gem_ruby_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_ruby_3
+    inputIds:
+    - gem_ruby_2
+    inputCounts: 03000000
+    output: gem_ruby_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_ruby_4
+    inputIds:
+    - gem_ruby_3
+    inputCounts: 03000000
+    output: gem_ruby_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_emerald_2
+    inputIds:
+    - gem_emerald_1
+    inputCounts: 03000000
+    output: gem_emerald_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_emerald_3
+    inputIds:
+    - gem_emerald_2
+    inputCounts: 03000000
+    output: gem_emerald_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_emerald_4
+    inputIds:
+    - gem_emerald_3
+    inputCounts: 03000000
+    output: gem_emerald_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_sapphire_2
+    inputIds:
+    - gem_sapphire_1
+    inputCounts: 03000000
+    output: gem_sapphire_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_sapphire_3
+    inputIds:
+    - gem_sapphire_2
+    inputCounts: 03000000
+    output: gem_sapphire_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_sapphire_4
+    inputIds:
+    - gem_sapphire_3
+    inputCounts: 03000000
+    output: gem_sapphire_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_diamond_2
+    inputIds:
+    - gem_diamond_1
+    inputCounts: 03000000
+    output: gem_diamond_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_diamond_3
+    inputIds:
+    - gem_diamond_2
+    inputCounts: 03000000
+    output: gem_diamond_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_diamond_4
+    inputIds:
+    - gem_diamond_3
+    inputCounts: 03000000
+    output: gem_diamond_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_topaz_2
+    inputIds:
+    - gem_topaz_1
+    inputCounts: 03000000
+    output: gem_topaz_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_topaz_3
+    inputIds:
+    - gem_topaz_2
+    inputCounts: 03000000
+    output: gem_topaz_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_topaz_4
+    inputIds:
+    - gem_topaz_3
+    inputCounts: 03000000
+    output: gem_topaz_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_onyx_2
+    inputIds:
+    - gem_onyx_1
+    inputCounts: 03000000
+    output: gem_onyx_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_onyx_3
+    inputIds:
+    - gem_onyx_2
+    inputCounts: 03000000
+    output: gem_onyx_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_onyx_4
+    inputIds:
+    - gem_onyx_3
+    inputCounts: 03000000
+    output: gem_onyx_4
+    outputCount: 1
+    goldCost: 900
+  - id: gem_bloodstone_2
+    inputIds:
+    - gem_bloodstone_1
+    inputCounts: 03000000
+    output: gem_bloodstone_2
+    outputCount: 1
+    goldCost: 100
+  - id: gem_bloodstone_3
+    inputIds:
+    - gem_bloodstone_2
+    inputCounts: 03000000
+    output: gem_bloodstone_3
+    outputCount: 1
+    goldCost: 400
+  - id: gem_bloodstone_4
+    inputIds:
+    - gem_bloodstone_3
+    inputCounts: 03000000
+    output: gem_bloodstone_4
+    outputCount: 1
+    goldCost: 900
+  - id: scroll_kindling
+    inputIds:
+    - mat_r1_ashfall
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_kindling
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_rime
+    inputIds:
+    - mat_r4_frostveil
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_rime
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_gale
+    inputIds:
+    - mat_r3_dunes
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_gale
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_bedrock
+    inputIds:
+    - mat_r2_verdant
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_bedrock
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_storm
+    inputIds:
+    - mat_r6_fracture
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_storm
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_umbra
+    inputIds:
+    - mat_r5_archive
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_umbra
+    outputCount: 1
+    goldCost: 600
+  - id: scroll_dawn
+    inputIds:
+    - mat_s3_choir
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_dawn
+    outputCount: 1
+    goldCost: 600
+  - id: scroll_unwritten
+    inputIds:
+    - mat_z1_seat
+    - scrap_metal
+    inputCounts: 1400000004000000
+    output: scroll_unwritten
+    outputCount: 1
+    goldCost: 900
+  - id: scroll_warding
+    inputIds:
+    - mat_r2_verdant
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_warding
+    outputCount: 1
+    goldCost: 300
+  - id: scroll_vigor
+    inputIds:
+    - mat_r1_ashfall
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_vigor
+    outputCount: 1
+    goldCost: 300
+  - id: scroll_swiftness
+    inputIds:
+    - mat_r3_dunes
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_swiftness
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_focus
+    inputIds:
+    - mat_r4_frostveil
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_focus
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_fury
+    inputIds:
+    - mat_k1_cinder
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_fury
+    outputCount: 1
+    goldCost: 450
+  - id: scroll_keen_eye
+    inputIds:
+    - mat_k2_hollow_moon
+    - scrap_metal
+    inputCounts: 0600000004000000
+    output: scroll_keen_eye
+    outputCount: 1
+    goldCost: 600
+  - id: phoenix_tonic
+    inputIds:
+    - potion_royal
+    - mat_r1_ashfall
+    inputCounts: 0200000003000000
+    output: phoenix_tonic
+    outputCount: 1
+    goldCost: 300
+  - id: elixir_twofold
+    inputIds:
+    - potion_royal
+    - mana_draught_greater
+    inputCounts: 0100000002000000
+    output: elixir_twofold
+    outputCount: 1
+    goldCost: 120
+  stock:
+  - itemId: potion_small
+    price: 20
+  - itemId: potion_large
+    price: 80
+  - itemId: bread
+    price: 5
+  - itemId: codex_identify_scroll
+    price: 60
+  - itemId: mana_draught
+    price: 30
+  - itemId: mana_draught_greater
+    price: 110
+  - itemId: potion_royal
+    price: 400
+  - itemId: canteen_stew
+    price: 12
+  - itemId: gem_ruby_1
+    price: 150
+  - itemId: gem_diamond_1
+    price: 150
+  - itemId: scroll_warding
+    price: 900
+  - itemId: scroll_kindling
+    price: 1200

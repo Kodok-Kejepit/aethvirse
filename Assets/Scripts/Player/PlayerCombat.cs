@@ -255,7 +255,9 @@ namespace Aethvirse.Player
             Skills.SkillRuneData rune = RuneOf(skill);
             multiplier *= Skills.RuneMath.DamageFactor(rune, target.Health.Ratio);
             forceCrit |= _rng.NextDouble() < Skills.RuneMath.CritChance(rune);
-            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, Skills.RuneMath.Element(rune, a.element), _rng,
+            ElementType element = Skills.RuneMath.Element(rune, a.element);
+            if (skill == null && element == ElementType.Physical) element = WeaponElement;
+            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, element, _rng,
                 forceCrit: forceCrit, bonusMult: bonus);
             info.isHeavy = a.isHeavy;
             info.stagger = (a.stagger + extraStagger) * Skills.RuneMath.StaggerFactor(rune);
@@ -296,6 +298,9 @@ namespace Aethvirse.Player
             };
             if (target.Receive(info)) DamageNumbers.Spawn(target.transform.position + Vector3.up * 2.1f, info.amount, info.isCrit, info.element, false);
         }
+
+        /// <summary>A weapon enchant's element: normal (physical) attacks take it.</summary>
+        public ElementType WeaponElement { get; set; } = ElementType.Physical;
 
         void OnLanded(Damageable target, DamageInfo info)
         {

@@ -176,6 +176,8 @@ public static class RegionBuilder
         catalog.enemies.Add(Ranged(E("choir_lancer", "Choir Lancer", new Color(0.95f, 0.9f, 0.6f), 1.1f, 1.2f, 2f, 4.5f, 0.75f, 1.3f, 6f, 0f, 13f, 35f), 3, 18f, 12f, 9f, new Color(1f, 0.95f, 0.7f)));
         catalog.enemies.Add(E("halo_warden", "Halo Warden", new Color(0.8f, 0.75f, 0.5f), 1.7f, 2.6f, 2.1f, 3f, 0.9f, 1.5f, 12f, 5f, 2.8f, 95f));
         catalog.enemies.Add(E("the_god", "[ ??? ]", new Color(1f, 0.97f, 0.88f), 2f, 4f, 2.4f, 5f, 0.6f, 0.9f, 15f, 9f, 3.4f, 300f));
+        // Mimics: chests with teeth (Items.Chest).
+        catalog.enemies.Add(E("mimic", "Mimic", new Color(0.55f, 0.4f, 0.2f), 1.1f, 2.2f, 1.6f, 5.5f, 0.45f, 0.9f, 6f, 2f, 2.2f, 60f));
         // Allies in the war (they become minions on the hero's side).
         catalog.enemies.Add(E("vanguard", "Vanguard", new Color(0.3f, 0.55f, 0.9f), 1.1f, 1.5f, 1.4f, 6f, 0.5f, 0.9f, 6f, 0f, 2.2f, 50f));
         EditorUtility.SetDirty(catalog);
@@ -310,6 +312,21 @@ public static class RegionBuilder
             so.FindProperty("count").intValue = 3;
             so.FindProperty("level").intValue = region.LevelAt(t * 0.6f);
             so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // Chests (one in five is a mimic, decided per day).
+        Material chestMat = PlaygroundBuilder.MakeMaterial("Chest", new Color(0.55f, 0.4f, 0.2f));
+        Vector3[] chestSpots = { new Vector3(-62f, 0f, -40f), new Vector3(66f, 0f, 22f), new Vector3(-100f, 0f, 60f), new Vector3(105f, 0f, -60f), new Vector3(15f, 0f, 95f), new Vector3(-30f, 0f, -85f) };
+        for (int c = 0; c < chestSpots.Length; c++)
+        {
+            GameObject chest = PlaygroundBuilder.Box(world, $"Chest_{c}", chestSpots[c] + Vector3.up * 0.45f, new Vector3(1.2f, 0.9f, 0.8f), chestMat);
+            chest.isStatic = false;
+            chest.AddComponent<Interactable>();
+            var ch = chest.AddComponent<Aethvirse.Items.Chest>();
+            var cso = new SerializedObject(ch);
+            cso.FindProperty("chestId").stringValue = $"{d.id}_{c}";
+            cso.FindProperty("level").intValue = region.LevelAt(0.2f + 0.12f * c);
+            cso.ApplyModifiedPropertiesWithoutUndo();
         }
 
         // Roads: back (south) and forward (north); Ashfall's back road is the academy.

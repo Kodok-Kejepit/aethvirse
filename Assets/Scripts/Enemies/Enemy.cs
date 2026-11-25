@@ -456,6 +456,10 @@ namespace Aethvirse.Enemies
             if (inv == null || !data.dropsLoot || _noLoot) return;
             Vector3 at = transform.position;
             if (_gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = _gold });
+            // Each region's own crafting material.
+            World.RegionData region = World.RegionController.Current;
+            if (region != null && _rng.NextDouble() < 0.12 && inv.Database.Get("mat_" + region.id) != null)
+                Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "mat_" + region.id, count = 1 });
             foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(Level, Elite != null && data.tier == Stats.EnemyTier.Normal ? Stats.EnemyTier.Elite : data.tier, inv.Database, inv.Rules, _rng))
                 Items.WorldPickup.Spawn(at, drop);
         }

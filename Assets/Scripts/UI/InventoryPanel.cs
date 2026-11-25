@@ -13,7 +13,7 @@ namespace Aethvirse.UI
     /// </summary>
     public sealed class InventoryPanel : MonoBehaviour
     {
-        enum Tab { Bag, Shop, CodexShop, Craft }
+        enum Tab { Bag, Shop, CodexShop, Craft, Stash }
 
         static InventoryPanel _instance;
         bool _open;
@@ -29,6 +29,15 @@ namespace Aethvirse.UI
         public static void Toggle() { if (_instance != null) _instance.SetOpen(!_instance._open, false); }
         /// <summary>The Quartermaster opens the window on its Shop tab.</summary>
         public static void OpenShop() { if (_instance != null) _instance.SetOpen(true, true); }
+        /// <summary>Save crystals open the vault.</summary>
+        public static void OpenStash()
+        {
+            if (_instance == null) return;
+            _instance.SetOpen(true, false);
+            _instance._stashAvailable = true;
+            _instance._tab = Tab.Stash;
+        }
+        bool _stashAvailable;
 
         void Awake() => _instance = this;
 
@@ -41,6 +50,7 @@ namespace Aethvirse.UI
         void SetOpen(bool open, bool shop)
         {
             _shopAvailable = shop;
+            _stashAvailable = false;
             _tab = shop ? Tab.Shop : Tab.Bag;
             _status = "";
             if (open == _open) return;
@@ -84,6 +94,7 @@ namespace Aethvirse.UI
             if (_shopAvailable) TabButton(Tab.Shop, Core.Loc.T("shop"), s);
             TabButton(Tab.CodexShop, Core.Loc.T("codex_shop_tab"), s);
             TabButton(Tab.Craft, Core.Loc.T("craft"), s);
+            if (_stashAvailable) TabButton(Tab.Stash, Core.Loc.T("stash"), s);
             GUILayout.FlexibleSpace();
             GUILayout.Label($"{Core.Loc.T("gold")} {inv.Gold}", _title);
             if (GUILayout.Button(Core.Loc.T("close") + " (I)", _button, GUILayout.Width(150 * s), GUILayout.Height(44 * s))) SetOpen(false, false);
@@ -97,6 +108,7 @@ namespace Aethvirse.UI
                 case Tab.Shop: DrawShop(inv, s); break;
                 case Tab.CodexShop: DrawCodexShop(inv, s); break;
                 case Tab.Craft: DrawCraft(inv, s); break;
+                case Tab.Stash: DrawStash(inv, s, w); break;
             }
             GUILayout.EndArea();
         }
@@ -124,7 +136,7 @@ namespace Aethvirse.UI
                 ItemRow(inv, e, $"[{slot}] ", s);
             }
             GUILayout.Space(8 * s);
-            GUILayout.Label($"{Core.Loc.T("bag")} {bag.stacks.Count}/{Inventory.Capacity}", _title);
+            GUILayout.Label($"{Core.Loc.T("bag")} {bag.stacks.Count}/{bag.Cap}", _title);
             _listScroll = GUILayout.BeginScrollView(_listScroll);
             foreach (ItemStack st in new List<ItemStack>(SortedBag(inv))) ItemRow(inv, st, "", s);
             GUILayout.EndScrollView();
@@ -179,12 +191,22 @@ namespace Aethvirse.UI
                 if (item.slot == EquipSlot.Weapon) GUILayout.Label($"ATK {ItemStats.Attack(st, item, level, inv.Rules):0}", _text);
                 float def = ItemStats.Defense(st, item, inv.Rules);
                 if (def > 0.01f) GUILayout.Label($"DEF {def:0}", _text);
-                foreach (string key in new[] { StatKeys.Str, StatKeys.Agi, StatKeys.Int, StatKeys.Vit, StatKeys.Sen, StatKeys.Crit, StatKeys.Lifesteal })
+                foreach (string key in StatKeys.All)
                 {
-                    float v = ItemStats.Bonus(st, item, key, inv.Rules);
+                    float v = ItemStats.Bonus(st, item, key, inv.Rules, inv.Database);
                     if (Mathf.Abs(v) < 0.0001f) continue;
-                    GUILayout.Label(key == StatKeys.Crit || key == StatKeys.Lifesteal ? $"{key.ToUpperInvariant()} +{v * 100f:0.0}%" : $"{key.ToUpperInvariant()} +{v:0}", _text);
+                    GUILayout.Label(StatKeys.IsPercent(key) ? $"{StatLabel(key)} +{v * 100f:0.0}%" : $"{StatLabel(key)} +{v:0}", _text);
                 }
+                if (st.sockets > 0)
+                {
+                    var gems = new List<string>();
+                    foreach (string g in st.gems) gems.Add(inv.Database.Get(g)?.displayName ?? g);
+                    for (int k = st.gems.Count; k < st.sockets; k++) gems.Add("◯");
+                    GUILayout.Label($"{Core.Loc.T("sockets")}: {string.Join("  ", gems)}", _text);
+                }
+                ItemData ench = inv.Database.Get(st.enchant);
+                if (ench != null) { GUI.color = new Color(0.7f, 0.9f, 1f); GUILayout.Label($"{Core.Loc.T("enchant")}: {ench.displayName}", _text); GUI.color = Color.white; }
+                DrawSetInfo(inv, item);
                 if (item.healAmount > 0) GUILayout.Label($"{Core.Loc.T("heals")} {item.healAmount} HP", _text);
                 if (item.evolveKills > 0) GUILayout.Label($"Kills {st.kills} / ???", _text);
                 if (item.cursed) GUILayout.Label(Core.Loc.T("cursed"), _text);
@@ -231,6 +253,97 @@ namespace Aethvirse.UI
                     if (r == UpgradeResult.Success || r == UpgradeResult.FailedDowngraded) PlayerStats.Current?.Recompute(false);
                 }
             }
+            GUILayout.EndHorizontal();
+            if (item.IsEquipment && st.identified) DrawCrafting(inv, st, item, s);
+        }
+
+        static string StatLabel(string key) => key switch
+        {
+            StatKeys.AtkPct => "ATK", StatKeys.DefPct => "DEF", StatKeys.HpPct => "HP", StatKeys.Cdr => "Cooldown −",
+            StatKeys.Aspd => "Attack speed", StatKeys.Mspd => "Move speed", StatKeys.CritDmg => "Crit damage",
+            _ => key.ToUpperInvariant(),
+        };
+
+        void DrawSetInfo(PlayerInventory inv, ItemData item)
+        {
+            GearSet set = string.IsNullOrEmpty(item.setId) || GearSetDatabase.Instance == null ? null : GearSetDatabase.Instance.Get(item.setId);
+            if (set == null) return;
+            inv.SetCounts().TryGetValue(set.id, out int worn);
+            GUI.color = new Color(0.55f, 1f, 0.6f);
+            GUILayout.Label($"{set.displayName} ({worn}/6)", _title);
+            foreach (SetTier t in set.tiers)
+            {
+                GUI.color = worn >= t.pieces ? new Color(0.55f, 1f, 0.6f) : new Color(1f, 1f, 1f, 0.45f);
+                GUILayout.Label($"  ({t.pieces}) {t.text}", _text);
+            }
+            GUI.color = Color.white;
+            GUILayout.Label(set.lore, _text);
+        }
+
+        /// <summary>Gems, enchant scrolls and reforging for the selected gear.</summary>
+        void DrawCrafting(PlayerInventory inv, ItemStack st, ItemData item, float s)
+        {
+            Inventory bag = inv.Bag;
+            var seen = new HashSet<string>();
+            if (st.gems.Count < st.sockets)
+            {
+                foreach (ItemStack g in new List<ItemStack>(bag.stacks))
+                {
+                    ItemData gi = inv.Database.Get(g.itemId);
+                    if (gi == null || gi.kind != ItemKind.Gem || !seen.Add(gi.id)) continue;
+                    if (Btn($"{Core.Loc.T("socket")}: {gi.displayName}", s) && ItemActions.SocketGem(bag, st, gi.id))
+                    {
+                        _status = $"{gi.displayName} → {bag.DisplayName(st)}";
+                        PlayerStats.Current?.Recompute(false);
+                    }
+                }
+            }
+            if (st.gems.Count > 0 && Btn($"{Core.Loc.T("unsocket")} ({ItemActions.UnsocketCost(st)}g)", s) && ItemActions.UnsocketAll(bag, st, inv))
+                PlayerStats.Current?.Recompute(false);
+            foreach (ItemStack sc in new List<ItemStack>(bag.stacks))
+            {
+                ItemData si = inv.Database.Get(sc.itemId);
+                if (si == null || si.kind != ItemKind.EnchantScroll || si.enchantWeapon != (item.slot == EquipSlot.Weapon) || !seen.Add(si.id)) continue;
+                if (Btn($"{Core.Loc.T("enchant")}: {si.displayName}", s) && ItemActions.Enchant(bag, st, item, si.id))
+                {
+                    _status = $"{bag.DisplayName(st)} — {si.displayName}";
+                    PlayerStats.Current?.Recompute(false);
+                }
+            }
+            if (st.rarity >= 0 && Btn($"{Core.Loc.T("reforge")} ({ItemActions.ReforgeCost(st)}g + 2 scrap)", s))
+            {
+                _status = ItemActions.Reforge(bag, st, inv.Rules, inv, inv.Rng) ? $"{Core.Loc.T("reforged")}: {bag.DisplayName(st)}" : "Not enough gold or scrap.";
+                PlayerStats.Current?.Recompute(false);
+            }
+        }
+
+        // --- Stash ----------------------------------------------------------------------------------
+
+        void DrawStash(PlayerInventory inv, float s, float w)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical(GUILayout.Width(w * 0.48f));
+            GUILayout.Label($"{Core.Loc.T("bag")} {inv.Bag.stacks.Count}/{inv.Bag.Cap}", _title);
+            _listScroll = GUILayout.BeginScrollView(_listScroll);
+            foreach (ItemStack st in new List<ItemStack>(inv.Bag.stacks))
+                if (GUILayout.Button(inv.Bag.DisplayName(st) + (st.count > 1 ? $"  ×{st.count}" : "") + "   →", _item, GUILayout.Height(38 * s)) && inv.Stash.AddStack(st))
+                {
+                    inv.Bag.stacks.Remove(st);
+                    inv.Bag.NotifyChanged();
+                }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+            GUILayout.Label($"{Core.Loc.T("stash")} {inv.Stash.stacks.Count}/{inv.Stash.Cap}", _title);
+            _detailScroll = GUILayout.BeginScrollView(_detailScroll);
+            foreach (ItemStack st in new List<ItemStack>(inv.Stash.stacks))
+                if (GUILayout.Button("←   " + inv.Bag.DisplayName(st) + (st.count > 1 ? $"  ×{st.count}" : ""), _item, GUILayout.Height(38 * s)) && inv.Bag.AddStack(st))
+                {
+                    inv.Stash.stacks.Remove(st);
+                    inv.Stash.NotifyChanged();
+                }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
             GUILayout.EndHorizontal();
         }
 

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a604c67bd78838c817015a9a64f52c, type: 3}
+  m_Name: tideglass_gauntlets
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Items.ItemData
+  id: tideglass_gauntlets
+  displayName: Tideglass Gauntlets
+  description: Salvaged from the drowned archive; it hums with old words.
+  kind: 4
+  rarity: 0
+  maxStack: 1
+  sellPrice: 52
+  canSell: 1
+  slot: 5
+  attack: 0
+  attackPerLevel: 0
+  defense: 0
+  defensePerLevel: 0.45
+  statBonuses:
+  - stat: sen
+    value: 5
+  isDropBase: 1
+  onHitPoison: 0
+  healAmount: 0
+  manaAmount: 0
+  identifiesItems: 0
+  opensMysteryBox: 0
+  unidentified: 0
+  unidentifiedName: ???
+  unidentifiedDescription: 
+  cursed: 0
+  curseHpFraction: 0
+  curseInterval: 5
+  evolveKills: 0
+  evolvesInto: 
+  hiddenEffect: 
+  setId: 
+  minLevel: 200
+  gemStat: 
+  gemValue: 0
+  enchantWeapon: 0
+  enchantElement: 0
+  teachesSkill: 
+  runeId: 

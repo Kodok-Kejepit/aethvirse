@@ -44,6 +44,8 @@ namespace Aethvirse.Core
             { "new_stock", ("(new stock every day)", "(stok baru tiap hari)") },
             { "shop", ("Shop", "Toko") }, { "codex_shop_tab", ("Codex Shop", "Toko Codex") },
             { "rune", ("Rune", "Rune") }, { "socket", ("Socket", "Pasang") }, { "unsocket", ("Remove", "Lepas") },
+            { "stash", ("Stash", "Gudang") }, { "sockets", ("Sockets", "Soket") }, { "enchant", ("Enchant", "Enchant") },
+            { "reforge", ("Reforge", "Tempa ulang") }, { "reforged", ("Reforged", "Ditempa ulang") },
             { "fast_travel", ("Fast Travel", "Perjalanan Cepat") },
             { "perfect_dodge", ("PERFECT DODGE", "HINDARAN SEMPURNA") },
         };
