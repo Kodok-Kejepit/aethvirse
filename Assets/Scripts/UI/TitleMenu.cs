@@ -55,7 +55,7 @@ namespace Aethvirse.UI
             if (_classPage)
             {
                 Stats.ClassRegistry reg = Stats.ClassRegistry.Instance;
-                GUI.Label(new Rect(0, y - 70 * s, Screen.width, 50 * s), "Choose your class", _sub);
+                GUI.Label(new Rect(0, y - 70 * s, Screen.width, 50 * s), Core.Loc.T("choose_class"), _sub);
                 if (reg != null)
                     foreach (Stats.ClassData c in reg.classes)
                     {
@@ -67,7 +67,7 @@ namespace Aethvirse.UI
                         }
                         y += h + gap;
                     }
-                if (GUI.Button(new Rect(x, y, w, h), "Back", _button)) _classPage = false;
+                if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("back"), _button)) _classPage = false;
                 return;
             }
             if (_loadPage)
@@ -79,21 +79,21 @@ namespace Aethvirse.UI
                     GUI.enabled = true;
                     y += h + gap;
                 }
-                if (GUI.Button(new Rect(x, y, w, h), "Back", _button)) _loadPage = false;
+                if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("back"), _button)) _loadPage = false;
                 return;
             }
             if (_latest >= 0)
             {
-                if (GUI.Button(new Rect(x, y, w, h), "Continue", _button)) SaveManager.Load(_latest);
+                if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("continue"), _button)) SaveManager.Load(_latest);
                 y += h + gap;
             }
-            if (GUI.Button(new Rect(x, y, w, h), "New Game", _button)) _classPage = true;
+            if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("new_game"), _button)) _classPage = true;
             y += h + gap;
             GUI.enabled = _latest >= 0;
-            if (GUI.Button(new Rect(x, y, w, h), "Load", _button)) _loadPage = true;
+            if (GUI.Button(new Rect(x, y, w, h), Core.Loc.T("load"), _button)) _loadPage = true;
             GUI.enabled = true;
             y += h + gap;
-            if (!Application.isMobilePlatform && GUI.Button(new Rect(x, y, w, h), "Quit", _button)) Application.Quit();
+            if (!Application.isMobilePlatform && GUI.Button(new Rect(x, y, w, h), Core.Loc.T("quit"), _button)) Application.Quit();
         }
     }
 }

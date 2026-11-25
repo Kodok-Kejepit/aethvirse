@@ -19,6 +19,9 @@ namespace Aethvirse.Tests
             GameSettings.Language = "en";
             Assert.That(Loc.T("resume"), Is.EqualTo("Resume"));
             Assert.That(Loc.T("no_such_key"), Is.EqualTo("no_such_key"));
+            GameSettings.Language = "id";
+            Assert.That(Loc.T("journal"), Is.EqualTo("Jurnal Misteri"));
+            Assert.That(Loc.T("fast_travel"), Is.EqualTo("Perjalanan Cepat"));
         }
     }
 }

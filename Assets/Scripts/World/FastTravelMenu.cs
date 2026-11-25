@@ -52,9 +52,9 @@ namespace Aethvirse.World
             GUI.color = Color.white;
             GUILayout.BeginArea(new Rect(area.x + 20 * s, area.y + 14 * s, w - 40 * s, h - 28 * s));
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Fast Travel", _title);
+            GUILayout.Label(Core.Loc.T("fast_travel"), _title);
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Close", _button, GUILayout.Width(140 * s), GUILayout.Height(44 * s))) Close();
+            if (GUILayout.Button(Core.Loc.T("close"), _button, GUILayout.Width(140 * s), GUILayout.Height(44 * s))) Close();
             GUILayout.EndHorizontal();
             _scroll = GUILayout.BeginScrollView(_scroll);
             GameSession session = GameSession.Instance;

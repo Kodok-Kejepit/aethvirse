@@ -64,7 +64,7 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - **Settings** (Pause → Settings; saved): camera sensitivity, invert Y, camera distance, volume, graphics preset
   Low / Medium / High / Ultra (quality level, shadow distance, LOD bias), FPS limit (VSync / 30 / 60 / 120),
   language English / Bahasa Indonesia.
-- **Localization** table (EN / ID) used by the menus; other UI strings move into it with the Phase 2 UI.
+- **Localization** table (EN / ID): menus, title, status, journal, bag, shops, fast travel and HUD callouts; item, quest and dialog text stay English until the Phase 2 UI.
 - **Placeholder sound** (procedural): swings, hits, dodges, kills, pickups, level-up chime, the Codex ding.
 
 ## P1-12 — Endgame of the first world (branch `p1-12-endgame`)
