@@ -142,6 +142,7 @@ namespace Aethvirse.UI
 
         void OnGUI()
         {
+            GUI.depth = -10;
             Transform p = PlayerTarget.Current;
             if (!_ready || p == null) return;
             if (Core.StatusPanel.IsOpen || InventoryPanel.IsOpen || PauseMenu.IsOpen || Dialog.DialogBox.IsOpen) return;
@@ -164,7 +165,8 @@ namespace Aethvirse.UI
         void DrawMini(Transform p, float s)
         {
             float size = 220 * s;
-            var r = new Rect(20 * s, 132 * s, size, size);
+            // Under the debug panel when it is shown (fixed 136 px tall), else near the top.
+            var r = new Rect(20 * s, Core.DebugOverlay.Shown ? 150f : 24 * s, size, size);
             GUI.color = new Color(0f, 0f, 0f, 0.55f);
             GUI.DrawTexture(new Rect(r.x - 3, r.y - 3, r.width + 6, r.height + 6), Texture2D.whiteTexture);
             GUI.color = Color.white;

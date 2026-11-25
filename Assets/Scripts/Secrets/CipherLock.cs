@@ -75,6 +75,7 @@ namespace Aethvirse.Secrets
 
         void OnGUI()
         {
+            GUI.depth = -10;
             if (_open != this) return;
             float s = Screen.height / 1080f;
             _title ??= new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true };

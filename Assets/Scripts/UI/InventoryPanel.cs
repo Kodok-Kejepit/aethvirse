@@ -70,6 +70,7 @@ namespace Aethvirse.UI
 
         void OnGUI()
         {
+            GUI.depth = -10;
             PlayerInventory inv = PlayerInventory.Current;
             if (!_open || inv == null) return;
             float s = Screen.height / 1080f;

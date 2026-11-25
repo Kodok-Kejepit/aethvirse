@@ -271,8 +271,13 @@ namespace Aethvirse.Core
             GUI.color = fill;
             GUI.DrawTexture(new Rect(r.x + 2, r.y + 2, (r.width - 4) * Mathf.Clamp01(ratio), r.height - 4), Texture2D.whiteTexture);
             GUI.color = Color.white;
-            if (label != null) GUI.Label(new Rect(r.x + 8, r.y, r.width, r.height), label, _small);
+            if (label == null) return;
+            _bar ??= new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleLeft, padding = new RectOffset(0, 0, 0, 0), clipping = TextClipping.Overflow, normal = { textColor = Color.white } };
+            _bar.fontSize = Mathf.Max(10, Mathf.RoundToInt(Mathf.Min(_small.fontSize, r.height * 0.82f)));
+            GUI.Label(new Rect(r.x + 8, r.y, r.width - 8, r.height), label, _bar);
         }
+
+        GUIStyle _bar;
 
     }
 }

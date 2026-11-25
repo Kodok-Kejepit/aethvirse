@@ -37,6 +37,7 @@ namespace Aethvirse.World
 
         void OnGUI()
         {
+            GUI.depth = -10;
             if (!_open) return;
             WorldAtlas atlas = WorldAtlas.Instance;
             if (atlas == null) { Close(); return; }
