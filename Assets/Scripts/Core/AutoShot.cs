@@ -77,6 +77,7 @@ namespace Aethvirse.Core
             // Open every world (the F11 test cheat) and go to Ashfall.
             WorldFlags f = GameSession.Instance.Flags;
             foreach (RegionData r in WorldAtlas.Instance.AllRegions()) f.SetFlag(Secrets.SecretDatabase.PageFullFlag(r.id));
+            GameSession.Instance.AcademyPoints = 100000;
             Save.SceneTravel.Go("R1_Ashfall", new Vector3(0f, 0.2f, -100f));
             yield return new WaitForSecondsRealtime(6f);
             yield return Shot("06_ashfall");
