@@ -267,6 +267,8 @@ public static class RegionBuilder
     static void BuildScene(Def d, RegionData region, int index)
     {
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        // A new scene unloads loose objects: reload the region from disk, or the scene would save an empty reference.
+        region = AssetDatabase.LoadAssetAtPath<RegionData>($"{RegionDir}/{d.id}.asset");
         var rng = new System.Random(index * 9973 + 17);
         Material ground = PlaygroundBuilder.MakeMaterial($"Ground_{d.id}", d.palette);
         Material wall = PlaygroundBuilder.MakeMaterial($"Wall_{d.id}", Color.Lerp(d.palette, Color.white, 0.35f));
