@@ -92,6 +92,7 @@ namespace Aethvirse.Save
             data.world.quests = Quests.QuestSystem.Instance.Log;
             data.world.gates = s.Gates;
             data.world.secrets = Secrets.SecretSystem.Instance.State;
+            data.world.map = s.Map;
             player.Capture(data.player);
             try
             {
@@ -118,6 +119,7 @@ namespace Aethvirse.Save
             GameSession.Instance.PenaltyPending = data.world.penaltyPending;
             GameSession.Instance.Gates = data.world.gates ?? new Gates.WorldGates();
             Secrets.SecretSystem.Instance.Restore(data.world.secrets);
+            GameSession.Instance.Map = data.world.map ?? new MapMemory();
             Quests.QuestSystem.Instance.Restore(data.world.quests);
             _pending = data;
             Combat.TimeFx.ResetAll();

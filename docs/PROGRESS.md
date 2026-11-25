@@ -27,6 +27,15 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-20 — Minimap and region map (branch `p1-16-next`)
+
+### Done
+- **Minimap** (top left, under the bars): terrain baked by looking straight down at the scene, fog of war,
+  enemies (red), and landmarks once seen — waystones, roads, gates, star gates, people, chests. Secrets never show.
+- **Region map** (M, or the Map touch button): the whole region with fog, landmarks, your position and facing,
+  explored %, the secret tracker "Secrets 3/9" and "Sealed missions: open · done · ??? unknown" (§9.5).
+- Fog of war is remembered per region in the save (hex-packed 52×52 grid).
+
 ## P1-19 — Sealed missions and cipher locks (branch `p1-16-next`)
 
 ### Done

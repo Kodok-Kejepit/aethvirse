@@ -45,6 +45,7 @@ namespace Aethvirse.Input
         public readonly InputAction Pause;
         public readonly InputAction QuickPotion;
         public readonly InputAction InventoryPanel;
+        public readonly InputAction Map;
 
         GameInput()
         {
@@ -111,6 +112,7 @@ namespace Aethvirse.Input
             QuickPotion = Player.AddAction("QuickPotion", InputActionType.Button, "<Keyboard>/h");
             QuickPotion.AddBinding("<Gamepad>/dpad/down");
             InventoryPanel = Player.AddAction("InventoryPanel", InputActionType.Button, "<Keyboard>/i");
+            Map = Player.AddAction("Map", InputActionType.Button, "<Keyboard>/m");
 
             Player.Enable();
         }

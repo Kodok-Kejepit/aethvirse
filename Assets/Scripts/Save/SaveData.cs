@@ -62,6 +62,7 @@ namespace Aethvirse.Save
             public Quests.QuestLog quests = new Quests.QuestLog();
             public Gates.WorldGates gates = new Gates.WorldGates();
             public Secrets.SecretState secrets = new Secrets.SecretState();
+            public MapMemory map = new MapMemory();
         }
 
         public PlayerSection player = new PlayerSection();
