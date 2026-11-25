@@ -27,6 +27,22 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-22 — Display fix and visual self-test (branch `p1-22-display-fix`)
+
+### Fixed (found by running the build and looking at screenshots)
+- **Squashed picture** (owner report): Hyprland first tiled the new window at 860×836; Unity used that, stretched
+  it over the 16:9 screen and saved it (even the splash was squashed). `tools/play.sh` now passes the monitor size
+  and a display guard keeps fullscreen at the display's own resolution.
+- **Region scenes had an empty region reference since v1.0**: region name, weather table and seamless streaming
+  never ran in a real build. Fixed in the builder; tests now check every region scene's wiring.
+- Panels draw above the HUD (the bag's close button was hidden), XP/MP labels fit their bars, the minimap clears
+  the debug panel, QuestSystem.Start(string) renamed (Unity rejected it).
+
+### Verified on this laptop (`AETHVIRSE -autoshot <dir>`)
+- 1600×900 fullscreen on a 1600×900 (scaled) display at every stop; 60 FPS; no exceptions in the log.
+- Walking north: Verdant streams in near the border, becomes current on crossing (one player, one camera), Ashfall
+  unloads further on; Dunes follows. Closed regions show the mist wall.
+
 ## P1-21 — Seamless world (branch `p1-16-next`)
 
 ### Done
