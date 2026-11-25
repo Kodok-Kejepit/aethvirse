@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: summoner_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: summoner_2
-  displayName: Pact Smite
-  description: Summoner technique.
+  displayName: Pact Circle
+  description: Your pact flares as a ring of light.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.648, g: 0.824, b: 1, a: 1}

@@ -47,6 +47,8 @@ namespace Aethvirse.World
         public int AcademyPoints { get; set; }
         /// <summary>Dynamic Gates in every region (saved).</summary>
         public Aethvirse.Gates.WorldGates Gates { get; set; } = new Aethvirse.Gates.WorldGates();
+        /// <summary>Fog of war per region (saved).</summary>
+        public MapMemory Map { get; set; } = new MapMemory();
         public int CodexPoints { get; set; }
         /// <summary>A missed daily quest waits to be paid for in the Penalty Zone.</summary>
         public bool PenaltyPending { get; set; }
@@ -117,6 +119,7 @@ namespace Aethvirse.World
             Clock = new WorldClock();
             Weather = new WeatherState();
             Flags = new WorldFlags();
+            Map = new MapMemory();
             Gold = 0;
             Playtime = 0f;
             Region = "";

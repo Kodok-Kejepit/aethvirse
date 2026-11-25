@@ -35,8 +35,14 @@ namespace Aethvirse.Player
         /// <summary>Starts the attack queued by SkillCaster (restarts the Attack state if already attacking).</summary>
         public void StartQueuedSkill() => SetState(PlayerState.Attack);
 
+        const float SlamSpeed = 30f;
+        // Share of gravity while an air attack runs (the juggle hang).
+        const float HoverGravity = 0.12f;
+        bool _slamLanded;
+
         void StartAttack()
         {
+            _slamLanded = false;
             _attack = combat.BeginAttack();
             if (combat.CurrentSkill == null) Core.GameEvents.RaiseAttacked();
             // Attacking breaks stealth.
@@ -68,8 +74,22 @@ namespace Aethvirse.Player
             Vector3 steer = InputDirection * (movement.runSpeed * SpeedMultiplier * (a.isHeavy ? HeavySteer : AttackSteer));
             _velocity.x = _attackDirection.x * lunge + steer.x;
             _velocity.z = _attackDirection.z * lunge + steer.z;
-            ApplyGravity(dt);
+            if (a.slam && _attackElapsed >= a.startup && !_slamLanded)
+            {
+                // Plunge: dive and hold the strike open until the ground.
+                _velocity.x *= 0.3f;
+                _velocity.z *= 0.3f;
+                _velocity.y = -SlamSpeed;
+                if (!Grounded) _attackElapsed = Mathf.Min(_attackElapsed, strikeEnd - 0.001f);
+            }
+            else if ((a.hover || a.slam) && !Grounded) _velocity.y = Mathf.Max(_velocity.y - _gravity * HoverGravity * dt, -1.5f);
+            else ApplyGravity(dt);
             Move(dt);
+            if (a.slam && !_slamLanded && _attackElapsed >= a.startup && Grounded)
+            {
+                _slamLanded = true;
+                combat.SlamImpact();
+            }
 
             if (_attackElapsed >= a.startup && _attackElapsed < strikeEnd) combat.SweepHitbox();
             combat.UpdateSwing(a, _attackElapsed / strikeEnd);

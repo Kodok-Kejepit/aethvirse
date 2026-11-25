@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadowblade_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadowblade_5
-  displayName: Shade Crash
-  description: Shadowblade technique.
+  displayName: Shadow Grave
+  description: Open a grave of shadow under your foe.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.65, g: 0.51, b: 0.86, a: 1}

@@ -35,10 +35,12 @@ public static class SecretDataBuilder
         Directory.CreateDirectory(Dir);
         var db = LoadOrCreate<SecretDatabase>("Assets/Resources/SecretDatabase.asset");
         db.secrets = new List<SecretData>();
+        _bookIndex = 0;
+        _runeIndex = 0;
         db.pages = new List<SecretDatabase.Page>();
         var atlas = AssetDatabase.LoadAssetAtPath<WorldAtlas>("Assets/Resources/WorldAtlas.asset");
         var regions = new List<RegionData>(atlas.AllRegions());
-        var placements = new List<(string scene, List<S> list)>();
+        var placements = new List<(string scene, Vector3 origin, List<S> list)>();
         for (int i = 0; i < regions.Count; i++)
         {
             RegionData r = regions[i];
@@ -53,12 +55,12 @@ public static class SecretDataBuilder
                 regions[i + 1].requiredFlag = SecretDatabase.PageFullFlag(r.id);
                 EditorUtility.SetDirty(regions[i + 1]);
             }
-            placements.Add((r.scene, list));
+            placements.Add((r.scene, r.origin, list));
         }
         EditorUtility.SetDirty(db);
         AssetDatabase.SaveAssets();
         // Opening scenes unloads loose asset objects, so placing comes after everything is saved.
-        foreach (var (scene, list) in placements) Place(scene, list);
+        foreach (var (scene, origin, list) in placements) Place(scene, origin, list);
         Debug.Log($"AETHVIRSE: secrets built ({db.secrets.Count})");
     }
 
@@ -132,6 +134,22 @@ public static class SecretDataBuilder
         };
     }
 
+    static int _bookIndex, _runeIndex;
+
+    /// <summary>
+    /// Puzzles and storm-night secrets teach the secret skills (in world order, so the rarest books are deepest);
+    /// hollow walls hold runes; the rest give an identification scroll or a mystery box.
+    /// </summary>
+    static string RewardItem(S s)
+    {
+        var db = AssetDatabase.LoadAssetAtPath<Aethvirse.Skills.SecretSkillDatabase>("Assets/Resources/SecretSkillDatabase.asset");
+        if (db != null && (s.kind == Kind.Puzzle || s.kind == Kind.StormNight) && _bookIndex < db.skills.Count)
+            return "book_" + db.skills[_bookIndex++].id;
+        if (db != null && s.kind == Kind.Wall && db.runes.Count > 0)
+            return db.runes[_runeIndex++ % db.runes.Count].id;
+        return s.kind == Kind.Bring || s.kind == Kind.Dawn ? "mystery_box" : "codex_identify_scroll";
+    }
+
     static SecretData Secret(string region, S s)
     {
         var d = LoadOrCreate<SecretData>($"{Dir}/{s.id}.asset");
@@ -155,7 +173,7 @@ public static class SecretDataBuilder
         d.rewards = new List<Reward>
         {
             new Reward { type = RewardType.AcademyPoints, amount = 15 },
-            new Reward { type = RewardType.Item, key = s.kind == Kind.Wall ? "mystery_box" : "codex_identify_scroll", amount = 1 },
+            new Reward { type = RewardType.Item, key = RewardItem(s), amount = 1 },
             new Reward { type = RewardType.Xp, amount = 120 },
         };
         d.tier = s.category == SecretCategory.SealedMission ? 2 : s.kind == Kind.Puzzle ? 1 : 0;
@@ -164,13 +182,14 @@ public static class SecretDataBuilder
     }
 
     /// <summary>Puts the spots, puzzle bells, cracked walls and two hint notes per secret into the region scene.</summary>
-    static void Place(string sceneName, List<S> list)
+    static void Place(string sceneName, Vector3 origin, List<S> list)
     {
         string path = $"{RegionBuilder.SceneDir}/{sceneName}.unity";
         var scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Single);
         GameObject old = GameObject.Find("Secrets");
         if (old != null) Object.DestroyImmediate(old);
         var root = new GameObject("Secrets").transform;
+        root.position = origin;
         Material bell = PlaygroundBuilder.MakeMaterial("Bell", new Color(0.8f, 0.7f, 0.3f));
         Material crack = PlaygroundBuilder.MakeMaterial("CrackedWall", new Color(0.35f, 0.3f, 0.28f));
         Material note = PlaygroundBuilder.MakeMaterial("Note", new Color(0.9f, 0.88f, 0.8f));
@@ -212,7 +231,7 @@ public static class SecretDataBuilder
             {
                 var spot = new GameObject("Spot_" + s.id).AddComponent<SecretSpot>();
                 spot.transform.SetParent(root, false);
-                spot.transform.position = s.at;
+                spot.transform.localPosition = s.at;
                 var so = new SerializedObject(spot);
                 so.FindProperty("secretId").stringValue = s.id;
                 so.FindProperty("interact").boolValue = s.kind == Kind.Bring;

@@ -27,6 +27,99 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-21 — Seamless world (branch `p1-16-next`)
+
+### Done
+- **No loading screen between the regions of one world (§7).** The regions of a world sit side by side along the
+  road north (300 m apart, joined by a walled road). Walking toward an open neighbour streams its scene in next to
+  yours in the background; crossing the border makes it the current region (name, level band, weather table, map,
+  autosave scene) and the player rig moves into it; walking far away unloads the region behind you.
+- Regions still closed (journal page or academy rank) show a **mist wall** across the road that says why.
+- Every scene is saved with the player rig (player, camera, HUD, services) inactive; a tiny activator wakes it when
+  the scene is opened on its own and drops it when the scene is only streamed in, so there is never a second
+  player or camera. Streamed regions keep their own monsters, Gate spots and Gate rolls.
+- Fast travel, star gates and Gates (dungeon instances) still load their scene, as designed.
+
+## P1-20 — Minimap and region map (branch `p1-16-next`)
+
+### Done
+- **Minimap** (top left, under the bars): terrain baked by looking straight down at the scene, fog of war,
+  enemies (red), and landmarks once seen — waystones, roads, gates, star gates, people, chests. Secrets never show.
+- **Region map** (M, or the Map touch button): the whole region with fog, landmarks, your position and facing,
+  explored %, the secret tracker "Secrets 3/9" and "Sealed missions: open · done · ??? unknown" (§9.5).
+- Fog of war is remembered per region in the save (hex-packed 52×52 grid).
+
+## P1-19 — Sealed missions and cipher locks (branch `p1-16-next`)
+
+### Done
+- **14 sealed missions** (§9.1): never announced. They wake by themselves from hidden triggers — a secret found,
+  a duel won, a lock opened, a page read, even the hour (03:00 with level 80+ starts "ERR: page not found") — and
+  the Codex only says "[ ??? ] A sealed mission has been detected." Each is a 2–4 stage chain across regions and
+  worlds (Something Breathes Below, The Debt of Bread, Names on the Cinder Seat, A Tear That Did Not Fall, The Index
+  of Unwritten Books, Who Swung First, The Courier Who Never Arrived, The Valley's Slow Heartbeat, The Last
+  Rehearsal, Your Name on the Wall, The Fourth Name, ERR: page not found, Measure the Dark, The Unclaimed
+  Commission) and ends in a named unique, a set piece or a rune, often with a Codex line.
+- **14 cipher locks**, one per region, each with a mural somewhere in the town that holds the key: Caesar shifts
+  (three crows looking back = shift 3), mirror alphabets (Atbash), words written backwards, Morse taps and letter
+  numbers. Letter dials work with touch. Opening one pays a reward and feeds the sealed missions.
+- Every found secret now also sets a `secret_<id>` flag (sealed missions start from them).
+- Builder order: … RegionBuilder → SecretDataBuilder → MysteryBuilder.
+
+## P1-18 — Aerial combat and rival duels (branch `p1-16-next`)
+
+### Done
+- **Launcher → juggle → plunge (§6)** for all four weapons: heavy from neutral while locked on throws light
+  enemies up; jump after it and the air chain (three hanging strikes; staff and bow shoot) keeps them up; heavy in
+  the air plunges and ends in a shockwave that spikes juggled foes down. Big bodies, bosses and elites cannot be
+  thrown. Launched enemies tumble, hang while being hit, and are knocked down when they land.
+- **Duel ring at the academy** (east of the training ground): Kaelen Dray (wind, dashes and blade volleys),
+  Ilyra Vance (shadow, blinks behind you), Torvald Ash the champion (earth novas). Rivals side-step your swings,
+  telegraph their skills (red marks), speak at half health and scale to your level. First wins pay academy
+  points, XP and a reward (Kaelen's Spare Sword, the Umbral Rune, an Ashwalker piece). After the champion, a
+  fourth name appears on the board — yours.
+
+## P1-17 — Gear depth: sets, gems, enchants, reforge, stash, mimics (branch `p1-16-next`)
+
+### Done
+- **329 items** (was 36): hunter gear in nine level bands across all worlds (Thornwarden Lv 50 → Seraphic Lv 700;
+  12 pieces each incl. greatsword, twinfangs, staff, longbow), 8 named **gear sets** × 6 pieces, 28 gems,
+  14 enchant scrolls, 20 named uniques with their own story (Blade of the Cinder Seat, Nyra's Reading Lamp, Hammer
+  That Split the World, The First Line's Quill …), 14 region materials, more potions and food, 24 skill books,
+  28 runes. Drops pick bases from your level band.
+- **Gear sets** (2 / 4 / 6-piece bonuses): Ashwalker, Verdant Oath, Dunestrider, Frostveil Regalia, Drowned
+  Archivist, Fracture Knight, Hollow Regent, Echo of the First Vanguard (Mythic). Set pieces drop from elites and
+  bosses near your level; the Bag shows the set, worn count and which bonuses are active.
+- **Gems**: Ruby / Emerald / Sapphire / Diamond / Topaz / Onyx / Bloodstone in four grades (Chipped → Royal);
+  three fuse into the next grade (Craft). Generated gear rolls 0–3 sockets by rarity; unsocket for gold.
+- **Enchant scrolls**: eight weapon enchants turn normal attacks into an element (Kindling Steel = Fire … the
+  Mythic Scroll That Was Never Written = Void) and set up reactions; six armour enchants (DEF, HP, speed,
+  cooldowns, attack speed, crit). Crafted from region materials.
+- **Reforge**: reroll a generated item's affixes for gold + 2 scrap (rarity, level and sockets stay).
+- New affixes: Savage (ATK%), Bastion (DEF%), Hale (HP%), of Haste (CDR), of the Gale (attack speed), of the Fox
+  (move speed), of Ruin's Edge (crit damage).
+- **Stash** (200 slots): every save crystal opens it; saved with the player.
+- **Chests and mimics**: six chests per region refill daily; one in five is a mimic (decided per day) that fights
+  back and drops loot like a boss.
+- Recipes and Quartermaster stock now live in the item database (more stock: mana draughts, royal potions, gems,
+  scrolls).
+
+## P1-16 — Runes, secret skills, job skill names (branch `p1-16-next`)
+
+### Done
+- **Skill runes** (28, Uncommon → Mythic): socket one per skill in Status → Skills ("Socket" cycles the fitting
+  runes in your bag, "Remove" gives it back). Overcharge / Heart of the Furnace (more damage, more MP), Quiet /
+  Hermit's (cheaper), Quickening / Hourglass (shorter cooldown), Splinter / Hydra (+2 / +4 projectiles), Needle
+  (pierce), Echo / Twin Moon (every hit repeats for 40 % / 75 %), eight element runes (incl. the Void rune of the
+  Unwritten), Headsman's (execute), Leech / Crimson Pact, Keen, Wide / Colossus, Lingering, Mending, Thunderclap.
+  Runes drop rarely (0.4 % normal, 6 % elite, 35 % boss), hide behind hollow walls, and rarer runes are rarer.
+- **24 secret skills, any class**, each taught by a skill book with its own lore (Ash-Bound Hymnal, Page Without
+  Edges, [ ERR: page not found ] …): Ashen Requiem, Glacier Coffin, Fracture Line (Void), Hollow Crown, Requiem of
+  Echoes (two echoes of you), Phoenix Feather, C0dex Gl1tch, The First Line … The books are hidden in puzzle and
+  storm-night secrets across every world, rarer ones deeper (test-enforced: every book is in a secret).
+- **All 210 job skills have hand-written names and descriptions** (Shieldbreaker, Reaper's Due, Hall of Mirrors,
+  Meteor Sentence, Fated Shot, Great Bear's Fall, Answer Me …).
+- Builder order: … ItemDataBuilder → SecretSkillBuilder (appends books and runes) → … SecretDataBuilder.
+
 ## P1-15 — Elements, statuses, elites (branch `p1-14-beyond`)
 
 ### Done

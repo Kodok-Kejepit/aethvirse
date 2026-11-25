@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Hollow Moon
   blurb: A moon with its heart carved out.
   scene: K2_HollowMoon
+  origin: {x: 0, y: 0, z: 300}
   levelMin: 600
   levelMax: 650
   requiredRank: 5
@@ -33,18 +34,18 @@ MonoBehaviour:
   waystones:
   - id: k2_hollow_moon_gate
     displayName: "Hollow Moon \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 200}
   - id: k2_hollow_moon_town
     displayName: "Hollow Moon \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 270}
   - id: k2_hollow_moon_landmark
     displayName: "Hollow Moon \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 355}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 230}
+  - {x: -80, y: 0, z: 340}
+  - {x: 85, y: 0, z: 370}
+  - {x: -30, y: 0, z: 395}
   enemies:
   - moon_stalker
   - crater_mage

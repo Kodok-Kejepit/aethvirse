@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_3
-  displayName: Comet Barrage
-  description: Deadeye technique.
+  displayName: Thunderhead
+  description: Arrows charged with storm fall all around.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.672, b: 0.426, a: 1}

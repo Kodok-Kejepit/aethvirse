@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: summoner_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: summoner_p1
-  displayName: Call Resolve
-  description: Passive. Defense up.
+  displayName: Guardian Spirits
+  description: Passive. Something watches over you. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.6, g: 0.8, b: 1, a: 1}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Aethvirse.Items
 {
-    public enum ItemKind { Consumable, Food, Weapon, Accessory, Armor, Key, Material, Currency, SkillBook, Costume }
+    public enum ItemKind { Consumable, Food, Weapon, Accessory, Armor, Key, Material, Currency, SkillBook, Costume, Rune, Gem, EnchantScroll }
     public enum Rarity { Common, Uncommon, Rare, Epic, Legendary, Mythic, Unknown }
     /// <summary>Equipment slots (§11). Append only: saves store the number.</summary>
     public enum EquipSlot { None, Weapon, OffHand, Helm, Armor, Gloves, Boots, Ring, Necklace, RuneCore, Ring2, Costume }
@@ -13,6 +13,10 @@ namespace Aethvirse.Items
     public static class StatKeys
     {
         public const string Str = "str", Agi = "agi", Int = "int", Vit = "vit", Sen = "sen", Crit = "crit", Lifesteal = "lifesteal";
+        /// <summary>Percent bonuses (0.1 = +10 %) from sets, gems and enchants.</summary>
+        public const string AtkPct = "atk%", DefPct = "def%", HpPct = "hp%", Cdr = "cdr", Aspd = "aspd", Mspd = "mspd", CritDmg = "critdmg";
+        public static readonly string[] All = { Str, Agi, Int, Vit, Sen, Crit, Lifesteal, AtkPct, DefPct, HpPct, Cdr, Aspd, Mspd, CritDmg };
+        public static bool IsPercent(string k) => k != Str && k != Agi && k != Int && k != Vit && k != Sen;
     }
 
     [Serializable]
@@ -65,9 +69,28 @@ namespace Aethvirse.Items
         public string evolvesInto = "";
         public string hiddenEffect = "";
 
+        [Header("Sets, gems, enchants")]
+        [Tooltip("Gear set id (GearSetDatabase); wearing several pieces activates its bonuses.")]
+        public string setId = "";
+        [Tooltip("Drop bases: the lowest player level this base starts dropping at.")]
+        public int minLevel = 1;
+        [Tooltip("Gem / enchant scroll: the stat it adds and how much.")]
+        public string gemStat = "";
+        public float gemValue;
+        [Tooltip("Enchant scroll: weapon only (an element) or armour only.")]
+        public bool enchantWeapon;
+        public Combat.ElementType enchantElement = Combat.ElementType.Physical;
+
+        [Header("Skill books and runes")]
+        [Tooltip("Skill book: the secret skill it teaches (SecretSkillDatabase id).")]
+        public string teachesSkill = "";
+        [Tooltip("Rune item: the rune it is (SecretSkillDatabase id).")]
+        public string runeId = "";
+
         public bool IsStackable => maxStack > 1;
         public bool IsEquipment => slot != EquipSlot.None;
-        public bool IsUsable => kind == ItemKind.Consumable || kind == ItemKind.Food || identifiesItems || opensMysteryBox;
+        public bool IsUsable => kind == ItemKind.Consumable || kind == ItemKind.Food || identifiesItems || opensMysteryBox
+            || (kind == ItemKind.SkillBook && !string.IsNullOrEmpty(teachesSkill));
         public float AttackAt(int level) => attack + attackPerLevel * level;
 
         public float Bonus(string stat)

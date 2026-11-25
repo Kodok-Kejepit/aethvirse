@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Crimson Dunes
   blurb: Red sand over old ruins.
   scene: R3_Dunes
+  origin: {x: 0, y: 0, z: 600}
   levelMin: 100
   levelMax: 150
   requiredRank: 2
@@ -33,18 +34,18 @@ MonoBehaviour:
   waystones:
   - id: r3_dunes_gate
     displayName: "Crimson Dunes \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 500}
   - id: r3_dunes_town
     displayName: "Crimson Dunes \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 570}
   - id: r3_dunes_landmark
     displayName: "Crimson Dunes \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 655}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 530}
+  - {x: -80, y: 0, z: 640}
+  - {x: 85, y: 0, z: 670}
+  - {x: -30, y: 0, z: 695}
   enemies:
   - dune_scuttler
   - sand_wraith

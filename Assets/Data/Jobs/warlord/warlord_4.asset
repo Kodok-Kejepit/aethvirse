@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_4
-  displayName: Crimson Quake
-  description: Warlord technique.
+  displayName: Warlord's Roar
+  description: A roar that ends small wars before they start.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.582, b: 0.354, a: 1}

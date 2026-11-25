@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_6
-  displayName: Fate Rift
-  description: Oracle technique.
+  displayName: Seventh Sight
+  description: See every path. Close all of them.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.968, b: 0.744, a: 1}

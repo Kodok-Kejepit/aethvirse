@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_measure_the_dark
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_measure_the_dark
+  title: Measure the Dark
+  description: The Kethrans measured the dark inside their moon. It measured them
+    back.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_k2_hollow_moon_night
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 0
+    target: moon_stalker
+    count: 12
+    text: Drive back what lives in the hollow
+    stage: 0
+    optional: 0
+  - type: 5
+    target: cipher_k2_hollow_moon
+    count: 1
+    text: Read the survey numbers
+    stage: 1
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_hollow_moon_boots
+    amount: 1
+    text: 

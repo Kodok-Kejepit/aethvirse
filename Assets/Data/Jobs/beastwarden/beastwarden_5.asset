@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: beastwarden_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: beastwarden_5
-  displayName: Beast Burst
-  description: Beastwarden technique.
+  displayName: Great Bear's Fall
+  description: A spirit bear stands up and comes down.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.65, g: 0.86, b: 0.58, a: 1}

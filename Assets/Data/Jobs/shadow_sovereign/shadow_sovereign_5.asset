@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_5
   displayName: Answer Me
-  description: Shadow Sovereign technique.
+  description: Call your shadow army to fight.
   kind: 11
   isUltimate: 0
   iconColor: {r: 0.405, g: 0.36999997, b: 0.475, a: 1}

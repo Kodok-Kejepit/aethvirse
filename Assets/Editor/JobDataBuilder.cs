@@ -98,6 +98,7 @@ public static class JobDataBuilder
             s.mpCost = 20 + d.tier * 8 + i * 2; s.cooldown = 6f + i * 1.5f; s.damageMultiplier = power + i * 0.25f; s.multiplierPerLevel = 0.15f + d.tier * 0.05f;
             s.kind = d.ranged ? (i < 3 ? SkillKind.Projectile : SkillKind.Aoe) : (i == 6 ? SkillKind.Dash : i < 2 ? SkillKind.Melee : SkillKind.Aoe);
             s.attack = SkillAttack(dir, id, d, i, s.kind);
+            if (JobSkillTexts.All.TryGetValue(d.id, out var texts)) { s.displayName = texts[i].name; s.description = texts[i].desc; }
             // Lines with companions swap two actives for their own kinds.
             if (d.id == "summoner" || d.id == "conjurer") { if (i == 5) { s.kind = SkillKind.Summon; s.summonCount = d.tier; s.fx = SkillFxKind.Barrier; s.attack = null; } }
             if (d.shadows)
@@ -117,6 +118,7 @@ public static class JobDataBuilder
             s.description = $"Passive. {passives[i]} up."; s.kind = SkillKind.Passive; s.fx = SkillFxKind.None; s.attack = null;
             s.unlockLevel = baseLevel + 2 + i * 5; s.buffStat = passives[i]; s.buffAmount = 0.04f + 0.02f * d.tier; s.buffAmountPerLevel = 0.01f;
             s.iconColor = d.color; s.mpCost = 0; s.isUltimate = false;
+            if (JobSkillTexts.All.TryGetValue(d.id, out var ptexts)) { s.displayName = ptexts[7 + i].name; s.description = ptexts[7 + i].desc; }
             EditorUtility.SetDirty(s);
             list.Add(s);
         }

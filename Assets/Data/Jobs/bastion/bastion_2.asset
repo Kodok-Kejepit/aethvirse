@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_2
-  displayName: Iron Smite
-  description: Bastion technique.
+  displayName: Titan's Footstep
+  description: Stamp once. The earth carries the message outward.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.824, g: 0.824, b: 0.648, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_3
-  displayName: Stone Whirl
-  description: Guardian technique.
+  displayName: Rampart Rise
+  description: Stone walls burst up around you and fall on whoever is close.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.754, g: 0.795, b: 0.87700003, a: 1}

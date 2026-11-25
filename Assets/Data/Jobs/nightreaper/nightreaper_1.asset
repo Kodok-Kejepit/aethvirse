@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_1
-  displayName: Eclipse Wave
-  description: Nightreaper technique.
+  displayName: Eclipse Edge
+  description: Your blade darkens the light around the wound.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.43600002, g: 0.201, b: 0.624, a: 1}

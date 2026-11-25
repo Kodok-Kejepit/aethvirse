@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: vanguard_of_echoes_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: vanguard_of_echoes_4
-  displayName: Ripple Quake
-  description: Echo Warden technique.
+  displayName: Ripple of Selves
+  description: Echoes of you strike from every side.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.848, g: 0.848, b: 0.92399997, a: 1}

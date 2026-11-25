@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Aethvirse.Quests
 {
-    public enum QuestKind { Story, Side, Daily, Emergency, Academy, Bounty }
+    public enum QuestKind { Story, Side, Daily, Emergency, Academy, Bounty, Sealed }
     public enum ObjectiveType { Kill, Talk, Collect, ReachArea, ClearGate, Flag, Attack, Dodge, Distance, Pickup, Craft, UseItem, Skill, Secret }
     public enum RewardType { Item, Gold, Xp, Flag, AcademyPoints, CodexPoints, CodexMessage, StartQuest }
 

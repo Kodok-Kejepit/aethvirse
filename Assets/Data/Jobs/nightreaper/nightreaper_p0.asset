@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_p0
-  displayName: Dusk Might
-  description: Passive. Attack up.
+  displayName: Harvest Instinct
+  description: Passive. You know exactly where to cut. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.4, g: 0.15, b: 0.6, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_2
-  displayName: Dusk Smite
-  description: Nightreaper technique.
+  displayName: Dusk Harvest
+  description: Spin, and the night collects what it is owed.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.472, g: 0.252, b: 0.648, a: 1}

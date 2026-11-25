@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trickster_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trickster_p0
-  displayName: Gale Might
-  description: Passive. Attack up.
+  displayName: Dirty Tricks
+  description: Passive. Honour is for people who lose. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.9, b: 0.6, a: 1}

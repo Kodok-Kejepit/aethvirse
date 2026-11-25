@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: archmage_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: archmage_p0
-  displayName: Absolute Might
-  description: Passive. Attack up.
+  displayName: Arch Mastery
+  description: Passive. Every spell learned, every spell stronger. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.5, b: 0.9, a: 1}

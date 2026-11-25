@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: archmage_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: archmage_2
-  displayName: Absolute Lance
-  description: Archmage technique.
+  displayName: Absolute Ray
+  description: A line of absolute cold that pierces everything.
   kind: 5
   isUltimate: 0
   iconColor: {r: 1, g: 0.56, b: 0.912, a: 1}

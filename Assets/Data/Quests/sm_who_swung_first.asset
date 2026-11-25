@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_who_swung_first
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_who_swung_first
+  title: Who Swung First
+  description: The world split here. Someone held the hammer.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_r6_fracture_wall
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 0
+    target: void_hollow
+    count: 12
+    text: Clear the hollows from the fault
+    stage: 0
+    optional: 0
+  - type: 0
+    target: rift_stalker
+    count: 8
+    text: Clear the stalkers from the fault
+    stage: 0
+    optional: 0
+  - type: 5
+    target: cipher_r6_fracture
+    count: 1
+    text: Follow the five cracks
+    stage: 1
+    optional: 0
+  - type: 0
+    target: gravewarden
+    count: 3
+    text: Defeat the wardens of the split
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_fault_hammer
+    amount: 1
+    text: 

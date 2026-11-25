@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trapper_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trapper_6
-  displayName: Barb Rift
-  description: Trapper technique.
+  displayName: Hunter's Net
+  description: Throw a weighted net over everything in front of you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.744, g: 0.68, b: 0.552, a: 1}

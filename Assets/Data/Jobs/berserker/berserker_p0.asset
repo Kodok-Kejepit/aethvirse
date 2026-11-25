@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_p0
-  displayName: Blood Might
-  description: Passive. Attack up.
+  displayName: Pain Into Power
+  description: Passive. Every hurt becomes a heavier swing. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.35, b: 0.25, a: 1}

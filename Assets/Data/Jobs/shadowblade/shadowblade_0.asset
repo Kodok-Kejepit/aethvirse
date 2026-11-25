@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadowblade_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadowblade_0
-  displayName: Shade Cleave
-  description: Shadowblade technique.
+  displayName: Shade Cut
+  description: A cut from the side you were not watching.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.3, b: 0.8, a: 1}

@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Ashfall Outskirts
   blurb: Outskirts buried in ash. A dead city that still breathes.
   scene: R1_Ashfall
+  origin: {x: 0, y: 0, z: 0}
   levelMin: 1
   levelMax: 50
   requiredRank: 0

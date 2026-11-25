@@ -41,3 +41,11 @@ MonoBehaviour:
   evolveKills: 0
   evolvesInto: first_fang
   hiddenEffect: bleed_5
+  setId: 
+  minLevel: 1
+  gemStat: 
+  gemValue: 0
+  enchantWeapon: 0
+  enchantElement: 0
+  teachesSkill: 
+  runeId: 

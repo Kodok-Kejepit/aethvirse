@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_p2
-  displayName: Keep Rhythm
-  description: Passive. AttackSpeed up.
+  displayName: Garrison Rhythm
+  description: Passive. The drill never ends. Attack speed up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.8, g: 0.8, b: 0.6, a: 1}

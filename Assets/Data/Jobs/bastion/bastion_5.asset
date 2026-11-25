@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_5
-  displayName: Citadel Crash
-  description: Bastion technique.
+  displayName: Keep of Stone
+  description: Call the old keep's walls down on the ground in front of you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.86, g: 0.86, b: 0.72, a: 1}

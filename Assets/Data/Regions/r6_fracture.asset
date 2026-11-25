@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: The Fracture
   blurb: Broken land. The world split here once.
   scene: R6_Fracture
+  origin: {x: 0, y: 0, z: 1500}
   levelMin: 250
   levelMax: 300
   requiredRank: 5
@@ -35,18 +36,18 @@ MonoBehaviour:
   waystones:
   - id: r6_fracture_gate
     displayName: "The Fracture \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 1400}
   - id: r6_fracture_town
     displayName: "The Fracture \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 1470}
   - id: r6_fracture_landmark
     displayName: "The Fracture \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 1555}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 1430}
+  - {x: -80, y: 0, z: 1540}
+  - {x: 85, y: 0, z: 1570}
+  - {x: -30, y: 0, z: 1595}
   enemies:
   - void_hollow
   - rift_stalker

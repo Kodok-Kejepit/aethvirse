@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_p2
-  displayName: Glamour Rhythm
-  description: Passive. AttackSpeed up.
+  displayName: Kaleidoscope Rhythm
+  description: Passive. Every pattern repeats faster. Attack speed up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.9, g: 0.8, b: 1, a: 1}

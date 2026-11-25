@@ -92,9 +92,11 @@ namespace Aethvirse.Skills
         public float CooldownRatio(SkillData skill)
         {
             if (skill == null) return 0f;
-            float total = skill.cooldown * (1f - stats.Derived.cooldownReduction);
+            float total = CooldownTotal(skill);
             return total > 0f ? CooldownRemaining(skill) / total : 0f;
         }
+
+        float CooldownTotal(SkillData skill) => skill.cooldown * (1f - stats.Derived.cooldownReduction) * RuneMath.CooldownFactor(stats.RuneFor(skill));
 
         public void ResetCooldowns() => _cooldowns.Clear();
 
@@ -105,7 +107,7 @@ namespace Aethvirse.Skills
             int level = stats.SkillLevel(skill.id);
             if (level <= 0 || skill.IsPassive) return CastResult.Locked;
             if (CooldownRemaining(skill) > 0f) return CastResult.Cooldown;
-            if (!stats.Mana.CanPay(stats.MpCost(skill))) return CastResult.NoMp;
+            if (!stats.Mana.CanPay(stats.MpCostWithRune(skill))) return CastResult.NoMp;
             if (player.IsDead || !player.CanCastSkill) return CastResult.Busy;
             Cast(skill, level);
             return CastResult.Ok;
@@ -164,8 +166,9 @@ namespace Aethvirse.Skills
 
         void Cast(SkillData skill, int level)
         {
-            stats.Mana.TryPay(stats.MpCost(skill));
-            _cooldowns[skill.id] = skill.cooldown * (1f - stats.Derived.cooldownReduction);
+            SkillRuneData rune = stats.RuneFor(skill);
+            stats.Mana.TryPay(stats.MpCostWithRune(skill));
+            _cooldowns[skill.id] = CooldownTotal(skill);
             float now = Time.time;
             SkillComboData combo = stats.Class.FindCombo(_lastSkill, now - _lastSkillTime, skill.id);
             _lastSkill = skill.id;
@@ -177,14 +180,14 @@ namespace Aethvirse.Skills
             switch (skill.kind)
             {
                 case SkillKind.Buff:
-                    stats.AddBuff(skill.buffStat, skill.BuffAt(level), skill.buffDuration);
+                    stats.AddBuff(skill.buffStat, skill.BuffAt(level), skill.buffDuration * RuneMath.DurationFactor(rune));
                     return;
                 case SkillKind.Heal:
                     var health = GetComponent<Combat.Damageable>();
-                    if (health != null) health.Health.Heal(Mathf.RoundToInt(health.Health.maxHealth * (skill.healShare + skill.multiplierPerLevel * (level - 1))));
+                    if (health != null) health.Health.Heal(Mathf.RoundToInt(health.Health.maxHealth * (skill.healShare + skill.multiplierPerLevel * (level - 1)) * RuneMath.HealFactor(rune)));
                     return;
                 case SkillKind.Stealth:
-                    PlayerTarget.HiddenUntil = Time.time + skill.stealthDuration;
+                    PlayerTarget.HiddenUntil = Time.time + skill.stealthDuration * RuneMath.DurationFactor(rune);
                     combat.GrantCounter();
                     return;
                 case SkillKind.Trap:

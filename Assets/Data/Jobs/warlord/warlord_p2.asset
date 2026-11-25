@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_p2
-  displayName: Crimson Rhythm
-  description: Passive. AttackSpeed up.
+  displayName: Commander's Tempo
+  description: Passive. You set the beat the battle follows. Attack speed up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.45, b: 0.15, a: 1}

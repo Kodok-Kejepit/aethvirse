@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: necromancer_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_6
-  displayName: Bone Rush
-  description: Necromancer technique.
+  displayName: Death's Door
+  description: Step through death and come back behind them.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.616, g: 0.48799998, b: 0.68, a: 1}

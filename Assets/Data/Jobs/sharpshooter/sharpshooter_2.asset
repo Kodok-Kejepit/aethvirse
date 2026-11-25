@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_2
-  displayName: Precise Lance
-  description: Sharpshooter technique.
+  displayName: Piercing Line
+  description: An arrow that does not stop after the first.
   kind: 5
   isUltimate: 0
   iconColor: {r: 1, g: 0.86800003, b: 0.56, a: 1}

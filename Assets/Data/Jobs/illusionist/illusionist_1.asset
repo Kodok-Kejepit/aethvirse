@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_1
-  displayName: Prism Wave
-  description: Illusionist technique.
+  displayName: Mirror Lash
+  description: Strike your foe and their reflection at once.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.90599996, g: 0.81200004, b: 1, a: 1}

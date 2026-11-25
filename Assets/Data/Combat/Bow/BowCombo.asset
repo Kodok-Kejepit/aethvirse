@@ -15,3 +15,6 @@ MonoBehaviour:
   lightStart: {fileID: 11400000, guid: c8148bb43ffc5b2c4930fd32e9700d2a, type: 2}
   heavyStart: {fileID: 11400000, guid: f9932c59dda9d75b2ab6c50961ccd38c, type: 2}
   chainGrace: 0.35
+  launcher: {fileID: 11400000, guid: 76b3c352df1cc1ae79e22ecb58f14009, type: 2}
+  airLightStart: {fileID: 11400000, guid: 80353a15c673b08f7ac2f36539f0d776, type: 2}
+  airHeavyStart: {fileID: 11400000, guid: d6ef1ad081d188546b2e696a3ad731ad, type: 2}

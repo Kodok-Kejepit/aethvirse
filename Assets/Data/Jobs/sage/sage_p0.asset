@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_p0
-  displayName: Ward Might
-  description: Passive. Attack up.
+  displayName: Patient Wisdom
+  description: Passive. Knowing when to strike. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.6, g: 1, b: 0.8, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: necromancer_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_0
-  displayName: Grave Cleave
-  description: Necromancer technique.
+  displayName: Bone Spear
+  description: A spear of old bone, thrown hard.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.4, g: 0.2, b: 0.5, a: 1}

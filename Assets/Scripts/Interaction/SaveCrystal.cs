@@ -19,6 +19,7 @@ namespace Aethvirse.Interaction
             Damageable d = user.GetComponent<Damageable>();
             if (d != null) d.Health.Heal(d.Health.maxHealth);
             Codex.Notify(SaveManager.Save(SaveManager.AutosaveSlot) ? "The crystal hums. HP and MP restored · saved." : "The crystal is silent.", CodexTone.System);
+            InventoryPanel.OpenStash();
         }
     }
 }

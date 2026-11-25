@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_5
-  displayName: Deadeye Burst
-  description: Deadeye technique.
+  displayName: Deadeye's Verdict
+  description: The last shot of the fight. It is always this one.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.72, b: 0.51, a: 1}

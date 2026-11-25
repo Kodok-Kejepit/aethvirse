@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_4
-  displayName: Oath Quake
-  description: Guardian technique.
+  displayName: Aegis Toll
+  description: Ring your shield like a bell. Every foe nearby hears it in their teeth.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.772, g: 0.81, b: 0.88600004, a: 1}

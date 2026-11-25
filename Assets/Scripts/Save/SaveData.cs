@@ -31,6 +31,13 @@ namespace Aethvirse.Save
             public Progression progression;
             public List<string> skillIds = new List<string>();
             public List<int> skillLevels = new List<int>();
+            /// <summary>Secret skills learned from books.</summary>
+            public List<string> secretSkills = new List<string>();
+            /// <summary>The vault at save crystals.</summary>
+            public Items.Inventory stash;
+            /// <summary>Socketed runes: skill id → rune item id (parallel lists).</summary>
+            public List<string> runeSkills = new List<string>();
+            public List<string> runeItems = new List<string>();
             public string[] slots = new string[PlayerStats.SlotCount];
             public Vector3 position;
             public bool hasPosition;
@@ -55,6 +62,7 @@ namespace Aethvirse.Save
             public Quests.QuestLog quests = new Quests.QuestLog();
             public Gates.WorldGates gates = new Gates.WorldGates();
             public Secrets.SecretState secrets = new Secrets.SecretState();
+            public MapMemory map = new MapMemory();
         }
 
         public PlayerSection player = new PlayerSection();

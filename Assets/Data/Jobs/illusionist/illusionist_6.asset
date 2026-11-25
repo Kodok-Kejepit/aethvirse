@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_6
-  displayName: Prism Rush
-  description: Illusionist technique.
+  displayName: Step Through the Glass
+  description: Enter one reflection, leave from another.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.936, g: 0.872, b: 1, a: 1}

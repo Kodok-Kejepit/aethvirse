@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_4
-  displayName: Insight Nova
-  description: Sage technique.
+  displayName: Sunlit Verse
+  description: Read a verse aloud. The light listens.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.69600004, g: 1, b: 0.848, a: 1}

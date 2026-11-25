@@ -29,6 +29,9 @@ MonoBehaviour:
   hitStop: 0.05
   lungeSpeed: 0
   swing: 0
+  launch: 0
+  hover: 0
+  slam: 0
   ranged: 1
   projectileCount: 7
   projectileSpread: 50

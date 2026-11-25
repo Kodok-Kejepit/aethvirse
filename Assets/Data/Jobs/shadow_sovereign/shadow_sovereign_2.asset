@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadow_sovereign_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_2
-  displayName: Dominion Smite
-  description: Shadow Sovereign technique.
+  displayName: Dominion
+  description: Everything near you is yours. Including their pain.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.252, g: 0.208, b: 0.34, a: 1}

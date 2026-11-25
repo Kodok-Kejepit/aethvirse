@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Glasswood Expanse
   blurb: Trees of glass. Every step rings.
   scene: S1_Glasswood
+  origin: {x: 0, y: 0, z: 0}
   levelMin: 400
   levelMax: 450
   requiredRank: 5

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_4
-  displayName: Summons Quake
-  description: Conjurer technique.
+  displayName: Summons Storm
+  description: Spirits fall like rain.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.772, g: 0.92399997, b: 1, a: 1}

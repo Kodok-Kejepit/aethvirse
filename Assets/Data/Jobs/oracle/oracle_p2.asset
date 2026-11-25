@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_p2
-  displayName: Vision Rhythm
-  description: Passive. Crit up.
+  displayName: Inevitable
+  description: Passive. Fate leans in your favour. CRIT up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.95, b: 0.6, a: 1}

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_breathing_drain
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_breathing_drain
+  title: Something Breathes Below
+  description: The drain breathed. Something answered from further down.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_r1_drain_breath
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 0
+    target: ember_husk
+    count: 6
+    text: Silence what crawls up from the drains
+    stage: 0
+    optional: 0
+  - type: 3
+    target: secret_r1_ash_room
+    count: 1
+    text: Find the room the ash closed off
+    stage: 1
+    optional: 0
+  - type: 5
+    target: cipher_r1_ashfall
+    count: 1
+    text: Open the lock the crows look away from
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 0
+    key: rune_ember
+    amount: 1
+    text: 
+  - type: 2
+    key: 
+    amount: 600
+    text: 
+  - type: 6
+    key: 
+    amount: 1
+    text: Under the city, something stops breathing. Or starts.

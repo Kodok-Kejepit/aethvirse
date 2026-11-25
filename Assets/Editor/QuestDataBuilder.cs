@@ -68,6 +68,14 @@ public static class QuestDataBuilder
                 objectives: new[] { Obj(ObjectiveType.Kill, "ash_hound", 5, "Defeat 5 Ash Hounds") },
                 rewards: new[] { R(RewardType.Gold, "", 150), R(RewardType.Xp, "", 100) }),
         };
+        // Sealed missions (§9.1): hidden quest chains that start by themselves.
+        foreach (MysteryContent.Sealed m in MysteryContent.Missions())
+        {
+            QuestData q = Quest(m.id, m.title, QuestKind.Sealed, m.desc, m.objectives, m.rewards, autoStart: true);
+            q.startConditions = new List<Condition>(m.start);
+            EditorUtility.SetDirty(q);
+            db.quests.Add(q);
+        }
         EditorUtility.SetDirty(db);
 
         BuildNpcs();

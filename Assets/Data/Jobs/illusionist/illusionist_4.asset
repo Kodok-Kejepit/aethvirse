@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_4
-  displayName: Glamour Quake
-  description: Illusionist technique.
+  displayName: Phantasmal Choir
+  description: Illusions sing; the song cuts.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.92399997, g: 0.848, b: 1, a: 1}

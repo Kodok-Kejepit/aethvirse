@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_lost_courier
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_lost_courier
+  title: The Courier Who Never Arrived
+  description: A message is still on its way. It has been for three hundred years.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_r3_dunes_weather
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 8
+    target: 
+    count: 3000
+    text: Run the courier's route (3 km)
+    stage: 0
+    optional: 0
+  - type: 3
+    target: secret_r3_dunes_dawn
+    count: 1
+    text: Arrive when the courier always did
+    stage: 1
+    optional: 0
+  - type: 5
+    target: cipher_r3_dunes
+    count: 1
+    text: Read the message the wind wrote
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_sandglass_dagger
+    amount: 1
+    text: 
+  - type: 0
+    key: set_dunestrider_4
+    amount: 1
+    text: 

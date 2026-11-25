@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1c576eed42e6ed980edb7096892459, type: 3}
+  m_Name: gs_launcher
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Combat.AttackData
+  id: gs_launcher
+  displayName: Launcher
+  damageMultiplier: 1.3
+  isHeavy: 1
+  element: 0
+  startup: 0.16
+  active: 0.1
+  recovery: 0.3
+  comboWindow: 0.31
+  dodgeCancel: 0.21
+  hitboxSize: {x: 2.2, y: 2.4, z: 2.2}
+  hitboxOffset: {x: 0, y: 1.2, z: 1.1}
+  knockback: 1
+  stagger: 25
+  hitStop: 0.08
+  lungeSpeed: 3
+  swing: 5
+  launch: 10
+  hover: 0
+  slam: 0
+  ranged: 0
+  projectileCount: 1
+  projectileSpread: 10
+  projectileSpeed: 28
+  projectileRange: 26
+  projectileRadius: 0.35
+  projectilePierce: 0
+  projectileColor: {r: 0.9, g: 0.9, b: 1, a: 1}
+  homing: 0
+  nextLight: {fileID: 0}
+  nextHeavy: {fileID: 0}

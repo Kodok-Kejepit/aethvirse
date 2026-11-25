@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadowblade_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadowblade_p1
-  displayName: Veil Resolve
-  description: Passive. Defense up.
+  displayName: Hard to Hold
+  description: Passive. Hits slide off what they cannot see. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.3, b: 0.8, a: 1}

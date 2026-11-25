@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_4
-  displayName: Moonless Quake
-  description: Nightreaper technique.
+  displayName: Moonless Hour
+  description: The hour when nothing is seen. Everything nearby is cut.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.544, g: 0.354, b: 0.69600004, a: 1}

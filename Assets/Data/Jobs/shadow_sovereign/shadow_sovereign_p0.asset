@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadow_sovereign_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_p0
-  displayName: Dominion Might
-  description: Passive. Attack up.
+  displayName: Will of the Sovereign
+  description: Passive. Shadows obey; so does damage. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.15, g: 0.1, b: 0.25, a: 1}

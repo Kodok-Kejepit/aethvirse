@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trickster_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trickster_2
-  displayName: Gale Smite
-  description: Trickster technique.
+  displayName: Gale Pirouette
+  description: A spinning dance that throws the wind outward.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.56, g: 0.912, b: 0.648, a: 1}

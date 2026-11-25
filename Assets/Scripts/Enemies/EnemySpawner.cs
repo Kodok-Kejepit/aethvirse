@@ -51,6 +51,8 @@ namespace Aethvirse.Enemies
             Vector3 at = transform.position + new Vector3(Mathf.Cos(a), 0.1f, Mathf.Sin(a)) * ((float)_rng.NextDouble() * radius);
             Enemy e = catalog.Spawn(types[_rng.Next(types.Count)], at, level);
             if (e == null) return;
+            // Streamed regions keep their monsters in their own scene (unloaded together).
+            if (e.gameObject.scene != gameObject.scene) UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(e.gameObject, gameObject.scene);
             if (_rng.NextDouble() < EliteAffixes.Chance) EliteAffixes.Make(e, EliteAffixes.Roll(_rng));
             _alive.Add(e);
         }

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_4
-  displayName: Ruin Quake
-  description: Berserker technique.
+  displayName: Fury Eruption
+  description: Fire pours out of every wound you have taken.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.506, b: 0.43, a: 1}

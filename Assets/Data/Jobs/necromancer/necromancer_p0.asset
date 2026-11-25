@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: necromancer_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_p0
-  displayName: Echo Might
-  description: Passive. Attack up.
+  displayName: Grave Strength
+  description: Passive. The dead lend you their arms. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.4, g: 0.2, b: 0.5, a: 1}

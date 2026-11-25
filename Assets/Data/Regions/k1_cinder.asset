@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Cinder Reach
   blurb: The ground still glows where cities burned.
   scene: K1_Cinder
+  origin: {x: 0, y: 0, z: 0}
   levelMin: 550
   levelMax: 600
   requiredRank: 5

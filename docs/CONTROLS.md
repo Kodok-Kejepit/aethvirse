@@ -36,3 +36,13 @@ Skill combos (Paladin): Iron Charge → Rending Slash = **Breaker** (guaranteed 
 
 Weapons: greatsword (Paladin) · twin daggers (Assassin, 6-hit chain) · staff (Mage: light = homing bolts,
 heavy = orb / lance / fan) · bow (Marksman: light = arrows that curve to the lock-on, heavy = piercing / spread).
+
+## Aerial (P1-18)
+
+- **Launcher:** lock on (Tab / middle mouse / R3), then heavy from neutral.
+- **Air chain:** jump right after the launcher, then light attacks (three hits hang you in the air).
+- **Plunge:** heavy while in the air.
+
+## Map (P1-20)
+
+- **M** (keyboard) or the **Map** touch button: region map. The minimap is always on (top left).

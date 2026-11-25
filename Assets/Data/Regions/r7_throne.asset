@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Hollow Throne
   blurb: An empty throne at the end of the known map.
   scene: R7_Throne
+  origin: {x: 0, y: 0, z: 1800}
   levelMin: 300
   levelMax: 350
   requiredRank: 5
@@ -35,18 +36,18 @@ MonoBehaviour:
   waystones:
   - id: r7_throne_gate
     displayName: "Hollow Throne \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 1700}
   - id: r7_throne_town
     displayName: "Hollow Throne \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 1770}
   - id: r7_throne_landmark
     displayName: "Hollow Throne \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 1855}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 1730}
+  - {x: -80, y: 0, z: 1840}
+  - {x: 85, y: 0, z: 1870}
+  - {x: -30, y: 0, z: 1895}
   enemies:
   - hollow_echo
   - gravewarden

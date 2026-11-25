@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: The Silent Choir
   blurb: A cathedral that stopped singing.
   scene: S3_Choir
+  origin: {x: 0, y: 0, z: 600}
   levelMin: 500
   levelMax: 550
   requiredRank: 5
@@ -35,18 +36,18 @@ MonoBehaviour:
   waystones:
   - id: s3_choir_gate
     displayName: "The Silent Choir \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 500}
   - id: s3_choir_town
     displayName: "The Silent Choir \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 570}
   - id: s3_choir_landmark
     displayName: "The Silent Choir \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 655}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 530}
+  - {x: -80, y: 0, z: 640}
+  - {x: 85, y: 0, z: 670}
+  - {x: -30, y: 0, z: 695}
   enemies:
   - bell_wraith
   - choir_knight

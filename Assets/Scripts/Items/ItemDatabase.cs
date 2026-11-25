@@ -8,6 +8,9 @@ namespace Aethvirse.Items
     public sealed class ItemDatabase : ScriptableObject
     {
         public List<ItemData> items = new List<ItemData>();
+        /// <summary>Crafting recipes and the Quartermaster's stock (data, so they grow without rebuilding scenes).</summary>
+        public List<Recipe> recipes = new List<Recipe>();
+        public List<ShopEntry> stock = new List<ShopEntry>();
         Dictionary<string, ItemData> _byId;
 
         public ItemData Get(string id)

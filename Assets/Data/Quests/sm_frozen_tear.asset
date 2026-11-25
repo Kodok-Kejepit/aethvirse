@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_frozen_tear
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_frozen_tear
+  title: A Tear That Did Not Fall
+  description: A queen of ice wept once. It froze before it landed.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_r4_frostveil_night
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 0
+    target: frost_yeti
+    count: 10
+    text: Break the guardians of the frozen hall
+    stage: 0
+    optional: 0
+  - type: 3
+    target: secret_r4_frostveil_stormnight
+    count: 1
+    text: Stand where she stood on the worst night
+    stage: 1
+    optional: 0
+  - type: 5
+    target: cipher_r4_frostveil
+    count: 1
+    text: Count the ice
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_frozen_tear
+    amount: 1
+    text: 
+  - type: 2
+    key: 
+    amount: 1500
+    text: 

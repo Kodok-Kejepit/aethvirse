@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_p1
-  displayName: Stone Resolve
-  description: Passive. Defense up.
+  displayName: Living Wall
+  description: Passive. You stop flinching. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.7, g: 0.75, b: 0.85, a: 1}

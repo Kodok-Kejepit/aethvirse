@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_6
-  displayName: Conquest Rush
-  description: Warlord technique.
+  displayName: March of Ruin
+  description: Advance. Everything ahead becomes behind.
   kind: 1
   isUltimate: 0
   iconColor: {r: 1, g: 0.648, b: 0.456, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_0
-  displayName: Rage Cleave
-  description: Berserker technique.
+  displayName: Red Mark
+  description: Cut a wound that burns longer than it bleeds.
   kind: 0
   isUltimate: 0
   iconColor: {r: 1, g: 0.35, b: 0.25, a: 1}

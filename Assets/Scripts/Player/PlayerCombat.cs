@@ -66,12 +66,18 @@ namespace Aethvirse.Player
             int level = _currentSkillLevel;
             Skills.SkillComboData skillCombo = _currentCombo;
             Vector3 from = _frame.position + Vector3.up * 1.2f + _frame.forward * 0.8f;
-            for (int i = 0; i < a.projectileCount; i++)
+            Skills.SkillRuneData rune = RuneOf(skill);
+            int count = a.projectileCount + Skills.RuneMath.ExtraProjectiles(rune);
+            float spread = count > a.projectileCount && a.projectileSpread < 8f ? 8f + count * 2f : a.projectileSpread;
+            int pierce = a.projectilePierce + Skills.RuneMath.ExtraPierce(rune);
+            Color color = rune != null && rune.effect == Skills.RuneEffect.Infuse ? Element.ColorOf(rune.element) : a.projectileColor;
+            for (int i = 0; i < count; i++)
             {
-                float offset = a.projectileCount > 1 ? Mathf.Lerp(-a.projectileSpread, a.projectileSpread, i / (a.projectileCount - 1f)) : 0f;
+                float offset = count > 1 ? Mathf.Lerp(-spread, spread, i / (count - 1f)) : 0f;
                 Vector3 dir = Quaternion.Euler(0f, offset, 0f) * _frame.forward;
-                Projectile.Fire(from, dir, a.projectileSpeed, a.projectileRange, a.projectileRadius, a.projectilePierce, Team.Player,
-                    a.projectileColor, t => BuildHit(t, a, skill, level, skillCombo), OnLanded, a.homing ? HomingTarget : null);
+                Projectile.Fire(from, dir, a.projectileSpeed, a.projectileRange, a.projectileRadius, pierce, Team.Player,
+                    color, t => BuildHit(t, a, skill, level, skillCombo), (t, info) => { OnLanded(t, info); AfterRuneHit(skill, t, info); },
+                    a.homing ? HomingTarget : null);
             }
         }
         AttackData _lastAttack;
@@ -168,13 +174,28 @@ namespace Aethvirse.Player
         public bool CanCancelIntoSkill => Current != null && CurrentSkill == null;
 
         /// <summary>Picks the next attack from the buffered input (heavy wins) into <see cref="Pending"/>.</summary>
+        /// <summary>Set by the controller every frame: in the air (air chain) / locked on (launcher).</summary>
+        public bool Airborne { get; set; }
+        public bool LockedOn { get; set; }
+
+        /// <summary>The plunge lands: one shockwave around the hero.</summary>
+        public void SlamImpact()
+        {
+            if (Current == null || _frame == null) return;
+            _hits.Begin();
+            _hits.Sweep(_frame, new Vector3(0f, 0.6f, 0f), new Vector3(6f, 2f, 6f), Strike);
+            if (impulse != null) impulse.GenerateImpulse(heavyShake * 1.4f);
+        }
+
         public bool ConsumeAttack()
         {
             if (!HasAttackInput || combo == null || _input.SkillModifier.IsPressed()) return false;
             bool heavy = _heavyBuffer > 0f;
             _lightBuffer = _heavyBuffer = 0f;
             AttackData previous = Current != null && CurrentSkill == null ? Current : (_chainTimer > 0f ? _lastAttack : null);
-            Pending = combo.ResolveNext(previous, heavy);
+            if (Airborne && combo.airLightStart != null) Pending = combo.ResolveAir(previous, heavy);
+            else if (heavy && LockedOn && previous == null && combo.launcher != null) Pending = combo.launcher;
+            else Pending = combo.ResolveNext(previous, heavy);
             PendingSkill = null;
             _pendingCombo = null;
             return Pending != null;
@@ -209,7 +230,7 @@ namespace Aethvirse.Player
                 if (!_fired) FireProjectiles();
                 return;
             }
-            _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize, Strike);
+            _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize * Skills.RuneMath.HitboxFactor(RuneOf(CurrentSkill)), Strike);
         }
 
         public void EndAttack()
@@ -226,7 +247,11 @@ namespace Aethvirse.Player
         void Strike(Damageable target)
         {
             DamageInfo info = BuildHit(target, Current, CurrentSkill, _currentSkillLevel, _currentCombo);
-            if (target.Receive(info)) OnLanded(target, info);
+            if (target.Receive(info))
+            {
+                OnLanded(target, info);
+                AfterRuneHit(CurrentSkill, target, info);
+            }
         }
 
         DamageInfo BuildHit(Damageable target, AttackData a, Skills.SkillData skill, int skillLevel, Skills.SkillComboData skillCombo)
@@ -242,10 +267,16 @@ namespace Aethvirse.Player
                 forceCrit |= skillCombo.forceCrit;
                 extraStagger = skillCombo.extraStagger;
             }
-            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, a.element, _rng,
+            Skills.SkillRuneData rune = RuneOf(skill);
+            multiplier *= Skills.RuneMath.DamageFactor(rune, target.Health.Ratio);
+            forceCrit |= _rng.NextDouble() < Skills.RuneMath.CritChance(rune);
+            ElementType element = Skills.RuneMath.Element(rune, a.element);
+            if (skill == null && element == ElementType.Physical) element = WeaponElement;
+            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, element, _rng,
                 forceCrit: forceCrit, bonusMult: bonus);
             info.isHeavy = a.isHeavy;
-            info.stagger = a.stagger + extraStagger;
+            info.launch = a.launch;
+            info.stagger = (a.stagger + extraStagger) * Skills.RuneMath.StaggerFactor(rune);
             info.hitStop = a.hitStop;
             info.source = gameObject;
             info.hitPosition = target.transform.position;
@@ -254,6 +285,38 @@ namespace Aethvirse.Player
             info.knockback = push.normalized * a.knockback;
             return info;
         }
+
+        static Skills.SkillRuneData RuneOf(Skills.SkillData skill)
+        {
+            var ps = global::Aethvirse.Stats.PlayerStats.Current;
+            return skill != null && ps != null ? ps.RuneFor(skill) : null;
+        }
+
+        /// <summary>Rune after-effects of a landed skill hit: leech and the echoing second hit.</summary>
+        void AfterRuneHit(Skills.SkillData skill, Damageable target, DamageInfo info)
+        {
+            Skills.SkillRuneData rune = RuneOf(skill);
+            if (rune == null) return;
+            float leech = Skills.RuneMath.LeechShare(rune);
+            if (leech > 0f && _self != null) _self.Health.Heal(Mathf.Max(1, Mathf.RoundToInt(info.amount * leech)));
+            float echo = Skills.RuneMath.EchoShare(rune);
+            if (echo > 0f) StartCoroutine(Echo(target, info, echo));
+        }
+
+        System.Collections.IEnumerator Echo(Damageable target, DamageInfo first, float share)
+        {
+            yield return new WaitForSeconds(0.22f);
+            if (target == null || target.IsDead) yield break;
+            var info = new DamageInfo
+            {
+                amount = Mathf.Max(1, Mathf.RoundToInt(first.amount * share)), element = first.element, isCrit = first.isCrit,
+                source = gameObject, hitPosition = target.transform.position, stagger = first.stagger * 0.5f,
+            };
+            if (target.Receive(info)) DamageNumbers.Spawn(target.transform.position + Vector3.up * 2.1f, info.amount, info.isCrit, info.element, false);
+        }
+
+        /// <summary>A weapon enchant's element: normal (physical) attacks take it.</summary>
+        public ElementType WeaponElement { get; set; } = ElementType.Physical;
 
         void OnLanded(Damageable target, DamageInfo info)
         {

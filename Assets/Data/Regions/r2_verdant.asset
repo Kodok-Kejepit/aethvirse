@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Verdant Hollow
   blurb: A green valley. Too quiet to trust.
   scene: R2_Verdant
+  origin: {x: 0, y: 0, z: 300}
   levelMin: 50
   levelMax: 100
   requiredRank: 1
@@ -37,18 +38,18 @@ MonoBehaviour:
   waystones:
   - id: r2_verdant_gate
     displayName: "Verdant Hollow \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 200}
   - id: r2_verdant_town
     displayName: "Verdant Hollow \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 270}
   - id: r2_verdant_landmark
     displayName: "Verdant Hollow \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 355}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 230}
+  - {x: -80, y: 0, z: 340}
+  - {x: 85, y: 0, z: 370}
+  - {x: -30, y: 0, z: 395}
   enemies:
   - thorn_stalker
   - moss_brute

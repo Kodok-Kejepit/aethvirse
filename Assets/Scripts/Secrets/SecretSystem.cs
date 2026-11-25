@@ -59,6 +59,8 @@ namespace Aethvirse.Secrets
             if (s == null || !State.MarkFound(id)) return false;
             Codex.Notify(s.category == SecretCategory.SealedMission ? "[ ??? ]  Something answered." : $"Journal: {s.title}", CodexTone.Anomaly);
             Pay(s);
+            // Sealed missions start from these (flag) and count them (area).
+            GameSession.Instance.Flags.SetFlag("secret_" + id);
             Core.GameEvents.RaiseAreaEntered("secret_" + id);
             var (found, total) = db.Progress(s.region, State);
             if (found >= total && total > 0) PageFull(s.region);

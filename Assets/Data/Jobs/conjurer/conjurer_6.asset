@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_6
-  displayName: Legion Rush
-  description: Conjurer technique.
+  displayName: Spirit Gate
+  description: Step through a gate of spirits and out the other side.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.80799997, g: 0.936, b: 1, a: 1}

@@ -19,6 +19,10 @@ public static class CombatDataBuilder
         BuildDaggers();
         BuildStaff();
         BuildBow();
+        Aerial(GreatswordDir, $"{GreatswordDir}/GreatswordCombo.asset", "gs", false, Color.white);
+        Aerial("Assets/Data/Combat/Daggers", "Assets/Data/Combat/Daggers/DaggersCombo.asset", "dg", false, Color.white);
+        Aerial("Assets/Data/Combat/Staff", "Assets/Data/Combat/Staff/StaffCombo.asset", "st", true, new Color(0.6f, 0.75f, 1f));
+        Aerial("Assets/Data/Combat/Bow", "Assets/Data/Combat/Bow/BowCombo.asset", "bw", true, new Color(0.95f, 0.9f, 0.75f));
         Directory.CreateDirectory(EnemyDir);
         BuildAshHound();
         AssetDatabase.SaveAssets();
@@ -67,6 +71,7 @@ public static class CombatDataBuilder
         a.dodgeCancel = startup + active * 0.5f;
         a.hitboxSize = size; a.hitboxOffset = offset; a.knockback = knockback; a.stagger = stagger; a.hitStop = hitStop;
         a.lungeSpeed = lunge; a.swing = swing; a.ranged = false; a.homing = false; a.projectileCount = 1; a.projectilePierce = 0;
+        a.launch = 0f; a.hover = false; a.slam = false;
         EditorUtility.SetDirty(a);
         return a;
     }
@@ -226,8 +231,42 @@ public static class CombatDataBuilder
         a.hitStop = hitStop;
         a.lungeSpeed = lunge;
         a.swing = swing;
+        a.launch = 0f; a.hover = false; a.slam = false;
         EditorUtility.SetDirty(a);
         return a;
+    }
+
+    /// <summary>
+    /// The aerial kit of a weapon (§6): a launcher (heavy from neutral while locked on), three hanging air strikes
+    /// that keep the target up, and a plunge that ends in a shockwave. Ranged weapons shoot in the air instead.
+    /// </summary>
+    static void Aerial(string dir, string comboPath, string w, bool ranged, Color shot)
+    {
+        Vector3 box = new Vector3(2.4f, 2f, 2.2f), front = new Vector3(0f, 1f, 1.1f);
+        AttackData launcher = A(dir, $"{w}_launcher", "Launcher", 1.3f, true, 0.16f, 0.1f, 0.3f, SwingKind.Rising, new Vector3(2.2f, 2.4f, 2.2f), new Vector3(0, 1.2f, 1.1f), 1f, 25f, 0.08f, 3f);
+        launcher.launch = 10f;
+        launcher.comboWindow = launcher.startup + launcher.active + 0.05f;
+        var air = new AttackData[3];
+        string[] names = ranged ? new[] { "Air Shot", "Air Shot", "Air Burst" } : new[] { "Air Cut I", "Air Cut II", "Air Cross" };
+        SwingKind[] swings = { SwingKind.Horizontal, SwingKind.Backhand, SwingKind.Diagonal };
+        for (int i = 0; i < 3; i++)
+        {
+            air[i] = A(dir, $"{w}_air_{i + 1}", names[i], 0.9f + 0.15f * i, false, 0.07f, 0.1f, 0.2f, swings[i], box, front, 0.5f, 6f, 0.05f, 1f);
+            if (ranged) Ranged(air[i], i == 2 ? 3 : 1, i == 2 ? 20f : 0f, 36f, 22f, 0.3f, 0, shot, true);
+            air[i].hover = true;
+            air[i].launch = 3.5f;
+        }
+        for (int i = 0; i < 3; i++) Link(air[i], i < 2 ? air[i + 1] : null, null);
+        AttackData plunge = A(dir, $"{w}_plunge", "Plunge", 2.2f, true, 0.18f, 0.12f, 0.35f, SwingKind.Slam, new Vector3(2.4f, 3f, 2.4f), new Vector3(0, 0.5f, 0.6f), 7f, 40f, 0.12f, 0f);
+        plunge.slam = true;
+        plunge.launch = -14f;
+        Link(launcher, null, null);
+        Link(plunge, null, null);
+        var combo = LoadOrCreate<ComboData>(comboPath);
+        combo.launcher = launcher;
+        combo.airLightStart = air[0];
+        combo.airHeavyStart = plunge;
+        EditorUtility.SetDirty(combo);
     }
 
     static void Link(AttackData a, AttackData nextLight, AttackData nextHeavy)

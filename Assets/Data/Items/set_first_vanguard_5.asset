@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a604c67bd78838c817015a9a64f52c, type: 3}
+  m_Name: set_first_vanguard_5
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Items.ItemData
+  id: set_first_vanguard_5
+  displayName: First Vanguard's Codex Clasp
+  description: Part of the Echo of the First Vanguard set. Someone carried the Codex
+    before you. This is what is left of them. It remembers how to fight.
+  kind: 3
+  rarity: 5
+  maxStack: 1
+  sellPrice: 2080
+  canSell: 1
+  slot: 8
+  attack: 0
+  attackPerLevel: 0
+  defense: 0
+  defensePerLevel: 0
+  statBonuses:
+  - stat: sen
+    value: 27
+  isDropBase: 0
+  onHitPoison: 0
+  healAmount: 0
+  manaAmount: 0
+  identifiesItems: 0
+  opensMysteryBox: 0
+  unidentified: 0
+  unidentifiedName: ???
+  unidentifiedDescription: 
+  cursed: 0
+  curseHpFraction: 0
+  curseInterval: 5
+  evolveKills: 0
+  evolvesInto: 
+  hiddenEffect: 
+  setId: first_vanguard
+  minLevel: 600
+  gemStat: 
+  gemValue: 0
+  enchantWeapon: 0
+  enchantElement: 0
+  teachesSkill: 
+  runeId: 

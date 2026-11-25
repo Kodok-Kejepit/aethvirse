@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: summoner_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: summoner_6
-  displayName: Bond Rush
-  description: Summoner technique.
+  displayName: Bond Step
+  description: Swap places with your own shadow, cutting on the way.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.744, g: 0.872, b: 1, a: 1}

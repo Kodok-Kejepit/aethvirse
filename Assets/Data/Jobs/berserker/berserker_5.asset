@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_5
-  displayName: Rage Crash
-  description: Berserker technique.
+  displayName: Ruinbringer
+  description: One overhead blow that leaves a crater.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.54499996, b: 0.475, a: 1}

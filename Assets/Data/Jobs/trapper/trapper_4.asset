@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trapper_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trapper_4
-  displayName: Wire Nova
-  description: Trapper technique.
+  displayName: Thorn Garden
+  description: Earth spikes bloom around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.69600004, g: 0.62, b: 0.468, a: 1}

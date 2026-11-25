@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: archmage_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: archmage_p1
-  displayName: Cataclysm Resolve
-  description: Passive. Defense up.
+  displayName: Arcane Ward
+  description: Passive. A shell of quiet magic. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.5, b: 0.9, a: 1}

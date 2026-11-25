@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadow_sovereign_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_0
-  displayName: Sovereign Cleave
-  description: Shadow Sovereign technique.
+  displayName: Sovereign's Edge
+  description: A cut that carries the weight of an army.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.15, g: 0.1, b: 0.25, a: 1}

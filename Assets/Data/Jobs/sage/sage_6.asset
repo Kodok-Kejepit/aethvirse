@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_6
-  displayName: Lumen Rift
-  description: Sage technique.
+  displayName: Blessed Dawn
+  description: A small sunrise, all around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.744, g: 1, b: 0.872, a: 1}

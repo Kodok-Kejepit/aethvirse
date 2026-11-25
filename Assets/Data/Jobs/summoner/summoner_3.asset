@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: summoner_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: summoner_3
-  displayName: Call Whirl
-  description: Summoner technique.
+  displayName: Spirit Flare
+  description: Spirits burst out of the air around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.672, g: 0.836, b: 1, a: 1}

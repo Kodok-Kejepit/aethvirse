@@ -85,6 +85,8 @@ namespace Aethvirse.Input.Touch
             bagButton.anchorMin = bagButton.anchorMax = Vector2.one;
             RectTransform pauseButton = BuildTapButton(safe, "Pause", "II", new Vector2(-400f, -110f), 110f, UI.PauseMenu.Toggle);
             pauseButton.anchorMin = pauseButton.anchorMax = Vector2.one;
+            RectTransform mapButton = BuildTapButton(safe, "Map", "M", new Vector2(-680f, -110f), 110f, UI.MapView.Toggle);
+            mapButton.anchorMin = mapButton.anchorMax = Vector2.one;
 
             // Contextual: only shows while something usable is near.
             var detector = FindFirstObjectByType<Interaction.InteractionDetector>();

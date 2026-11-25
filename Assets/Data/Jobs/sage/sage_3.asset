@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_3
-  displayName: Grace Barrage
-  description: Sage technique.
+  displayName: Ward Circle
+  description: A glowing circle forms; what is inside does not like it.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.672, g: 1, b: 0.836, a: 1}

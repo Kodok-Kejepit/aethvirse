@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_5
-  displayName: Phantasm Crash
-  description: Illusionist technique.
+  displayName: Dream Collapse
+  description: The false world you made falls on them.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.93, g: 0.86, b: 1, a: 1}

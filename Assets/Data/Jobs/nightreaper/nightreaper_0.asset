@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_0
-  displayName: Reaper Cleave
-  description: Nightreaper technique.
+  displayName: Reaping Crescent
+  description: A curved cut like the last moon of the year.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.4, g: 0.15, b: 0.6, a: 1}

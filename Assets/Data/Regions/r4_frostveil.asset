@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Frostveil Peaks
   blurb: Frozen peaks under a veil of snow.
   scene: R4_Frostveil
+  origin: {x: 0, y: 0, z: 900}
   levelMin: 150
   levelMax: 200
   requiredRank: 3
@@ -37,18 +38,18 @@ MonoBehaviour:
   waystones:
   - id: r4_frostveil_gate
     displayName: "Frostveil Peaks \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 800}
   - id: r4_frostveil_town
     displayName: "Frostveil Peaks \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 870}
   - id: r4_frostveil_landmark
     displayName: "Frostveil Peaks \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 955}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 830}
+  - {x: -80, y: 0, z: 940}
+  - {x: 85, y: 0, z: 970}
+  - {x: -30, y: 0, z: 995}
   enemies:
   - frost_yeti
   - ice_wyvernling

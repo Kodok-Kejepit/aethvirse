@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_4
   displayName: Rise, Echo
-  description: Necromancer technique.
+  description: Pull the shadow out of a fallen foe and bind it to you.
   kind: 10
   isUltimate: 0
   iconColor: {r: 0.544, g: 0.392, b: 0.62, a: 1}

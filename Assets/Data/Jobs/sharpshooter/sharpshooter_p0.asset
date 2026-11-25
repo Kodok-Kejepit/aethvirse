@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_p0
-  displayName: Precise Might
-  description: Passive. Attack up.
+  displayName: Steady Hands
+  description: Passive. Breath held, aim true. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.85, b: 0.5, a: 1}

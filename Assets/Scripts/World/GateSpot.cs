@@ -38,7 +38,9 @@ namespace Aethvirse.World
             _interact.Used += _ => Enter();
         }
 
-        OpenGate Gate => GameSession.Instance.Gates.At(GameSession.Instance.Region, index);
+        string _region;
+        string RegionId => _region ??= RegionController.In(gameObject.scene)?.id ?? GameSession.Instance.Region;
+        OpenGate Gate => GameSession.Instance.Gates.At(RegionId, index);
 
         void Update()
         {

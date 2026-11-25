@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: vanguard_of_echoes_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: vanguard_of_echoes_3
-  displayName: Unwritten Whirl
-  description: Echo Warden technique.
+  displayName: Unwritten Burst
+  description: A burst of something the world does not have a word for.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.836, g: 0.836, b: 0.918, a: 1}

@@ -35,6 +35,14 @@ namespace Aethvirse.Combat
         public float lungeSpeed = 3f;
         public SwingKind swing = SwingKind.Horizontal;
 
+        [Header("Aerial")]
+        [Tooltip("Upward speed given to light targets (launchers); negative spikes airborne targets down.")]
+        public float launch;
+        [Tooltip("Air attacks: the hero hangs in the air while it runs (juggles).")]
+        public bool hover;
+        [Tooltip("Plunging attack: dives until it lands, then a shockwave.")]
+        public bool slam;
+
         [Header("Ranged (bows, staves, thrown knives)")]
         [Tooltip("Fires projectiles at the start of the active window instead of a melee sweep.")]
         public bool ranged;

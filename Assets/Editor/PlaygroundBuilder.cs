@@ -247,6 +247,8 @@ public static class PlaygroundBuilder
         Material accent = MakeMaterial("Accent", new Color(0.20f, 0.85f, 0.95f));
         Material blade = MakeMaterial("Blade", new Color(0.80f, 0.85f, 0.95f));
         Material markerMat = MakeMaterial("LockMarker", new Color(1f, 0.25f, 0.25f));
+        var sceneNow = EditorSceneManager.GetActiveScene();
+        var before = new System.Collections.Generic.HashSet<GameObject>(sceneNow.GetRootGameObjects());
         Light sun = BuildLight();
         PlayerController body = BuildPlayer(player, accent, out Transform cameraTarget);
         body.transform.position = spawn;
@@ -259,6 +261,10 @@ public static class PlaygroundBuilder
         BuildServices(body, sun, regionId);
         var overlay = new GameObject("DebugOverlay").AddComponent<DebugOverlay>();
         Wire(overlay, "player", body);
+        // Everything above is the rig: saved inactive, woken (or dropped when streamed) by the activator.
+        foreach (GameObject root in sceneNow.GetRootGameObjects())
+            if (!before.Contains(root) && root.GetComponent<Aethvirse.World.SceneRig>() == null) root.AddComponent<Aethvirse.World.SceneRig>();
+        new GameObject("RigActivator").AddComponent<Aethvirse.World.RigActivator>();
         return body;
     }
 
