@@ -104,7 +104,7 @@ namespace Aethvirse.Quests
             if (GameSession.Instance.PenaltyPending && _penaltyTimer < 0f && !InPenaltyZone) SchedulePenalty();
         }
 
-        public bool Start(string id)
+        public bool StartQuest(string id)
         {
             QuestData q = Get(id);
             if (q == null || !Log.Start(q, Time.time)) return false;
@@ -218,7 +218,7 @@ namespace Aethvirse.Quests
                     case RewardType.AcademyPoints: AddAcademyPoints(r.amount); break;
                     case RewardType.CodexPoints: s.CodexPoints += r.amount; break;
                     case RewardType.CodexMessage: Codex.Notify(r.text, CodexTone.Anomaly); break;
-                    case RewardType.StartQuest: Start(r.key); break;
+                    case RewardType.StartQuest: StartQuest(r.key); break;
                 }
             }
         }
@@ -238,7 +238,7 @@ namespace Aethvirse.Quests
             foreach (QuestData q in _db.quests)
             {
                 if (q == null || !q.autoStart || Log.IsActive(q.id) || Log.IsCompleted(q.id) || Log.failed.Contains(q.id)) continue;
-                if (Condition.All(q.startConditions, GameContext.Instance)) Start(q.id);
+                if (Condition.All(q.startConditions, GameContext.Instance)) StartQuest(q.id);
             }
         }
 
@@ -266,7 +266,7 @@ namespace Aethvirse.Quests
                 int xp = t != null ? Mathf.RoundToInt(Progression.XpNeeded(level, t) * 0.15f) : 15;
                 _runtime[id] = DailyQuests.Build(day, level, xp);
             }
-            if (!Log.IsActive(id) && !Log.IsCompleted(id) && !Log.failed.Contains(id)) Start(id);
+            if (!Log.IsActive(id) && !Log.IsCompleted(id) && !Log.failed.Contains(id)) StartQuest(id);
         }
 
         void OnHour(int hour)
@@ -279,7 +279,7 @@ namespace Aethvirse.Quests
             int level = PlayerStats.Current != null ? PlayerStats.Current.Progression.level : 1;
             QuestData q = DailyQuests.Emergency(++_emergencySerial, level);
             _runtime[q.id] = q;
-            Start(q.id);
+            StartQuest(q.id);
         }
 
         void SchedulePenalty()

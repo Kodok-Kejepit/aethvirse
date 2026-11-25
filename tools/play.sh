@@ -60,4 +60,14 @@ GAME="$(game_binary "$DIR")"
 chmod +x "$GAME"
 echo "Starting $GAME"
 cd "$DIR"
-exec "$GAME" -logFile "$DIR/player.log" "${GAME_ARGS[@]}"
+# Fullscreen at the monitor's (scaled) size from the first frame. Without this, Hyprland's first tile size
+# (e.g. 860x836) became the game resolution, stretched over the screen and saved for next time.
+SCREEN_ARGS=()
+if command -v hyprctl >/dev/null && [[ " ${GAME_ARGS[*]} " != *" -screen-width "* && " ${GAME_ARGS[*]} " != *" -windowed "* ]]; then
+	read -r W H < <(hyprctl monitors -j 2>/dev/null | python3 -c 'import json,sys
+m=[x for x in json.load(sys.stdin) if x.get("focused")] or [None]
+m=m[0]
+print(round(m["width"]/m["scale"]), round(m["height"]/m["scale"])) if m else print("")' 2>/dev/null)
+	[[ -n "${W:-}" && -n "${H:-}" ]] && SCREEN_ARGS=(-screen-fullscreen 1 -screen-width "$W" -screen-height "$H")
+fi
+exec "$GAME" -logFile "$DIR/player.log" "${SCREEN_ARGS[@]}" "${GAME_ARGS[@]}"

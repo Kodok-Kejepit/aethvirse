@@ -116,7 +116,7 @@ namespace Aethvirse.Dialog
                     case DialogEffectType.GiveGold: s.AddGold(e.amount); break;
                     case DialogEffectType.TakeGold: s.SpendGold(e.amount); break;
                     case DialogEffectType.SetFlag: s.Flags.SetFlag(e.key); break;
-                    case DialogEffectType.StartQuest: QuestSystem.Instance.Start(e.key); break;
+                    case DialogEffectType.StartQuest: QuestSystem.Instance.StartQuest(e.key); break;
                     case DialogEffectType.AcademyPoints: QuestSystem.Instance.AddAcademyPoints(e.amount); break;
                     case DialogEffectType.CodexMessage: Codex.Notify(e.text, CodexTone.Anomaly); break;
                     case DialogEffectType.OpenShop: InventoryPanel.OpenShop(); break;
@@ -126,6 +126,7 @@ namespace Aethvirse.Dialog
 
         void OnGUI()
         {
+            GUI.depth = -10;
             if (_npc == null) return;
             float s = Screen.height / 1080f;
             _name ??= new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold };

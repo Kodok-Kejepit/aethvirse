@@ -85,9 +85,14 @@ namespace Aethvirse.Core
             _smoothedDelta = Mathf.Lerp(_smoothedDelta, Time.unscaledDeltaTime, FpsSmoothing);
         }
 
+        /// <summary>Shown and not covered by a panel (the minimap moves below it).</summary>
+        public static bool Shown { get; private set; }
+
         void OnGUI()
         {
-            if (!_visible) return;
+            bool panel = StatusPanel.IsOpen || UI.InventoryPanel.IsOpen || UI.PauseMenu.IsOpen || UI.MapView.IsOpen || Dialog.DialogBox.IsOpen || World.FastTravelMenu.IsOpen;
+            Shown = _visible && !panel;
+            if (!Shown) return;
             _style ??= new GUIStyle(GUI.skin.label) { fontSize = 16, normal = { textColor = Color.white } };
             string text = $"FPS {1f / _smoothedDelta:0}";
             if (player != null)

@@ -19,7 +19,7 @@ namespace Aethvirse.Quests
             foreach (string id in quests)
             {
                 if (qs.Log.IsActive(id) || qs.Log.IsCompleted(id)) continue;
-                if (qs.Start(id)) return;
+                if (qs.StartQuest(id)) return;
             }
             Codex.Notify("Nothing new on the board.", CodexTone.Info);
         }

@@ -50,5 +50,40 @@ namespace Aethvirse.Tests
                 Assert.That(roots.Any(x => x.GetComponent<RigActivator>() != null), Is.True, sc);
             }
         }
+
+        [Test]
+        public void EveryRegionScene_KnowsItsRegion()
+        {
+            var atlas = AssetDatabase.LoadAssetAtPath<WorldAtlas>("Assets/Resources/WorldAtlas.asset");
+            var regions = atlas.AllRegions().Where(r => !r.hidden && !string.IsNullOrEmpty(r.scene)).Select(r => (r.id, r.scene)).ToList();
+            foreach (var (id, sc) in regions)
+            {
+                UnityEditor.SceneManagement.EditorSceneManager.OpenScene($"Assets/Scenes/Regions/{sc}.unity");
+                var rc = Object.FindFirstObjectByType<RegionController>();
+                Assert.That(rc, Is.Not.Null, sc);
+                Assert.That(rc.Region, Is.Not.Null, sc + ": the RegionController lost its region (saved as an empty reference)");
+                Assert.That(rc.Region.id, Is.EqualTo(id), sc);
+            }
+        }
+
+        [Test]
+        public void EveryScene_HasNoMissingObjectReferences_OnItsOwnComponents()
+        {
+            foreach (string path in new[] { "Assets/Scenes/Academy.unity", "Assets/Scenes/Regions/R1_Ashfall.unity", "Assets/Scenes/Regions/S1_Glasswood.unity", "Assets/Scenes/Gate.unity" })
+            {
+                var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(path);
+                foreach (GameObject root in scene.GetRootGameObjects())
+                    foreach (MonoBehaviour mb in root.GetComponentsInChildren<MonoBehaviour>(true))
+                    {
+                        Assert.That(mb, Is.Not.Null, path + ": a component lost its script");
+                        if (!mb.GetType().Namespace?.StartsWith("Aethvirse") ?? true) continue;
+                        var so = new SerializedObject(mb);
+                        SerializedProperty it = so.GetIterator();
+                        while (it.NextVisible(true))
+                            if (it.propertyType == SerializedPropertyType.ObjectReference && it.objectReferenceValue == null && it.objectReferenceInstanceIDValue != 0)
+                                Assert.Fail($"{path}: {mb.GetType().Name}.{it.propertyPath} points to a missing object");
+                    }
+            }
+        }
     }
 }

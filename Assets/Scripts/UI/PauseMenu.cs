@@ -62,6 +62,7 @@ namespace Aethvirse.UI
 
         void OnGUI()
         {
+            GUI.depth = -10;
             if (!_open) return;
             float s = Screen.height / 1080f;
             _title ??= new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold };

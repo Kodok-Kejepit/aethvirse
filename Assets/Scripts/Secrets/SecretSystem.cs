@@ -89,7 +89,7 @@ namespace Aethvirse.Secrets
                     case RewardType.AcademyPoints: QuestSystem.Instance.AddAcademyPoints(r.amount); break;
                     case RewardType.CodexPoints: session.CodexPoints += r.amount; break;
                     case RewardType.CodexMessage: Codex.Notify(r.text, CodexTone.Anomaly); break;
-                    case RewardType.StartQuest: QuestSystem.Instance.Start(r.key); break;
+                    case RewardType.StartQuest: QuestSystem.Instance.StartQuest(r.key); break;
                 }
             }
         }
