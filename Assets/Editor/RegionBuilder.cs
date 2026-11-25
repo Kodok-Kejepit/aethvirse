@@ -90,7 +90,15 @@ public static class RegionBuilder
         Directory.CreateDirectory(SceneDir);
         BuildEnemies();
         var regions = new List<RegionData>();
-        foreach (Def d in Regions) regions.Add(RegionAsset(d));
+        var perPlanet = new Dictionary<int, int>();
+        foreach (Def d in Regions)
+        {
+            // Regions of one world sit side by side along the road (north), for seamless streaming.
+            perPlanet.TryGetValue(d.planet, out int k);
+            Vector3 origin = d.hidden ? Vector3.zero : new Vector3(0f, 0f, k * Aethvirse.World.WorldStreamer.Spacing);
+            if (!d.hidden) perPlanet[d.planet] = k + 1;
+            regions.Add(RegionAsset(d, origin));
+        }
         // Roads join neighbouring regions of the same world; worlds are joined by star gates.
         for (int i = 0; i < regions.Count; i++)
         {
@@ -227,10 +235,11 @@ public static class RegionBuilder
 
     // --- Regions --------------------------------------------------------------------------------------
 
-    static RegionData RegionAsset(Def d)
+    static RegionData RegionAsset(Def d, Vector3 origin)
     {
         var r = LoadOrCreate<RegionData>($"{RegionDir}/{d.id}.asset");
         r.id = d.id;
+        r.origin = origin;
         r.displayName = d.name;
         r.blurb = d.blurb;
         r.scene = d.scene;
@@ -246,11 +255,11 @@ public static class RegionBuilder
         for (int i = 0; i < d.weather.Length; i++) r.weather.entries.Add(new WeatherTable.Entry { kind = d.weather[i], weight = i == 0 ? 4f : 1.5f });
         r.waystones = new List<WaystoneInfo>
         {
-            new WaystoneInfo { id = d.id + "_gate", displayName = d.name + " — Entry", position = new Vector3(6f, 0f, -100f) },
-            new WaystoneInfo { id = d.id + "_town", displayName = d.name + " — Town", position = new Vector3(-50f, 0f, -30f) },
-            new WaystoneInfo { id = d.id + "_landmark", displayName = d.name + " — Landmark", position = new Vector3(0f, 0f, 55f) },
+            new WaystoneInfo { id = d.id + "_gate", displayName = d.name + " — Entry", position = origin + new Vector3(6f, 0f, -100f) },
+            new WaystoneInfo { id = d.id + "_town", displayName = d.name + " — Town", position = origin + new Vector3(-50f, 0f, -30f) },
+            new WaystoneInfo { id = d.id + "_landmark", displayName = d.name + " — Landmark", position = origin + new Vector3(0f, 0f, 55f) },
         };
-        r.gateSpots = new List<Vector3> { new Vector3(70f, 0f, -70f), new Vector3(-80f, 0f, 40f), new Vector3(85f, 0f, 70f), new Vector3(-30f, 0f, 95f) };
+        r.gateSpots = new List<Vector3> { origin + new Vector3(70f, 0f, -70f), origin + new Vector3(-80f, 0f, 40f), origin + new Vector3(85f, 0f, 70f), origin + new Vector3(-30f, 0f, 95f) };
         EditorUtility.SetDirty(r);
         return r;
     }
@@ -292,7 +301,7 @@ public static class RegionBuilder
 
         foreach (WaystoneInfo w in region.waystones)
         {
-            GameObject ws = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "Waystone_" + w.id, world, w.position + Vector3.up * 1.5f, new Vector3(0.8f, 1.5f, 0.8f), stone);
+            GameObject ws = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "Waystone_" + w.id, world, w.position - region.origin + Vector3.up * 1.5f, new Vector3(0.8f, 1.5f, 0.8f), stone);
             ws.AddComponent<Interactable>();
             var wsc = ws.AddComponent<Waystone>();
             var so = new SerializedObject(wsc);
@@ -373,7 +382,7 @@ public static class RegionBuilder
         {
             var spot = new GameObject($"GateSpot_{i}").AddComponent<GateSpot>();
             spot.transform.SetParent(spots, false);
-            spot.transform.position = region.gateSpots[i];
+            spot.transform.position = region.gateSpots[i] - region.origin;
             var so = new SerializedObject(spot);
             so.FindProperty("index").intValue = i;
             so.ApplyModifiedPropertiesWithoutUndo();
@@ -397,6 +406,24 @@ public static class RegionBuilder
             PlaygroundBuilder.Wire(hg, "ring", ring);
         }
 
+        // The road north to the next region of this world (and mist across it while that region is closed).
+        string next = region.neighbours.Find(n => System.Array.FindIndex(Regions, x => x.id == n) > index);
+        if (next != null)
+        {
+            PlaygroundBuilder.Box(world, "RoadNorth", new Vector3(0f, -0.5f, 150f), new Vector3(18f, 1f, 42f), dark);
+            PlaygroundBuilder.Box(world, "RoadWallW", new Vector3(-10f, 1.5f, 150f), new Vector3(1f, 3f, 42f), wall);
+            PlaygroundBuilder.Box(world, "RoadWallE", new Vector3(10f, 1.5f, 150f), new Vector3(1f, 3f, 42f), wall);
+            GameObject mist = PlaygroundBuilder.Box(world, "Mist_" + next, new Vector3(0f, 3f, 150f), new Vector3(18f, 6f, 1f),
+                PlaygroundBuilder.MakeMaterial("Mist", new Color(0.85f, 0.88f, 0.95f)));
+            mist.isStatic = false;
+            var mw = mist.AddComponent<MistWall>();
+            var mso = new SerializedObject(mw);
+            mso.FindProperty("targetRegion").stringValue = next;
+            mso.ApplyModifiedPropertiesWithoutUndo();
+        }
+        // Move the whole region to its place in the world.
+        if (region.origin != Vector3.zero)
+            foreach (GameObject root in scene.GetRootGameObjects()) root.transform.position += region.origin;
         EditorSceneManager.SaveScene(scene, $"{SceneDir}/{d.scene}.unity");
     }
 

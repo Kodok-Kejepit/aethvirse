@@ -27,6 +27,19 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-21 — Seamless world (branch `p1-16-next`)
+
+### Done
+- **No loading screen between the regions of one world (§7).** The regions of a world sit side by side along the
+  road north (300 m apart, joined by a walled road). Walking toward an open neighbour streams its scene in next to
+  yours in the background; crossing the border makes it the current region (name, level band, weather table, map,
+  autosave scene) and the player rig moves into it; walking far away unloads the region behind you.
+- Regions still closed (journal page or academy rank) show a **mist wall** across the road that says why.
+- Every scene is saved with the player rig (player, camera, HUD, services) inactive; a tiny activator wakes it when
+  the scene is opened on its own and drops it when the scene is only streamed in, so there is never a second
+  player or camera. Streamed regions keep their own monsters, Gate spots and Gate rolls.
+- Fast travel, star gates and Gates (dungeon instances) still load their scene, as designed.
+
 ## P1-20 — Minimap and region map (branch `p1-16-next`)
 
 ### Done

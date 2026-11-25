@@ -47,6 +47,7 @@ namespace Aethvirse.UI
 
         void OnScene(Scene scene, LoadSceneMode mode)
         {
+            if (mode == LoadSceneMode.Additive) return;
             _ready = false;
             SetOpen(false);
             CancelInvoke(nameof(Bake));
@@ -54,11 +55,15 @@ namespace Aethvirse.UI
         }
 
         string Key => RegionController.Current != null ? RegionController.Current.id : SceneManager.GetActiveScene().name;
+        /// <summary>Centre of the current region (regions of one world sit side by side).</summary>
+        static Vector3 Origin => RegionController.Current != null ? RegionController.Current.origin : Vector3.zero;
+        Vector3 _bakedOrigin;
 
         void Bake()
         {
             if (System.Array.IndexOf(NoMap, SceneManager.GetActiveScene().name) >= 0 || PlayerTarget.Current == null) return;
             _key = Key;
+            _bakedOrigin = Origin;
             int n = MapMemory.Grid;
             float cell = MapMemory.CellSize, half = MapMemory.Size * 0.5f;
             _terrain ??= new Texture2D(n, n, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
@@ -67,7 +72,7 @@ namespace Aethvirse.UI
             for (int y = 0; y < n; y++)
                 for (int x = 0; x < n; x++)
                 {
-                    var origin = new Vector3(-half + (x + 0.5f) * cell, 80f, -half + (y + 0.5f) * cell);
+                    var origin = _bakedOrigin + new Vector3(-half + (x + 0.5f) * cell, 80f, -half + (y + 0.5f) * cell);
                     Color c = new Color(0.04f, 0.05f, 0.08f);
                     if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 200f, ~0, QueryTriggerInteraction.Ignore))
                     {
@@ -85,6 +90,8 @@ namespace Aethvirse.UI
             foreach (var g in FindObjectsByType<Endgame.StarGate>(FindObjectsSortMode.None)) _marks.Add((g.transform.position, new Color(0.95f, 0.85f, 1f), "Star gate"));
             foreach (var npc in FindObjectsByType<Dialog.Npc>(FindObjectsSortMode.None)) _marks.Add((npc.transform.position, new Color(1f, 0.9f, 0.4f), "Person"));
             foreach (var ch in FindObjectsByType<Items.Chest>(FindObjectsSortMode.None)) _marks.Add((ch.transform.position, new Color(0.8f, 0.6f, 0.3f), "Chest"));
+            // Streamed neighbours are loaded too: keep only this region's landmarks.
+            _marks.RemoveAll(m => Mathf.Abs(m.pos.x - _bakedOrigin.x) > half || Mathf.Abs(m.pos.z - _bakedOrigin.z) > half);
             _ready = true;
         }
 
@@ -101,6 +108,8 @@ namespace Aethvirse.UI
         void Update()
         {
             if (!_ready) return;
+            // Walked into the next region (seamless world): bake its map.
+            if (Key != _key) { _ready = false; Bake(); return; }
             if (GameInput.Instance.Map.WasPressedThisFrame()) SetOpen(!_open);
             if (_open && GameInput.Instance.ReleaseCursor.WasPressedThisFrame()) SetOpen(false);
             _revealTimer -= Time.unscaledDeltaTime;
@@ -108,7 +117,7 @@ namespace Aethvirse.UI
             if (_revealTimer <= 0f && p != null)
             {
                 _revealTimer = 0.25f;
-                if (GameSession.Instance.Map.Reveal(_key, p.position, RevealRadius) > 0) RefreshFog();
+                if (GameSession.Instance.Map.Reveal(_key, p.position - _bakedOrigin, RevealRadius) > 0) RefreshFog();
             }
         }
 
@@ -146,7 +155,11 @@ namespace Aethvirse.UI
         }
 
         /// <summary>World position → 0..1 map coordinates (x right, y up).</summary>
-        static Vector2 Uv(Vector3 w) => new Vector2((w.x + MapMemory.Size * 0.5f) / MapMemory.Size, (w.z + MapMemory.Size * 0.5f) / MapMemory.Size);
+        Vector2 Uv(Vector3 w)
+        {
+            w -= _bakedOrigin;
+            return new Vector2((w.x + MapMemory.Size * 0.5f) / MapMemory.Size, (w.z + MapMemory.Size * 0.5f) / MapMemory.Size);
+        }
 
         void DrawMini(Transform p, float s)
         {
@@ -229,7 +242,7 @@ namespace Aethvirse.UI
 
         bool Seen(Vector3 pos)
         {
-            Vector2Int c = MapMemory.Cell(pos);
+            Vector2Int c = MapMemory.Cell(pos - _bakedOrigin);
             return GameSession.Instance.Map.IsRevealed(_key, c.x, c.y);
         }
 

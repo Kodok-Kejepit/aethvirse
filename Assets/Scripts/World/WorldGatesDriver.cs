@@ -16,14 +16,18 @@ namespace Aethvirse.World
         readonly Dictionary<int, List<Enemy>> _breakWaves = new Dictionary<int, List<Enemy>>();
         int _spotCount;
 
+        RegionData _r;
+        RegionData Region => _r != null ? _r : _r = RegionController.In(gameObject.scene) ?? RegionController.Current;
+
         void Start()
         {
-            _spotCount = RegionController.Current != null ? RegionController.Current.gateSpots.Count : 0;
+            _spotCount = Region != null ? Region.gateSpots.Count : 0;
             GameSession.Instance.HourChanged += OnHour;
             OnHour(GameSession.Instance.Clock.Hour);
             // Gates that broke while you were away are still pouring out.
-            foreach (OpenGate g in GameSession.Instance.Gates.In(GameSession.Instance.Region))
-                if (g.broken) StartBreak(g);
+            if (Region != null)
+                foreach (OpenGate g in GameSession.Instance.Gates.In(Region.id))
+                    if (g.broken) StartBreak(g);
         }
 
         void OnDestroy()
@@ -33,23 +37,24 @@ namespace Aethvirse.World
 
         int RegionTier()
         {
-            RegionData r = RegionController.Current;
+            RegionData r = Region;
             return r != null && WorldAtlas.Instance != null ? Mathf.Clamp(new List<RegionData>(WorldAtlas.Instance.AllRegions()).IndexOf(r), 0, 5) : 0;
         }
 
         void OnHour(int hour)
         {
             GameSession s = GameSession.Instance;
-            OpenGate g = s.Gates.Roll(s.Region, _spotCount, RegionTier(), s.Clock.totalMinutes, _rng);
+            if (Region == null) return;
+            OpenGate g = s.Gates.Roll(Region.id, _spotCount, RegionTier(), s.Clock.totalMinutes, _rng);
             if (g != null) Codex.Notify($"A rank {WorldGates.RankNames[g.rank]} {(g.red ? "RED Gate" : "Gate")} has opened nearby.", g.red ? CodexTone.Warning : CodexTone.Info);
             foreach (OpenGate broke in s.Gates.CheckBreaks(s.Clock.totalMinutes))
-                if (broke.region == s.Region) StartBreak(broke);
+                if (broke.region == Region.id) StartBreak(broke);
         }
 
         void StartBreak(OpenGate g)
         {
-            if (_breakWaves.ContainsKey(g.uid) || RegionController.Current == null) return;
-            RegionData r = RegionController.Current;
+            if (_breakWaves.ContainsKey(g.uid) || Region == null) return;
+            RegionData r = Region;
             Vector3 at = r.gateSpots[Mathf.Clamp(g.spot, 0, r.gateSpots.Count - 1)];
             int level = Mathf.Clamp(r.levelMin + g.rank * 5, r.levelMin, r.levelMax);
             var wave = new List<Enemy>();

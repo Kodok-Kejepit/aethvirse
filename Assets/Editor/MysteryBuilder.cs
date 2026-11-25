@@ -14,10 +14,11 @@ public static class MysteryBuilder
         int placed = 0;
         // Scene names first: opening a scene unloads the loose atlas objects.
         var scenes = new System.Collections.Generic.Dictionary<string, string>();
+        var origins = new System.Collections.Generic.Dictionary<string, Vector3>();
         foreach (MysteryContent.CipherDef c in MysteryContent.Ciphers)
         {
             var region = atlas.Region(c.region);
-            if (region != null && !string.IsNullOrEmpty(region.scene)) scenes[c.region] = region.scene;
+            if (region != null && !string.IsNullOrEmpty(region.scene)) { scenes[c.region] = region.scene; origins[c.region] = region.origin; }
         }
         foreach (MysteryContent.CipherDef c in MysteryContent.Ciphers)
         {
@@ -26,6 +27,7 @@ public static class MysteryBuilder
             GameObject old = GameObject.Find("Mysteries");
             if (old != null) Object.DestroyImmediate(old);
             var root = new GameObject("Mysteries").transform;
+            root.position = origins[c.region];
 
             GameObject lockGo = PlaygroundBuilder.Primitive(PrimitiveType.Cube, "CipherLock", root, c.lockAt + Vector3.up * 1f, new Vector3(1.4f, 2f, 0.6f),
                 PlaygroundBuilder.MakeMaterial("CipherLock", new Color(0.3f, 0.32f, 0.4f)));

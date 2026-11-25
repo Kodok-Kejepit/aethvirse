@@ -11,6 +11,8 @@ namespace Aethvirse.World
         public string displayName = "";
         [TextArea] public string blurb = "";
         public string scene = "";
+        [Tooltip("Centre of this region in its world (regions of one world sit side by side for streaming).")]
+        public Vector3 origin;
         public int levelMin = 1;
         public int levelMax = 50;
         [Tooltip("Academy rank (0 = E … 5 = S) needed before the road opens (the Mystery Journal adds its own lock in P1-11).")]

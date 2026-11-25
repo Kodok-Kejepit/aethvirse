@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: The Last City
   blurb: They held out longest here. The walls remember.
   scene: K3_LastCity
+  origin: {x: 0, y: 0, z: 600}
   levelMin: 650
   levelMax: 700
   requiredRank: 5
@@ -35,18 +36,18 @@ MonoBehaviour:
   waystones:
   - id: k3_last_city_gate
     displayName: "The Last City \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 500}
   - id: k3_last_city_town
     displayName: "The Last City \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 570}
   - id: k3_last_city_landmark
     displayName: "The Last City \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 655}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 530}
+  - {x: -80, y: 0, z: 640}
+  - {x: 85, y: 0, z: 670}
+  - {x: -30, y: 0, z: 695}
   enemies:
   - hunted_sentinel
   - star_archer

@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: The God's Seat
   blurb: The place every story was written from.
   scene: Z1_Seat
+  origin: {x: 0, y: 0, z: 0}
   levelMin: 700
   levelMax: 800
   requiredRank: 5

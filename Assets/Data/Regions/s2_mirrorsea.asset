@@ -16,6 +16,7 @@ MonoBehaviour:
   displayName: Mirror Shallows
   blurb: Still water that shows a different sky.
   scene: S2_Mirrorsea
+  origin: {x: 0, y: 0, z: 300}
   levelMin: 450
   levelMax: 500
   requiredRank: 5
@@ -35,18 +36,18 @@ MonoBehaviour:
   waystones:
   - id: s2_mirrorsea_gate
     displayName: "Mirror Shallows \u2014 Entry"
-    position: {x: 6, y: 0, z: -100}
+    position: {x: 6, y: 0, z: 200}
   - id: s2_mirrorsea_town
     displayName: "Mirror Shallows \u2014 Town"
-    position: {x: -50, y: 0, z: -30}
+    position: {x: -50, y: 0, z: 270}
   - id: s2_mirrorsea_landmark
     displayName: "Mirror Shallows \u2014 Landmark"
-    position: {x: 0, y: 0, z: 55}
+    position: {x: 0, y: 0, z: 355}
   gateSpots:
-  - {x: 70, y: 0, z: -70}
-  - {x: -80, y: 0, z: 40}
-  - {x: 85, y: 0, z: 70}
-  - {x: -30, y: 0, z: 95}
+  - {x: 70, y: 0, z: 230}
+  - {x: -80, y: 0, z: 340}
+  - {x: 85, y: 0, z: 370}
+  - {x: -30, y: 0, z: 395}
   enemies:
   - tide_shade
   - reflection
