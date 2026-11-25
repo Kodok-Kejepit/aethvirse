@@ -27,6 +27,19 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-15 — Elements, statuses, elites (branch `p1-14-beyond`)
+
+### Done
+- **Elemental auras and reactions (§6.1):** an elemental hit leaves its aura for 8 s; a second element triggers the
+  reaction (name pops over the target, the Codex names each one the first time): Melt 2×, Firestorm (spreads fire),
+  Magma (burn + slow), Overload (blast + stun), Blizzard, Permafrost (root + DEF down), Shatter (heavy blow on a
+  frozen target, 2.5×), Superconduct (takes 35 % more), Sandstorm (blind), Thunderstorm (chains to 4), Magnetize
+  (pulls), Eclipse, Corrode, Purge, Erase (Void: % max HP).
+- **Status effects:** Burn / Bleed / Poison / Shock damage over time, Chill stacks (3 = Freeze), Freeze / Stun /
+  Petrify / Root stop the AI, Slow, Blind (half of the blows miss), Corrode, Exposed.
+- **Elites:** 8 % of camp spawns, tougher and named after 1–2 affixes: Berserk, Shielded (8 hits break the shield),
+  Vampiric, Splitter, Teleporter.
+
 ## P1-14 — Beyond Aethvirse (branch `p1-14-beyond`)
 
 ### Done

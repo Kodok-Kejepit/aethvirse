@@ -34,6 +34,20 @@ namespace Aethvirse.Combat
             _instance.Show(position, amount, crit, element, onPlayer);
         }
 
+        /// <summary>A big word over a target (reaction names).</summary>
+        public static void Label(Vector3 position, string text, Color color)
+        {
+            if (_instance == null) _instance = new GameObject("DamageNumbers").AddComponent<DamageNumbers>();
+            Entry e = _instance._pool[_instance._next];
+            _instance._next = (_instance._next + 1) % _instance._pool.Count;
+            e.age = 0f;
+            e.scale = 1.9f;
+            e.color = color;
+            e.text.text = text;
+            e.text.transform.position = position + Vector3.up * 0.8f;
+            e.text.gameObject.SetActive(true);
+        }
+
         void Awake()
         {
             Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");

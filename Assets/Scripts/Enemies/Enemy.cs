@@ -57,7 +57,27 @@ namespace Aethvirse.Enemies
         public EnemyData Data => data;
         public EnemyState State { get; private set; } = EnemyState.Idle;
         public bool IsLockable => State != EnemyState.Dead && isActiveAndEnabled;
-        public string DisplayName => $"{data.displayName}  Lv {Level}";
+        public string DisplayName => $"{EliteAffixes.Prefix(Elite != null ? Elite.Affixes : null)}{data.displayName}  Lv {Level}";
+        /// <summary>Set when this enemy is an elite (affixes).</summary>
+        public EliteAffixes Elite { get; set; }
+        public int CurrentLevel => Level;
+        /// <summary>Damage this enemy dealt (vampiric elites heal from it).</summary>
+        public event System.Action<int> DealtDamage;
+
+        public void Teleport(Vector3 to)
+        {
+            _body.enabled = false;
+            transform.position = to;
+            _body.enabled = true;
+            _velocity = Vector3.zero;
+        }
+
+        /// <summary>Smaller and weaker copy (splitter elites).</summary>
+        public void Shrink(float factor)
+        {
+            visual.localScale *= factor;
+            _damageable.Health.SetMax(Mathf.Max(1, Mathf.RoundToInt(_damageable.Health.maxHealth * factor * 0.5f)), refill: true);
+        }
         /// <summary>Spawned waves remove themselves instead of respawning.</summary>
         public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
@@ -181,6 +201,15 @@ namespace Aethvirse.Enemies
         void Update()
         {
             float dt = Time.deltaTime;
+            // Frozen, stunned, petrified or rooted: the AI waits (the windup does not advance).
+            if (State != EnemyState.Dead && _damageable.Status.Disabled)
+            {
+                ShowTelegraph(0f);
+                Stop(dt);
+                Move(dt);
+                UpdateFlash(dt);
+                return;
+            }
             _stateTime += dt;
             _cooldown = Mathf.Max(_cooldown - dt, 0f);
             _sinceHit += dt;
@@ -374,12 +403,14 @@ namespace Aethvirse.Enemies
                     info.hitPosition = t.transform.position;
                     info.knockback = Flat(t.transform.position - transform.position).normalized * data.attackKnockback;
                     return info;
-                });
+                }, (t, info) => DealtDamage?.Invoke(info.amount));
             }
         }
 
         void Strike(Damageable target)
         {
+            // Blinded: half of its blows miss.
+            if (_damageable.Status.Has(StatusType.Blind) && _rng.NextDouble() < 0.5) return;
             DamageInfo info = DamageCalculator.Resolve(_damageable.Stats, target.Stats, data.attackMultiplier,
                 _damageable.Stats.element, _rng);
             info.stagger = data.attackStagger;
@@ -388,7 +419,7 @@ namespace Aethvirse.Enemies
             info.hitPosition = target.transform.position;
             Vector3 push = Flat(target.transform.position - transform.position);
             info.knockback = push.normalized * data.attackKnockback;
-            target.Receive(info);
+            if (target.Receive(info)) DealtDamage?.Invoke(info.amount);
         }
 
         void OnDamaged(DamageInfo info)
@@ -437,6 +468,7 @@ namespace Aethvirse.Enemies
             visual.rotation = _homeRotation;
             _velocity = Vector3.zero;
             _poise = 0f;
+            _damageable.Status.ClearAll();
             _damageable.Health.Reset();
             if (healthBar != null) healthBar.gameObject.SetActive(true);
             SetVisible(true);
@@ -454,7 +486,7 @@ namespace Aethvirse.Enemies
         void MoveToward(Vector3 point, float speed, float dt)
         {
             Vector3 to = Flat(point - transform.position);
-            Vector3 desired = to.magnitude > 0.2f ? to.normalized * speed : Vector3.zero;
+            Vector3 desired = to.magnitude > 0.2f ? to.normalized * speed * _damageable.Status.SpeedFactor : Vector3.zero;
             _velocity = MovementMath.ApproachHorizontal(_velocity, desired, MoveRate, dt);
             Face(point, dt);
         }

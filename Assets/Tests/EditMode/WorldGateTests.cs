@@ -79,7 +79,8 @@ namespace Aethvirse.Tests
             var catalog = AssetDatabase.LoadAssetAtPath<EnemyCatalog>("Assets/Resources/EnemyCatalog.asset");
             Assert.That(atlas, Is.Not.Null);
             List<RegionData> regions = atlas.AllRegions().ToList();
-            Assert.That(regions.Count(r => !r.hidden), Is.EqualTo(7), "regions I–VII");
+            Assert.That(atlas.galaxies[0].planets[0].regions.Count(r => !r.hidden), Is.EqualTo(7), "Aethvirse: regions I–VII");
+            Assert.That(regions.Count(r => !r.hidden), Is.EqualTo(14), "with Seren, Kethra and the Seat");
             Assert.That(regions.Count(r => r.hidden), Is.EqualTo(1), "[ ??? ]");
             for (int i = 1; i < regions.Count; i++) Assert.That(regions[i].levelMin, Is.EqualTo(regions[i - 1].levelMax), "levels continue");
             foreach (RegionData r in regions)
