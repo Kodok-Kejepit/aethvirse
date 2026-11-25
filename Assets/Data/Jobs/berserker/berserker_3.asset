@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_3
-  displayName: Fury Whirl
-  description: Berserker technique.
+  displayName: Rage Quake
+  description: Hit the ground hard enough to make it angry too.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.46699998, b: 0.385, a: 1}

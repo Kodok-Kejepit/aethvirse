@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: beastwarden_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: beastwarden_0
-  displayName: Beast Bolt
-  description: Beastwarden technique.
+  displayName: Falcon Strike
+  description: A spirit falcon dives at your target.
   kind: 5
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.8, b: 0.4, a: 1}

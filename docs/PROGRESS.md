@@ -27,6 +27,23 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-16 — Runes, secret skills, job skill names (branch `p1-16-next`)
+
+### Done
+- **Skill runes** (28, Uncommon → Mythic): socket one per skill in Status → Skills ("Socket" cycles the fitting
+  runes in your bag, "Remove" gives it back). Overcharge / Heart of the Furnace (more damage, more MP), Quiet /
+  Hermit's (cheaper), Quickening / Hourglass (shorter cooldown), Splinter / Hydra (+2 / +4 projectiles), Needle
+  (pierce), Echo / Twin Moon (every hit repeats for 40 % / 75 %), eight element runes (incl. the Void rune of the
+  Unwritten), Headsman's (execute), Leech / Crimson Pact, Keen, Wide / Colossus, Lingering, Mending, Thunderclap.
+  Runes drop rarely (0.4 % normal, 6 % elite, 35 % boss), hide behind hollow walls, and rarer runes are rarer.
+- **24 secret skills, any class**, each taught by a skill book with its own lore (Ash-Bound Hymnal, Page Without
+  Edges, [ ERR: page not found ] …): Ashen Requiem, Glacier Coffin, Fracture Line (Void), Hollow Crown, Requiem of
+  Echoes (two echoes of you), Phoenix Feather, C0dex Gl1tch, The First Line … The books are hidden in puzzle and
+  storm-night secrets across every world, rarer ones deeper (test-enforced: every book is in a secret).
+- **All 210 job skills have hand-written names and descriptions** (Shieldbreaker, Reaper's Due, Hall of Mirrors,
+  Meteor Sentence, Fated Shot, Great Bear's Fall, Answer Me …).
+- Builder order: … ItemDataBuilder → SecretSkillBuilder (appends books and runes) → … SecretDataBuilder.
+
 ## P1-15 — Elements, statuses, elites (branch `p1-14-beyond`)
 
 ### Done

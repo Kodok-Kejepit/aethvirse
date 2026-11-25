@@ -66,12 +66,18 @@ namespace Aethvirse.Player
             int level = _currentSkillLevel;
             Skills.SkillComboData skillCombo = _currentCombo;
             Vector3 from = _frame.position + Vector3.up * 1.2f + _frame.forward * 0.8f;
-            for (int i = 0; i < a.projectileCount; i++)
+            Skills.SkillRuneData rune = RuneOf(skill);
+            int count = a.projectileCount + Skills.RuneMath.ExtraProjectiles(rune);
+            float spread = count > a.projectileCount && a.projectileSpread < 8f ? 8f + count * 2f : a.projectileSpread;
+            int pierce = a.projectilePierce + Skills.RuneMath.ExtraPierce(rune);
+            Color color = rune != null && rune.effect == Skills.RuneEffect.Infuse ? Element.ColorOf(rune.element) : a.projectileColor;
+            for (int i = 0; i < count; i++)
             {
-                float offset = a.projectileCount > 1 ? Mathf.Lerp(-a.projectileSpread, a.projectileSpread, i / (a.projectileCount - 1f)) : 0f;
+                float offset = count > 1 ? Mathf.Lerp(-spread, spread, i / (count - 1f)) : 0f;
                 Vector3 dir = Quaternion.Euler(0f, offset, 0f) * _frame.forward;
-                Projectile.Fire(from, dir, a.projectileSpeed, a.projectileRange, a.projectileRadius, a.projectilePierce, Team.Player,
-                    a.projectileColor, t => BuildHit(t, a, skill, level, skillCombo), OnLanded, a.homing ? HomingTarget : null);
+                Projectile.Fire(from, dir, a.projectileSpeed, a.projectileRange, a.projectileRadius, pierce, Team.Player,
+                    color, t => BuildHit(t, a, skill, level, skillCombo), (t, info) => { OnLanded(t, info); AfterRuneHit(skill, t, info); },
+                    a.homing ? HomingTarget : null);
             }
         }
         AttackData _lastAttack;
@@ -209,7 +215,7 @@ namespace Aethvirse.Player
                 if (!_fired) FireProjectiles();
                 return;
             }
-            _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize, Strike);
+            _hits.Sweep(_frame, Current.hitboxOffset, Current.hitboxSize * Skills.RuneMath.HitboxFactor(RuneOf(CurrentSkill)), Strike);
         }
 
         public void EndAttack()
@@ -226,7 +232,11 @@ namespace Aethvirse.Player
         void Strike(Damageable target)
         {
             DamageInfo info = BuildHit(target, Current, CurrentSkill, _currentSkillLevel, _currentCombo);
-            if (target.Receive(info)) OnLanded(target, info);
+            if (target.Receive(info))
+            {
+                OnLanded(target, info);
+                AfterRuneHit(CurrentSkill, target, info);
+            }
         }
 
         DamageInfo BuildHit(Damageable target, AttackData a, Skills.SkillData skill, int skillLevel, Skills.SkillComboData skillCombo)
@@ -242,10 +252,13 @@ namespace Aethvirse.Player
                 forceCrit |= skillCombo.forceCrit;
                 extraStagger = skillCombo.extraStagger;
             }
-            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, a.element, _rng,
+            Skills.SkillRuneData rune = RuneOf(skill);
+            multiplier *= Skills.RuneMath.DamageFactor(rune, target.Health.Ratio);
+            forceCrit |= _rng.NextDouble() < Skills.RuneMath.CritChance(rune);
+            DamageInfo info = DamageCalculator.Resolve(stats, target.Stats, multiplier, Skills.RuneMath.Element(rune, a.element), _rng,
                 forceCrit: forceCrit, bonusMult: bonus);
             info.isHeavy = a.isHeavy;
-            info.stagger = a.stagger + extraStagger;
+            info.stagger = (a.stagger + extraStagger) * Skills.RuneMath.StaggerFactor(rune);
             info.hitStop = a.hitStop;
             info.source = gameObject;
             info.hitPosition = target.transform.position;
@@ -253,6 +266,35 @@ namespace Aethvirse.Player
             push.y = 0f;
             info.knockback = push.normalized * a.knockback;
             return info;
+        }
+
+        static Skills.SkillRuneData RuneOf(Skills.SkillData skill)
+        {
+            var ps = global::Aethvirse.Stats.PlayerStats.Current;
+            return skill != null && ps != null ? ps.RuneFor(skill) : null;
+        }
+
+        /// <summary>Rune after-effects of a landed skill hit: leech and the echoing second hit.</summary>
+        void AfterRuneHit(Skills.SkillData skill, Damageable target, DamageInfo info)
+        {
+            Skills.SkillRuneData rune = RuneOf(skill);
+            if (rune == null) return;
+            float leech = Skills.RuneMath.LeechShare(rune);
+            if (leech > 0f && _self != null) _self.Health.Heal(Mathf.Max(1, Mathf.RoundToInt(info.amount * leech)));
+            float echo = Skills.RuneMath.EchoShare(rune);
+            if (echo > 0f) StartCoroutine(Echo(target, info, echo));
+        }
+
+        System.Collections.IEnumerator Echo(Damageable target, DamageInfo first, float share)
+        {
+            yield return new WaitForSeconds(0.22f);
+            if (target == null || target.IsDead) yield break;
+            var info = new DamageInfo
+            {
+                amount = Mathf.Max(1, Mathf.RoundToInt(first.amount * share)), element = first.element, isCrit = first.isCrit,
+                source = gameObject, hitPosition = target.transform.position, stagger = first.stagger * 0.5f,
+            };
+            if (target.Receive(info)) DamageNumbers.Spawn(target.transform.position + Vector3.up * 2.1f, info.amount, info.isCrit, info.element, false);
         }
 
         void OnLanded(Damageable target, DamageInfo info)

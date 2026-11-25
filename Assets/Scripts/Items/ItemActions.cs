@@ -51,8 +51,30 @@ namespace Aethvirse.Items
             if (rng.NextDouble() < ScrapChance) Add(drops, db, "scrap_metal", 1);
             if (rng.NextDouble() < PotionChance) Add(drops, db, "potion_small", 1);
             if (rng.NextDouble() < BoxChance[(int)tier]) Add(drops, db, "mystery_box", 1);
+            if (rng.NextDouble() < RuneChance[(int)tier]) AddRune(drops, db, rng);
             return drops;
         }
+
+        /// <summary>Runes are rare drops: elites and bosses far more often (normal, elite, boss).</summary>
+        public static readonly float[] RuneChance = { 0.004f, 0.06f, 0.35f };
+
+        /// <summary>A random rune, weighted toward the common ones (rarer runes are 3× rarer per tier).</summary>
+        static void AddRune(List<ItemStack> list, ItemDatabase db, System.Random rng)
+        {
+            var runes = new List<ItemData>();
+            float total = 0f;
+            foreach (ItemData i in db.items)
+                if (i != null && i.kind == ItemKind.Rune) { runes.Add(i); total += RuneWeight(i.rarity); }
+            if (runes.Count == 0) return;
+            double roll = rng.NextDouble() * total;
+            foreach (ItemData i in runes)
+            {
+                roll -= RuneWeight(i.rarity);
+                if (roll <= 0) { list.Add(ItemStack.Make(i.id, 1, i)); return; }
+            }
+        }
+
+        static float RuneWeight(Rarity r) => Mathf.Pow(3f, (int)Rarity.Mythic - Mathf.Min((int)r, (int)Rarity.Mythic));
 
         static void Add(List<ItemStack> list, ItemDatabase db, string id, int count)
         {

@@ -48,8 +48,58 @@ namespace Aethvirse.Stats
         {
             var list = new List<SkillData>(classData.skills);
             foreach (global::Aethvirse.Jobs.JobData j in Jobs) list.AddRange(j.skills);
+            var db = SecretSkillDatabase.Instance;
+            if (db != null) foreach (string id in SecretSkills) { SkillData s = db.Skill(id); if (s != null) list.Add(s); }
             return list;
         }
+
+        /// <summary>Secret skills learned from skill books (any class).</summary>
+        public List<string> SecretSkills { get; private set; } = new List<string>();
+        /// <summary>skill id → rune item id.</summary>
+        readonly Dictionary<string, string> _runes = new Dictionary<string, string>();
+        public event Action RunesChanged;
+
+        /// <summary>Learns a secret skill from a book (level 1). False if already known or unknown.</summary>
+        public bool LearnSecretSkill(string id)
+        {
+            var db = SecretSkillDatabase.Instance;
+            SkillData s = db != null ? db.Skill(id) : null;
+            if (s == null || SecretSkills.Contains(id)) return false;
+            SecretSkills.Add(id);
+            _skillLevels[id] = 1;
+            SkillLearned?.Invoke(s);
+            Recompute(refill: false);
+            return true;
+        }
+
+        public string RuneItemOn(string skillId) => _runes.TryGetValue(skillId, out string r) ? r : "";
+
+        /// <summary>The rune socketed in a skill (null = none).</summary>
+        public SkillRuneData RuneFor(SkillData skill)
+        {
+            if (skill == null || !_runes.TryGetValue(skill.id, out string itemId) || inventory == null) return null;
+            Items.ItemData item = inventory.Database.Get(itemId);
+            var db = SecretSkillDatabase.Instance;
+            return item != null && db != null ? db.Rune(item.runeId) : null;
+        }
+
+        /// <summary>Sockets a rune item from the bag (the old one goes back to the bag). Empty id = take it out.</summary>
+        public bool SocketRune(string skillId, string runeItemId)
+        {
+            if (inventory == null) return false;
+            string old = RuneItemOn(skillId);
+            if (!string.IsNullOrEmpty(runeItemId))
+            {
+                if (!inventory.Bag.Remove(runeItemId, 1)) return false;
+                _runes[skillId] = runeItemId;
+            }
+            else _runes.Remove(skillId);
+            if (!string.IsNullOrEmpty(old)) inventory.Bag.Add(old, 1);
+            RunesChanged?.Invoke();
+            return true;
+        }
+
+        public int MpCostWithRune(SkillData s) => Mathf.Max(0, Mathf.RoundToInt(MpCost(s) * RuneMath.MpFactor(RuneFor(s))));
 
         public SkillData FindSkill(string id) => AllSkills().Find(s => s != null && s.id == id);
 
@@ -130,6 +180,9 @@ namespace Aethvirse.Stats
                 p.skillLevels.Add(kv.Value);
             }
             p.slots = (string[])Slots.Clone();
+            p.secretSkills = new List<string>(SecretSkills);
+            p.runeSkills = new List<string>(_runes.Keys);
+            p.runeItems = new List<string>(_runes.Values);
             p.jobId = JobId;
             p.shadows = Shadows;
             if (player != null)
@@ -170,6 +223,10 @@ namespace Aethvirse.Stats
             _skillLevels.Clear();
             for (int i = 0; i < p.skillIds.Count && i < p.skillLevels.Count; i++) _skillLevels[p.skillIds[i]] = p.skillLevels[i];
             JobId = p.jobId ?? "";
+            SecretSkills = p.secretSkills != null ? new List<string>(p.secretSkills) : new List<string>();
+            _runes.Clear();
+            if (p.runeSkills != null && p.runeItems != null)
+                for (int i = 0; i < p.runeSkills.Count && i < p.runeItems.Count; i++) _runes[p.runeSkills[i]] = p.runeItems[i];
             Shadows = p.shadows ?? new global::Aethvirse.Jobs.ShadowArmy();
             var reg = global::Aethvirse.Jobs.JobRegistry.Instance;
             Jobs = reg != null ? reg.Lineage(JobId) : new List<global::Aethvirse.Jobs.JobData>();

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_p0
-  displayName: Covenant Might
-  description: Passive. Attack up.
+  displayName: Commander of Hosts
+  description: Passive. The host's strength is yours. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.7, g: 0.9, b: 1, a: 1}

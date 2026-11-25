@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_p1
-  displayName: Fury Resolve
-  description: Passive. Defense up.
+  displayName: Thick Blood
+  description: Passive. You bleed slower than they do. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.35, b: 0.25, a: 1}

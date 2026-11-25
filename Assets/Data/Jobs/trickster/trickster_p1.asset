@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trickster_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trickster_p1
-  displayName: Jest Resolve
-  description: Passive. Defense up.
+  displayName: Always Elsewhere
+  description: Passive. Hard to hit what refuses to stay. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.9, b: 0.6, a: 1}

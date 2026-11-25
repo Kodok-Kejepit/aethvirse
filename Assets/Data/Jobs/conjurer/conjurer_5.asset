@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_5
-  displayName: Host Crash
-  description: Conjurer technique.
+  displayName: The Host Answers
+  description: Call a larger host to your side.
   kind: 9
   isUltimate: 0
   iconColor: {r: 0.78999996, g: 0.93, b: 1, a: 1}

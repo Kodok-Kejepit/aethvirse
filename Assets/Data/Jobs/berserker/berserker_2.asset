@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_2
-  displayName: Blood Smite
-  description: Berserker technique.
+  displayName: Blood Whirl
+  description: Spin until the world is a red blur.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.428, b: 0.34, a: 1}

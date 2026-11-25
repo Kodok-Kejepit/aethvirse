@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: beastwarden_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: beastwarden_4
-  displayName: Howl Nova
-  description: Beastwarden technique.
+  displayName: Fang Circle
+  description: Wolves made of wind circle and bite.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.62, g: 0.848, b: 0.544, a: 1}

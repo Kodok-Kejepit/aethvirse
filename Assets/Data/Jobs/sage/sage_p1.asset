@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_p1
-  displayName: Grace Resolve
-  description: Passive. Defense up.
+  displayName: Calm Ward
+  description: Passive. Composure is armour. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.6, g: 1, b: 0.8, a: 1}

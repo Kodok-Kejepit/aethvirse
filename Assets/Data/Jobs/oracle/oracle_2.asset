@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_2
-  displayName: Augury Lance
-  description: Oracle technique.
+  displayName: Line of Prophecy
+  description: A beam that traces the future and cuts through it.
   kind: 5
   isUltimate: 0
   iconColor: {r: 1, g: 0.956, b: 0.648, a: 1}

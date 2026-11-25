@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_0
-  displayName: Bulwark Cleave
-  description: Guardian technique.
+  displayName: Shieldbreaker
+  description: Crash the rim of your guard into a foe's guard. Theirs breaks first.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.7, g: 0.75, b: 0.85, a: 1}

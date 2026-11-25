@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: archmage_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: archmage_4
-  displayName: Astral Nova
-  description: Archmage technique.
+  displayName: Astral Rain
+  description: Stars fall in a circle around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.62, b: 0.92399997, a: 1}

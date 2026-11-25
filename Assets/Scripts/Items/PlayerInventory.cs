@@ -154,6 +154,19 @@ namespace Aethvirse.Items
                 Codex.Notify($"Mystery Box: {tiers}" + (gear != null ? $"\n{Bag.DisplayName(gear)}" : "") + (key ? " + Gate Key" : ""), CodexTone.Reward);
                 return true;
             }
+            if (item.kind == ItemKind.SkillBook && !string.IsNullOrEmpty(item.teachesSkill))
+            {
+                if (_stats == null || !_stats.LearnSecretSkill(item.teachesSkill))
+                {
+                    Codex.Notify("The pages are blank to you. You already know this.", CodexTone.Info);
+                    return false;
+                }
+                Bag.TakeOne(s);
+                var learned = Skills.SecretSkillDatabase.Instance.Skill(item.teachesSkill);
+                Codex.Notify($"[ SECRET SKILL ]  {learned.displayName}\n{learned.description}", CodexTone.Anomaly);
+                Core.GameEvents.RaiseItemUsed(item.id);
+                return true;
+            }
             if (item.identifiesItems)
             {
                 ItemStack target = Bag.stacks.Find(x => !x.identified);

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_3
-  displayName: Choir Whirl
-  description: Conjurer technique.
+  displayName: Choir of Spirits
+  description: A hundred small voices, all singing harm.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.754, g: 0.918, b: 1, a: 1}

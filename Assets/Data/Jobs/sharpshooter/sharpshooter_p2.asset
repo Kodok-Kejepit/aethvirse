@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_p2
-  displayName: Pierce Rhythm
-  description: Passive. Crit up.
+  displayName: Bullseye Instinct
+  description: Passive. You always aim for the eye. CRIT up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.85, b: 0.5, a: 1}

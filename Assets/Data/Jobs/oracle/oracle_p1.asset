@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_p1
-  displayName: Dawn Resolve
-  description: Passive. Defense up.
+  displayName: Already Moved
+  description: Passive. You dodged before they swung. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.95, b: 0.6, a: 1}

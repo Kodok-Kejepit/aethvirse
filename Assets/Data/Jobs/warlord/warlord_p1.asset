@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_p1
-  displayName: Siege Resolve
-  description: Passive. Defense up.
+  displayName: Scarred Veteran
+  description: Passive. Every scar taught a lesson. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.45, b: 0.15, a: 1}

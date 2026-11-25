@@ -35,6 +35,8 @@ public static class SecretDataBuilder
         Directory.CreateDirectory(Dir);
         var db = LoadOrCreate<SecretDatabase>("Assets/Resources/SecretDatabase.asset");
         db.secrets = new List<SecretData>();
+        _bookIndex = 0;
+        _runeIndex = 0;
         db.pages = new List<SecretDatabase.Page>();
         var atlas = AssetDatabase.LoadAssetAtPath<WorldAtlas>("Assets/Resources/WorldAtlas.asset");
         var regions = new List<RegionData>(atlas.AllRegions());
@@ -132,6 +134,22 @@ public static class SecretDataBuilder
         };
     }
 
+    static int _bookIndex, _runeIndex;
+
+    /// <summary>
+    /// Puzzles and storm-night secrets teach the secret skills (in world order, so the rarest books are deepest);
+    /// hollow walls hold runes; the rest give an identification scroll or a mystery box.
+    /// </summary>
+    static string RewardItem(S s)
+    {
+        var db = AssetDatabase.LoadAssetAtPath<Aethvirse.Skills.SecretSkillDatabase>("Assets/Resources/SecretSkillDatabase.asset");
+        if (db != null && (s.kind == Kind.Puzzle || s.kind == Kind.StormNight) && _bookIndex < db.skills.Count)
+            return "book_" + db.skills[_bookIndex++].id;
+        if (db != null && s.kind == Kind.Wall && db.runes.Count > 0)
+            return db.runes[_runeIndex++ % db.runes.Count].id;
+        return s.kind == Kind.Bring || s.kind == Kind.Dawn ? "mystery_box" : "codex_identify_scroll";
+    }
+
     static SecretData Secret(string region, S s)
     {
         var d = LoadOrCreate<SecretData>($"{Dir}/{s.id}.asset");
@@ -155,7 +173,7 @@ public static class SecretDataBuilder
         d.rewards = new List<Reward>
         {
             new Reward { type = RewardType.AcademyPoints, amount = 15 },
-            new Reward { type = RewardType.Item, key = s.kind == Kind.Wall ? "mystery_box" : "codex_identify_scroll", amount = 1 },
+            new Reward { type = RewardType.Item, key = RewardItem(s), amount = 1 },
             new Reward { type = RewardType.Xp, amount = 120 },
         };
         d.tier = s.category == SecretCategory.SealedMission ? 2 : s.kind == Kind.Puzzle ? 1 : 0;

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: illusionist_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_2
-  displayName: Dream Smite
-  description: Illusionist technique.
+  displayName: Glamour Bloom
+  description: A beautiful burst of light. It hurts to look at; it hurts more to
+    be in.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.912, g: 0.824, b: 1, a: 1}

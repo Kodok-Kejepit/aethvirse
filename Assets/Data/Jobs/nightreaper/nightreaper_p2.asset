@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_p2
-  displayName: Moonless Rhythm
-  description: Passive. AttackSpeed up.
+  displayName: Midnight Tempo
+  description: Passive. The night is short; so is your recovery. Attack speed up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.4, g: 0.15, b: 0.6, a: 1}

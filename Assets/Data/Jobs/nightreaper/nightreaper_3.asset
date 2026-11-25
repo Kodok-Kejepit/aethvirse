@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: nightreaper_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: nightreaper_3
-  displayName: Grave Whirl
-  description: Nightreaper technique.
+  displayName: Grave Bloom
+  description: Black flowers open from the ground and close on whoever stands there.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.508, g: 0.303, b: 0.672, a: 1}

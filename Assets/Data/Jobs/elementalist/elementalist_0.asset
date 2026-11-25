@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: elementalist_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: elementalist_0
-  displayName: Storm Bolt
-  description: Elementalist technique.
+  displayName: Seeking Spark
+  description: A spark of lightning that hunts the nearest foe.
   kind: 5
   isUltimate: 0
   iconColor: {r: 1, g: 0.85, b: 0.3, a: 1}

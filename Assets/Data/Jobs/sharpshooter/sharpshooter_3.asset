@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_3
-  displayName: True Barrage
-  description: Sharpshooter technique.
+  displayName: Arrow Storm
+  description: A rain of arrows on the area around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.87700003, b: 0.59, a: 1}

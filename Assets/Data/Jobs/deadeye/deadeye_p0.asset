@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_p0
-  displayName: Final Might
-  description: Passive. Attack up.
+  displayName: Perfect Aim
+  description: Passive. Nothing in range is safe. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.6, b: 0.3, a: 1}

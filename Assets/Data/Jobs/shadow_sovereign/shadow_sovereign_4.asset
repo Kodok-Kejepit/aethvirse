@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_4
   displayName: Rise, Echo
-  description: Shadow Sovereign technique.
+  description: Pull the shadow out of a fallen foe and bind it to you.
   kind: 10
   isUltimate: 0
   iconColor: {r: 0.354, g: 0.31599998, b: 0.43, a: 1}

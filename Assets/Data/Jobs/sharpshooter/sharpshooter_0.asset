@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_0
-  displayName: Snipe Bolt
-  description: Sharpshooter technique.
+  displayName: Hawk's Eye
+  description: One arrow that finds its target even if it turns.
   kind: 5
   isUltimate: 0
   iconColor: {r: 1, g: 0.85, b: 0.5, a: 1}

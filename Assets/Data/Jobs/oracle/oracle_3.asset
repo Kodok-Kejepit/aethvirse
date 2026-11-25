@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_3
-  displayName: Dawn Barrage
-  description: Oracle technique.
+  displayName: Vision of Ruin
+  description: Show them how this ends. Then end it.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.959, b: 0.672, a: 1}

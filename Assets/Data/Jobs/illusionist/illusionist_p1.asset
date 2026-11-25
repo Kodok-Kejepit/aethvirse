@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_p1
-  displayName: Mirror Resolve
-  description: Passive. Defense up.
+  displayName: Unreal Body
+  description: Passive. Some of their hits strike an image. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.9, g: 0.8, b: 1, a: 1}

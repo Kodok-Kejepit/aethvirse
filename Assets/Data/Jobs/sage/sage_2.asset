@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_2
-  displayName: Ward Lance
-  description: Sage technique.
+  displayName: Insight Beam
+  description: A beam of understanding. It passes through lies and armour.
   kind: 5
   isUltimate: 0
   iconColor: {r: 0.648, g: 1, b: 0.824, a: 1}

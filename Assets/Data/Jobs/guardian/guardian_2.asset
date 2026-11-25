@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_2
-  displayName: Rampart Smite
-  description: Guardian technique.
+  displayName: Bulwark Pulse
+  description: The ground under your feet pushes everything else away.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.736, g: 0.78, b: 0.86800003, a: 1}

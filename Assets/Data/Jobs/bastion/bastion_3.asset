@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: bastion_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_3
-  displayName: Titan Whirl
-  description: Bastion technique.
+  displayName: Bastion Ring
+  description: Raise a circle of iron spikes and let them sink back through your
+    foes.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.836, g: 0.836, b: 0.672, a: 1}

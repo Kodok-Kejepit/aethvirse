@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_p0
-  displayName: Havoc Might
-  description: Passive. Attack up.
+  displayName: Born for War
+  description: Passive. Battle is home. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.45, b: 0.15, a: 1}

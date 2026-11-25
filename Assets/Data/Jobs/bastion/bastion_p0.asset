@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_p0
-  displayName: Iron Might
-  description: Passive. Attack up.
+  displayName: Fortress Heart
+  description: Passive. Your body remembers being a wall. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.8, g: 0.8, b: 0.6, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: oracle_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: oracle_4
-  displayName: Vision Nova
-  description: Oracle technique.
+  displayName: Dawn Oracle
+  description: A circle of foretold light flares up.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.962, b: 0.69600004, a: 1}

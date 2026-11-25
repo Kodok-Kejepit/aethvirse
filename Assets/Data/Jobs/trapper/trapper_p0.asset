@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trapper_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trapper_p0
-  displayName: Pitfall Might
-  description: Passive. Attack up.
+  displayName: Patient Hunter
+  description: Passive. The trap is set; the strike is stronger. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.6, g: 0.5, b: 0.3, a: 1}

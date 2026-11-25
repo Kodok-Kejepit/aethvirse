@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_p1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_p1
-  displayName: Comet Resolve
-  description: Passive. Defense up.
+  displayName: Unseen Nest
+  description: Passive. They never find where you are. DEF up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.6, b: 0.3, a: 1}

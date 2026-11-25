@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: necromancer_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_3
-  displayName: Wraith Whirl
-  description: Necromancer technique.
+  displayName: Requiem Burst
+  description: A burst of cold grave air.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.508, g: 0.34399998, b: 0.59, a: 1}

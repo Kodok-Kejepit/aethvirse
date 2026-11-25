@@ -35,12 +35,12 @@ public static class ClassDataBuilder
     }
 
     // Melee / AoE / dash timeline (Unity +Z forward offsets).
-    static AttackData M(string id, ElementType e, float startup, float active, float recovery, Vector3 size, Vector3 offset,
+    internal static AttackData M(string id, ElementType e, float startup, float active, float recovery, Vector3 size, Vector3 offset,
         float knock, float stagger, float hitStop, float lunge, SwingKind swing) =>
         Atk(id, e, startup, active, recovery, startup + active + recovery * 0.6f, startup + active * 0.5f, size, offset, knock, stagger, hitStop, lunge, swing);
 
     // Projectile timeline.
-    static AttackData P(string id, ElementType e, float startup, int count, float spread, float speed, float range, float radius, int pierce,
+    internal static AttackData P(string id, ElementType e, float startup, int count, float spread, float speed, float range, float radius, int pierce,
         Color color, bool homing, float stagger = 20f)
     {
         AttackData a = Atk(id, e, startup, 0.05f, 0.3f, startup + 0.3f, startup, new Vector3(1.5f, 1.5f, 1.5f), new Vector3(0, 1f, 1f), 3f, stagger, 0.06f, 0f, SwingKind.Thrust);
@@ -207,7 +207,7 @@ public static class ClassDataBuilder
             Combo("parting_shot", "Parting Shot", "roll_back", "explosive_arrow", 2f, 1.4f, true, 0f));
     }
 
-    static string _dir = "Assets/Data/Skills/Paladin";
+    internal static string _dir = "Assets/Data/Skills/Paladin";
 
     static SkillComboData Combo(string id, string name, string first, string second, float window, float bonus, bool crit, float stagger) =>
         new SkillComboData { id = id, displayName = name, first = first, second = second, window = window, bonusMultiplier = bonus, forceCrit = crit, extraStagger = stagger };
@@ -229,21 +229,21 @@ public static class ClassDataBuilder
         EditorUtility.SetDirty(c);
     }
 
-    static SkillData Heal(string id, string name, string desc, int unlock, int mp, float cooldown, float share, Color color)
+    internal static SkillData Heal(string id, string name, string desc, int unlock, int mp, float cooldown, float share, Color color)
     {
         SkillData s = Skill(id, name, desc, SkillKind.Heal, unlock, color);
         s.mpCost = mp; s.cooldown = cooldown; s.healShare = share; s.multiplierPerLevel = 0.02f; s.fx = SkillFxKind.Heal;
         return s;
     }
 
-    static SkillData Stealth(string id, string name, string desc, int unlock, int mp, float cooldown, float duration, Color color)
+    internal static SkillData Stealth(string id, string name, string desc, int unlock, int mp, float cooldown, float duration, Color color)
     {
         SkillData s = Skill(id, name, desc, SkillKind.Stealth, unlock, color);
         s.mpCost = mp; s.cooldown = cooldown; s.stealthDuration = duration; s.fx = SkillFxKind.Shadow;
         return s;
     }
 
-    static SkillData Trap(string id, string name, string desc, int unlock, int mp, float cooldown, float mult, float perLevel, float radius, Color color, AttackData attack)
+    internal static SkillData Trap(string id, string name, string desc, int unlock, int mp, float cooldown, float mult, float perLevel, float radius, Color color, AttackData attack)
     {
         SkillData s = Skill(id, name, desc, SkillKind.Trap, unlock, color);
         s.mpCost = mp; s.cooldown = cooldown; s.damageMultiplier = mult; s.multiplierPerLevel = perLevel; s.trapRadius = radius; s.trapLifetime = 15f;
@@ -251,7 +251,7 @@ public static class ClassDataBuilder
         return s;
     }
 
-    static SkillData Active(string id, string name, string desc, SkillKind kind, int unlock, int mp, float cooldown,
+    internal static SkillData Active(string id, string name, string desc, SkillKind kind, int unlock, int mp, float cooldown,
         float mult, float multPerLevel, Color color, SkillFxKind fx, AttackData attack, bool ultimate = false)
     {
         SkillData s = Skill(id, name, desc, kind, unlock, color);
@@ -265,7 +265,7 @@ public static class ClassDataBuilder
         return s;
     }
 
-    static SkillData Buff(string id, string name, string desc, int unlock, int mp, float cooldown, BuffStat stat,
+    internal static SkillData Buff(string id, string name, string desc, int unlock, int mp, float cooldown, BuffStat stat,
         float amount, float perLevel, float duration, Color color, SkillFxKind fx)
     {
         SkillData s = Skill(id, name, desc, SkillKind.Buff, unlock, color);
@@ -279,7 +279,7 @@ public static class ClassDataBuilder
         return s;
     }
 
-    static SkillData Passive(string id, string name, string desc, int unlock, BuffStat stat, float amount, float perLevel)
+    internal static SkillData Passive(string id, string name, string desc, int unlock, BuffStat stat, float amount, float perLevel)
     {
         SkillData s = Skill(id, name, desc, SkillKind.Passive, unlock, new Color(0.9f, 0.4f, 0.3f));
         s.mpCost = 0;
@@ -289,7 +289,7 @@ public static class ClassDataBuilder
         return s;
     }
 
-    static SkillData Skill(string id, string name, string desc, SkillKind kind, int unlock, Color color)
+    internal static SkillData Skill(string id, string name, string desc, SkillKind kind, int unlock, Color color)
     {
         var s = LoadOrCreate<SkillData>($"{_dir}/{id}.asset");
         s.id = id;
@@ -305,7 +305,7 @@ public static class ClassDataBuilder
         return s;
     }
 
-    static AttackData Atk(string id, ElementType element, float startup, float active, float recovery, float comboWindow,
+    internal static AttackData Atk(string id, ElementType element, float startup, float active, float recovery, float comboWindow,
         float dodgeCancel, Vector3 size, Vector3 offset, float knockback, float stagger, float hitStop, float lunge, SwingKind swing)
     {
         var a = LoadOrCreate<AttackData>($"{_dir}/{id}_attack.asset");

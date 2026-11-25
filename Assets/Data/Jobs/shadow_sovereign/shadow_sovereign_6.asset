@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadow_sovereign_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_6
-  displayName: Abyss Rush
-  description: Shadow Sovereign technique.
+  displayName: Throne Step
+  description: Walk on shadows like they are your throne room.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.456, g: 0.424, b: 0.52, a: 1}

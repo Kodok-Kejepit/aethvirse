@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_4
-  displayName: Keep Quake
-  description: Bastion technique.
+  displayName: Siege Echo
+  description: The sound of a hundred years of sieges, released at once.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.848, g: 0.848, b: 0.69600004, a: 1}

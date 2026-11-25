@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trickster_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trickster_4
-  displayName: Feint Quake
-  description: Trickster technique.
+  displayName: Trickster's Cyclone
+  description: Whip up a wind that steals footing and breath.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.62, g: 0.92399997, b: 0.69600004, a: 1}

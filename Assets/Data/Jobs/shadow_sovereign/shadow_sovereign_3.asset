@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadow_sovereign_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadow_sovereign_3
-  displayName: Eternal Whirl
-  description: Shadow Sovereign technique.
+  displayName: Eternal Night
+  description: The night closes around you and does not open again for them.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.303, g: 0.262, b: 0.385, a: 1}

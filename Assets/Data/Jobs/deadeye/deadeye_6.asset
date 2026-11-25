@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_6
-  displayName: Zenith Rift
-  description: Deadeye technique.
+  displayName: No Miss Left
+  description: Fire until nothing is standing.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.744, b: 0.552, a: 1}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: summoner_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: summoner_1
-  displayName: Bond Wave
-  description: Summoner technique.
+  displayName: Bound Strike
+  description: Strike together with your familiar.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.624, g: 0.81200004, b: 1, a: 1}

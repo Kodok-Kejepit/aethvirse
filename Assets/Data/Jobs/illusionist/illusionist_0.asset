@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_0
-  displayName: Phantasm Cleave
-  description: Illusionist technique.
+  displayName: Prism Cut
+  description: Your blade splits the light into seven edges.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.9, g: 0.8, b: 1, a: 1}

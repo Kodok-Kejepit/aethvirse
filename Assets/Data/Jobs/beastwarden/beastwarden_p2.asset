@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: beastwarden_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: beastwarden_p2
-  displayName: Howl Rhythm
-  description: Passive. Crit up.
+  displayName: Predator's Eye
+  description: Passive. You see prey like a hawk. CRIT up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.8, b: 0.4, a: 1}

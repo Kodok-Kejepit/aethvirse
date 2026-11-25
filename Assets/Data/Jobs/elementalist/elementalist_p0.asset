@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: elementalist_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: elementalist_p0
-  displayName: Rime Might
-  description: Passive. Attack up.
+  displayName: Elemental Attunement
+  description: Passive. The elements answer faster. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.85, b: 0.3, a: 1}

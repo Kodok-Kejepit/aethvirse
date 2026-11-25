@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_1
-  displayName: Aegis Wave
-  description: Guardian technique.
+  displayName: Oathbound Strike
+  description: A strike sworn before it lands. It does not miss its promise.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.718, g: 0.765, b: 0.859, a: 1}

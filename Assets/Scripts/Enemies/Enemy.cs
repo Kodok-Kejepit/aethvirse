@@ -456,7 +456,7 @@ namespace Aethvirse.Enemies
             if (inv == null || !data.dropsLoot || _noLoot) return;
             Vector3 at = transform.position;
             if (_gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = _gold });
-            foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(Level, data.tier, inv.Database, inv.Rules, _rng))
+            foreach (Items.ItemStack drop in Items.ItemActions.RollDrops(Level, Elite != null && data.tier == Stats.EnemyTier.Normal ? Stats.EnemyTier.Elite : data.tier, inv.Database, inv.Rules, _rng))
                 Items.WorldPickup.Spawn(at, drop);
         }
 

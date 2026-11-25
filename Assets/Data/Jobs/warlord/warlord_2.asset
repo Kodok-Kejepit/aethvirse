@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_2
-  displayName: Havoc Smite
-  description: Warlord technique.
+  displayName: Havoc Wheel
+  description: A turning storm of steel and embers.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.516, b: 0.252, a: 1}

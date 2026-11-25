@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: beastwarden_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: beastwarden_6
-  displayName: Pack Rift
-  description: Beastwarden technique.
+  displayName: Wild Hunt
+  description: The whole pack runs with you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.68, g: 0.872, b: 0.616, a: 1}

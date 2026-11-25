@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_1
-  displayName: Legion Wave
-  description: Conjurer technique.
+  displayName: Legion Swipe
+  description: A sweep with the weight of an army.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.718, g: 0.90599996, b: 1, a: 1}

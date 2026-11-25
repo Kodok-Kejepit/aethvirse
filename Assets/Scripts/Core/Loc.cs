@@ -43,6 +43,7 @@ namespace Aethvirse.Core
             { "codex_shop", ("Codex Shop — day", "Toko Codex — hari") },
             { "new_stock", ("(new stock every day)", "(stok baru tiap hari)") },
             { "shop", ("Shop", "Toko") }, { "codex_shop_tab", ("Codex Shop", "Toko Codex") },
+            { "rune", ("Rune", "Rune") }, { "socket", ("Socket", "Pasang") }, { "unsocket", ("Remove", "Lepas") },
             { "fast_travel", ("Fast Travel", "Perjalanan Cepat") },
             { "perfect_dodge", ("PERFECT DODGE", "HINDARAN SEMPURNA") },
         };

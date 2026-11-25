@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sage_1
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sage_1
-  displayName: Lumen Volley
-  description: Sage technique.
+  displayName: Grace Scatter
+  description: Five motes of warm light, scattered like seeds.
   kind: 5
   isUltimate: 0
   iconColor: {r: 0.624, g: 1, b: 0.81200004, a: 1}

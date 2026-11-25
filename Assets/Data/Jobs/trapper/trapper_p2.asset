@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trapper_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trapper_p2
-  displayName: Wire Rhythm
-  description: Passive. Crit up.
+  displayName: Weak Spot Study
+  description: Passive. You know where prey is soft. CRIT up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.6, g: 0.5, b: 0.3, a: 1}

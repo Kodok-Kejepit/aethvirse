@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: shadowblade_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: shadowblade_p0
-  displayName: Night Might
-  description: Passive. Attack up.
+  displayName: Quiet Lethality
+  description: Passive. The softer the step, the deeper the cut. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.5, g: 0.3, b: 0.8, a: 1}

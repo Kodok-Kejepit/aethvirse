@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: berserker_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: berserker_p2
-  displayName: Ruin Rhythm
-  description: Passive. AttackSpeed up.
+  displayName: War Drum Heart
+  description: Passive. Your heartbeat sets the pace. Attack speed up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.35, b: 0.25, a: 1}

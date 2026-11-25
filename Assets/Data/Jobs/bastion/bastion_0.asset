@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bastion_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: bastion_0
-  displayName: Citadel Cleave
-  description: Bastion technique.
+  displayName: Citadel Fall
+  description: Bring your weapon down like a fortress gate.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.8, g: 0.8, b: 0.6, a: 1}

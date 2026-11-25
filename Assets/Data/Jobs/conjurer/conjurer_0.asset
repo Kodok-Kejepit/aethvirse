@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: conjurer_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: conjurer_0
-  displayName: Host Cleave
-  description: Conjurer technique.
+  displayName: Host Lance
+  description: A spear made of a dozen spirits.
   kind: 0
   isUltimate: 0
   iconColor: {r: 0.7, g: 0.9, b: 1, a: 1}

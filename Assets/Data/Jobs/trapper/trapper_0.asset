@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: trapper_0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: trapper_0
-  displayName: Snare Bolt
-  description: Trapper technique.
+  displayName: Barbed Bolt
+  description: A bolt with hooks that seek flesh.
   kind: 5
   isUltimate: 0
   iconColor: {r: 0.6, g: 0.5, b: 0.3, a: 1}

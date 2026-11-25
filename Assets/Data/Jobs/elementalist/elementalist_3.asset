@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: elementalist_3
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: elementalist_3
-  displayName: Tempest Barrage
-  description: Elementalist technique.
+  displayName: Ember Circle
+  description: A ring of fire flares around you.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.87700003, b: 0.426, a: 1}

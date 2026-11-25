@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: deadeye_p2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: deadeye_p2
-  displayName: Bullseye Rhythm
-  description: Passive. Crit up.
+  displayName: Dead Centre
+  description: Passive. Every shot is the best shot. CRIT up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 1, g: 0.6, b: 0.3, a: 1}

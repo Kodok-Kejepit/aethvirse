@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: necromancer_2
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: necromancer_2
-  displayName: Echo Smite
-  description: Necromancer technique.
+  displayName: Wraith Circle
+  description: Wraiths circle you and drain what they touch.
   kind: 2
   isUltimate: 0
   iconColor: {r: 0.472, g: 0.296, b: 0.56, a: 1}

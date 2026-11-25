@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: sharpshooter_4
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: sharpshooter_4
-  displayName: Pierce Nova
-  description: Sharpshooter technique.
+  displayName: True North
+  description: Arrows fall in a perfect circle.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.88600004, b: 0.62, a: 1}

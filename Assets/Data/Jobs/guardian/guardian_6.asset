@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: guardian_6
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: guardian_6
-  displayName: Aegis Rush
-  description: Guardian technique.
+  displayName: Unbroken Advance
+  description: Walk through them. They are the ones who move.
   kind: 1
   isUltimate: 0
   iconColor: {r: 0.80799997, g: 0.84, b: 0.904, a: 1}

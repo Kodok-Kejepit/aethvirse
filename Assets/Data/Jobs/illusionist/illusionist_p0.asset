@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: illusionist_p0
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: illusionist_p0
-  displayName: Dream Might
-  description: Passive. Attack up.
+  displayName: Beautiful Lie
+  description: Passive. They never see the real blow coming. ATK up.
   kind: 4
   isUltimate: 0
   iconColor: {r: 0.9, g: 0.8, b: 1, a: 1}

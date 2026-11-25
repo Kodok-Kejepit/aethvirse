@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Aethvirse.Input;
 using Aethvirse.Skills;
 using Aethvirse.Stats;
@@ -184,7 +185,7 @@ namespace Aethvirse.Core
                 int level = stats.SkillLevel(skill.id);
                 GUILayout.BeginHorizontal();
                 string state = level > 0 ? $"Lv {level}" : $"unlocks at Lv {skill.unlockLevel}";
-                string tag = skill.IsPassive ? "passive" : skill.isUltimate ? "ULT" : $"{skill.mpCost} MP · {skill.cooldown:0}s";
+                string tag = skill.IsPassive ? "passive" : skill.isUltimate ? "ULT" : $"{stats.MpCostWithRune(skill)} MP · {skill.cooldown:0}s";
                 GUI.color = level > 0 ? Color.white : new Color(1f, 1f, 1f, 0.45f);
                 GUILayout.Label($"{skill.displayName}  ({tag})  {state}", _text, GUILayout.Width(560 * s));
                 GUI.color = Color.white;
@@ -200,9 +201,41 @@ namespace Aethvirse.Core
                 GUI.enabled = true;
                 GUILayout.EndHorizontal();
                 GUILayout.Label("   " + skill.description, _text);
+                if (level > 0) DrawRune(stats, skill, s);
             }
             GUILayout.EndScrollView();
             GUILayout.EndArea();
+        }
+
+        /// <summary>Rune socket row: shows the rune and cycles through fitting runes in the bag (or takes it out).</summary>
+        void DrawRune(PlayerStats stats, SkillData skill, float s)
+        {
+            var inv = Items.PlayerInventory.Current;
+            var db = SecretSkillDatabase.Instance;
+            if (inv == null || db == null) return;
+            var fitting = new List<string>();
+            foreach (Items.ItemStack st in inv.Bag.stacks)
+            {
+                Items.ItemData item = inv.Database.Get(st.itemId);
+                if (item == null || item.kind != Items.ItemKind.Rune || fitting.Contains(item.id)) continue;
+                SkillRuneData r = db.Rune(item.runeId);
+                if (r != null && r.Fits(skill)) fitting.Add(item.id);
+            }
+            SkillRuneData on = stats.RuneFor(skill);
+            if (on == null && fitting.Count == 0) return;
+            GUILayout.BeginHorizontal();
+            GUI.color = new Color(0.6f, 0.85f, 1f);
+            GUILayout.Label(on != null ? $"   {Loc.T("rune")}: {on.displayName} — {on.description}" : $"   {Loc.T("rune")}: —", _text, GUILayout.Width(760 * s));
+            GUI.color = Color.white;
+            if (fitting.Count > 0 && GUILayout.Button(Loc.T("socket"), _button, GUILayout.Width(150 * s), GUILayout.Height(38 * s)))
+            {
+                // Next fitting rune after the current one.
+                string current = stats.RuneItemOn(skill.id);
+                int k = fitting.IndexOf(current);
+                stats.SocketRune(skill.id, fitting[(k + 1) % fitting.Count]);
+            }
+            if (on != null && GUILayout.Button(Loc.T("unsocket"), _button, GUILayout.Width(150 * s), GUILayout.Height(38 * s))) stats.SocketRune(skill.id, "");
+            GUILayout.EndHorizontal();
         }
     }
 }

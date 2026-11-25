@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Aethvirse.Items
 {
-    public enum ItemKind { Consumable, Food, Weapon, Accessory, Armor, Key, Material, Currency, SkillBook, Costume }
+    public enum ItemKind { Consumable, Food, Weapon, Accessory, Armor, Key, Material, Currency, SkillBook, Costume, Rune }
     public enum Rarity { Common, Uncommon, Rare, Epic, Legendary, Mythic, Unknown }
     /// <summary>Equipment slots (§11). Append only: saves store the number.</summary>
     public enum EquipSlot { None, Weapon, OffHand, Helm, Armor, Gloves, Boots, Ring, Necklace, RuneCore, Ring2, Costume }
@@ -65,9 +65,16 @@ namespace Aethvirse.Items
         public string evolvesInto = "";
         public string hiddenEffect = "";
 
+        [Header("Skill books and runes")]
+        [Tooltip("Skill book: the secret skill it teaches (SecretSkillDatabase id).")]
+        public string teachesSkill = "";
+        [Tooltip("Rune item: the rune it is (SecretSkillDatabase id).")]
+        public string runeId = "";
+
         public bool IsStackable => maxStack > 1;
         public bool IsEquipment => slot != EquipSlot.None;
-        public bool IsUsable => kind == ItemKind.Consumable || kind == ItemKind.Food || identifiesItems || opensMysteryBox;
+        public bool IsUsable => kind == ItemKind.Consumable || kind == ItemKind.Food || identifiesItems || opensMysteryBox
+            || (kind == ItemKind.SkillBook && !string.IsNullOrEmpty(teachesSkill));
         public float AttackAt(int level) => attack + attackPerLevel * level;
 
         public float Bonus(string stat)

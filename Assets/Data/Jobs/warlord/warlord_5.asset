@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: warlord_5
   m_EditorClassIdentifier: Aethvirse::Aethvirse.Skills.SkillData
   id: warlord_5
-  displayName: Warlord Crash
-  description: Warlord technique.
+  displayName: Last Charge Crater
+  description: Leap and land like the final assault.
   kind: 2
   isUltimate: 0
   iconColor: {r: 1, g: 0.615, b: 0.405, a: 1}
