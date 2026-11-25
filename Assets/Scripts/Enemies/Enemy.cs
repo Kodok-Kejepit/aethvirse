@@ -225,7 +225,14 @@ namespace Aethvirse.Enemies
                 return;
             }
             float dist = DistanceToTarget();
-            if (dist <= data.attackRange)
+            // Archers and casters keep their distance: step back while cooling down.
+            if (data.IsRanged && dist < data.keepDistance && _cooldown > 0f)
+            {
+                Vector3 away = Flat(transform.position - target.position).normalized;
+                MoveToward(transform.position + away * 3f, data.walkSpeed * 1.4f * _speedMult, dt);
+                Face(target.position, dt);
+            }
+            else if (dist <= data.attackRange)
             {
                 Stop(dt);
                 Face(target.position, dt);
@@ -261,9 +268,17 @@ namespace Aethvirse.Enemies
             else if (_stateTime < activeEnd)
             {
                 ShowTelegraph(0f);
-                _velocity.x = _attackDirection.x * data.attackLungeSpeed;
-                _velocity.z = _attackDirection.z * data.attackLungeSpeed;
-                _hits.Sweep(visual, data.attackHitboxOffset, data.attackHitboxSize, Strike);
+                if (data.IsRanged)
+                {
+                    if (!_fired) { _fired = true; FireShots(target); }
+                    Stop(dt);
+                }
+                else
+                {
+                    _velocity.x = _attackDirection.x * data.attackLungeSpeed;
+                    _velocity.z = _attackDirection.z * data.attackLungeSpeed;
+                    _hits.Sweep(visual, data.attackHitboxOffset, data.attackHitboxSize, Strike);
+                }
             }
             else Stop(dt);
             Move(dt);
@@ -321,6 +336,7 @@ namespace Aethvirse.Enemies
                     break;
                 case EnemyState.Attack:
                     _hits.Begin();
+                    _fired = false;
                     break;
                 case EnemyState.Hurt:
                     if (_lastHit != null)
@@ -337,6 +353,30 @@ namespace Aethvirse.Enemies
         }
 
         // --- Hits -----------------------------------------------------------------------------
+
+        bool _fired;
+
+        /// <summary>Ranged attack: a fan of projectiles aimed where the hero stood at the end of the windup (dodgeable).</summary>
+        void FireShots(Transform target)
+        {
+            Vector3 from = transform.position + Vector3.up * (1f * data.size) + Facing * 0.8f;
+            Vector3 aim = target != null ? (target.position + Vector3.up - from) : Facing;
+            aim.y = Mathf.Clamp(aim.y, -0.3f * aim.magnitude, 0.3f * aim.magnitude);
+            for (int i = 0; i < data.shots; i++)
+            {
+                float yaw = data.shots == 1 ? 0f : Mathf.Lerp(-data.shotSpread, data.shotSpread, i / (float)(data.shots - 1));
+                Vector3 dir = Quaternion.Euler(0f, yaw, 0f) * aim;
+                Projectile.Fire(from, dir, data.shotSpeed, data.attackRange * 1.6f, 0.35f, 0, Team.Enemy, data.shotColor, t =>
+                {
+                    DamageInfo info = DamageCalculator.Resolve(_damageable.Stats, t.Stats, data.attackMultiplier, _damageable.Stats.element, _rng);
+                    info.stagger = data.attackStagger;
+                    info.source = gameObject;
+                    info.hitPosition = t.transform.position;
+                    info.knockback = Flat(t.transform.position - transform.position).normalized * data.attackKnockback;
+                    return info;
+                });
+            }
+        }
 
         void Strike(Damageable target)
         {

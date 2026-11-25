@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c21cb8f7ace9e8d8b40fd042816947, type: 3}
+  m_Name: k2_hollow_moon
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.World.RegionData
+  id: k2_hollow_moon
+  displayName: Hollow Moon
+  blurb: A moon with its heart carved out.
+  scene: K2_HollowMoon
+  levelMin: 600
+  levelMax: 650
+  requiredRank: 5
+  hidden: 0
+  requiredFlag: journal_k1_cinder_full
+  palette: {r: 0.55, g: 0.55, b: 0.5, a: 1}
+  weather:
+    entries:
+    - kind: 0
+      weight: 4
+    - kind: 2
+      weight: 1.5
+    minDuration: 60
+    maxDuration: 240
+  waystones:
+  - id: k2_hollow_moon_gate
+    displayName: "Hollow Moon \u2014 Entry"
+    position: {x: 6, y: 0, z: -100}
+  - id: k2_hollow_moon_town
+    displayName: "Hollow Moon \u2014 Town"
+    position: {x: -50, y: 0, z: -30}
+  - id: k2_hollow_moon_landmark
+    displayName: "Hollow Moon \u2014 Landmark"
+    position: {x: 0, y: 0, z: 55}
+  gateSpots:
+  - {x: 70, y: 0, z: -70}
+  - {x: -80, y: 0, z: 40}
+  - {x: 85, y: 0, z: 70}
+  - {x: -30, y: 0, z: 95}
+  enemies:
+  - moon_stalker
+  - crater_mage
+  neighbours:
+  - k1_cinder
+  - k3_last_city

@@ -27,6 +27,24 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-14 — Beyond Aethvirse (branch `p1-14-beyond`)
+
+### Done
+- **Three galaxies, four worlds, 15 regions:** Aethvirse (I–VII + [ ??? ]); **Seren** (Glasswood Expanse, Mirror
+  Shallows, The Silent Choir — Lv 400–550); **Kethra** in the Drowned Stars (Cinder Reach, Hollow Moon, The Last
+  City — Lv 550–700); **The God's Seat** beyond the last sky (Lv 700–800). Each new region is a full graybox scene
+  (town, huts, landmark, camps, waystones, Gate spots, roads, journal secrets).
+- **Star gates:** the last page in [ ??? ] opens Seren; the Conductor (Silent Choir) opens the Drowned Stars; the
+  Warden of Kethra opens the Seat. Every later world has a gate back. Fast travel lists regions per galaxy / world.
+- **World guardians** (phased bosses that set their world's flag) and **the war at the Seat**: allies from every
+  world (Vanguards on your side), three waves of the God's hosts, then the God in four phases calling its hosts
+  again; its fall ends the game (THE END screen).
+- **Ranged enemies:** they keep their distance, telegraph, then fire a dodgeable fan of shots (9 types, e.g. Sand
+  Wraith, Ice Wyvernling, Bell Wraith, Star Archer, Choir Lancer). 13 new enemy types in total.
+- **126 secrets** (9 per region): dawn-only, storm-at-night, a second bell song and a lonely hollow wall join the
+  earlier five kinds. The §9 target of 120+ is met (test-enforced).
+- Test cheat **F11**: every journal page full and every world open.
+
 ## P1-13 — Settings, language, sound (branch `p1-13-settings`)
 
 ### Done

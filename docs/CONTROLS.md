@@ -22,7 +22,7 @@ All gameplay input goes through Input System actions defined in `Assets/Scripts/
 | Quick potion | H | D-pad down | — (Bag → Use) | P1-5 |
 | Pause (save / load / title) | P · Esc when the cursor is free | Start | ⏸ button top right | P1-4 |
 | Debug overlay | F3 | — | — | M1 |
-| Test cheats | F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather · F10 reveal the region's secrets | — | — | M3 |
+| Test cheats | F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather · F10 reveal the region's secrets · F11 open every world | — | — | M3 |
 
 Desktop testing of the touch UI: `tools/play.sh -- -touch-ui` (mouse clicks act as touches).
 

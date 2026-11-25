@@ -50,6 +50,15 @@ namespace Aethvirse.Core
                 var db = Secrets.SecretDatabase.Instance;
                 if (db != null) foreach (var sec in db.InRegion(World.GameSession.Instance.Region)) Secrets.SecretSystem.Instance.Find(sec.id);
             }
+            if (kb.f11Key.wasPressedThisFrame)
+            {
+                // Test cheat: every journal page full and every world open (Part 2 / 3 / finale).
+                var f = World.GameSession.Instance.Flags;
+                var atlas = World.WorldAtlas.Instance;
+                if (atlas != null) foreach (var r in atlas.AllRegions()) f.SetFlag(Secrets.SecretDatabase.PageFullFlag(r.id));
+                foreach (string flag in new[] { "region_r0_unknown_found", Endgame.Endings.LastSealFlag, "galaxy_2_opened", "god_war_opened" }) f.SetFlag(flag);
+                UI.Codex.Notify("[ DEBUG ] Every world is open.", UI.CodexTone.System);
+            }
             if (kb.f7Key.wasPressedThisFrame)
             {
                 if (_stats != null) _stats.Recompute(refill: true);
@@ -87,7 +96,7 @@ namespace Aethvirse.Core
                 text += $"\n{player.DebugState}\npos {p.x:0.0} {p.y:0.0} {p.z:0.0}";
             }
             text += "\nF3 hide · camera: mouse / drag / arrow keys · click = capture, Esc = release";
-            text += "\nTest: F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather · F10 reveal region secrets · C status · P pause";
+            text += "\nTest: F6 level up · F7 full HP/MP, no cooldowns · F8 +1 hour · F9 next weather · F10 reveal region secrets · F11 open every world · C status · P pause";
             var area = new Rect(8, 8, 640, 128);
             // Dark backing so the text stays readable over a bright sky.
             GUI.color = new Color(0f, 0f, 0f, 0.55f);

@@ -15,7 +15,7 @@ public static class SecretDataBuilder
 {
     const string Dir = "Assets/Data/Secrets";
 
-    enum Kind { Night, Weather, Puzzle, Wall, Bring }
+    enum Kind { Night, Weather, Puzzle, Wall, Bring, Dawn, StormNight }
 
     struct S
     {
@@ -25,6 +25,8 @@ public static class SecretDataBuilder
         public WeatherKind weather;
         public string item;
         public SecretCategory category;
+        /// <summary>Puzzle bell order (0 low, 1 middle, 2 high).</summary>
+        public int[] order;
     }
 
     [MenuItem("AETHVIRSE/Build Secrets (journal)")]
@@ -42,10 +44,15 @@ public static class SecretDataBuilder
             RegionData r = regions[i];
             if (r.hidden || string.IsNullOrEmpty(r.scene)) continue;
             List<S> list = i == 0 ? Ashfall() : Generic(r, i);
-            db.pages.Add(new SecretDatabase.Page { region = r.id, synopsis = Synopsis(i) });
+            list.AddRange(Extras(r));
+            db.pages.Add(new SecretDatabase.Page { region = r.id, synopsis = Synopsis(r.id) });
             foreach (S s in list) db.secrets.Add(Secret(r.id, s));
-            // The road on needs this page full (STORY: mist until the journal page is complete).
-            if (i + 1 < regions.Count) { regions[i + 1].requiredFlag = SecretDatabase.PageFullFlag(r.id); EditorUtility.SetDirty(regions[i + 1]); }
+            // The road on (same world) needs this page full (STORY: mist until the journal page is complete).
+            if (i + 1 < regions.Count && regions[i + 1].neighbours.Contains(r.id))
+            {
+                regions[i + 1].requiredFlag = SecretDatabase.PageFullFlag(r.id);
+                EditorUtility.SetDirty(regions[i + 1]);
+            }
             placements.Add((r.scene, list));
         }
         EditorUtility.SetDirty(db);
@@ -55,15 +62,23 @@ public static class SecretDataBuilder
         Debug.Log($"AETHVIRSE: secrets built ({db.secrets.Count})");
     }
 
-    static string Synopsis(int i) => i switch
+    static string Synopsis(string region) => region switch
     {
-        0 => "The ash remembers what the city forgot. Something here is still breathing.",
-        1 => "Green, quiet, patient. The valley is waiting for someone to notice.",
-        2 => "The sand moves when no wind blows. Old doors sleep under it.",
-        3 => "Cold keeps things. Ice keeps them longest.",
-        4 => "Written, then drowned. The tide reads what the people forgot.",
-        5 => "The land broke here once. The pieces have not stopped listening.",
-        _ => "An empty seat. A name nobody says.",
+        "r1_ashfall" => "The ash remembers what the city forgot. Something here is still breathing.",
+        "r2_verdant" => "Green, quiet, patient. The valley is waiting for someone to notice.",
+        "r3_dunes" => "The sand moves when no wind blows. Old doors sleep under it.",
+        "r4_frostveil" => "Cold keeps things. Ice keeps them longest.",
+        "r5_archive" => "Written, then drowned. The tide reads what the people forgot.",
+        "r6_fracture" => "The land broke here once. The pieces have not stopped listening.",
+        "r7_throne" => "An empty seat. A name nobody says.",
+        "s1_glasswood" => "Every tree is a window. Some of them look back.",
+        "s2_mirrorsea" => "The water shows a sky that is not this one.",
+        "s3_choir" => "They sang until something told them to stop.",
+        "k1_cinder" => "Another world. The same hand burned it.",
+        "k2_hollow_moon" => "They hid inside their moon. It was not deep enough.",
+        "k3_last_city" => "The last ones wrote on the walls. They wrote your name.",
+        "z1_seat" => "Every line ends here. Or starts.",
+        _ => "A page with no title yet.",
     };
 
     static List<S> Ashfall() => new List<S>
@@ -99,6 +114,24 @@ public static class SecretDataBuilder
         };
     }
 
+    /// <summary>Four more per region (dawn, storm at night, a second bell puzzle, a second hollow wall).</summary>
+    static List<S> Extras(RegionData r)
+    {
+        bool storm = r.weather.entries.Exists(e => e.kind == WeatherKind.Storm);
+        WeatherKind w = storm ? WeatherKind.Storm : r.weather.entries[r.weather.entries.Count - 1].kind;
+        return new List<S>
+        {
+            new S { id = r.id + "_dawn", category = SecretCategory.Lore, kind = Kind.Dawn, at = new Vector3(-95f, 0f, -80f),
+                title = "What the first light shows.", hint1 = "'At dawn the far south-west corner glows for a moment.'", hint2 = "'Five o'clock. Not four, not seven.'" },
+            new S { id = r.id + "_stormnight", category = SecretCategory.Anomaly, kind = Kind.StormNight, weather = w, at = new Vector3(95f, 0f, 0f),
+                title = "It only walks in the worst nights.", hint1 = $"'On a {w} night, something stands by the east edge.'", hint2 = "'Night and bad weather together. Never one alone.'" },
+            new S { id = r.id + "_bells2", category = SecretCategory.Puzzle, kind = Kind.Puzzle, order = new[] { 1, 2, 0 }, at = new Vector3(30f, 0f, 55f),
+                title = "A second song, near the landmark.", hint1 = "'Middle, high, low — the old song.'", hint2 = "Scratches by the landmark: M · H · L." },
+            new S { id = r.id + "_wall2", category = SecretCategory.Chest, kind = Kind.Wall, at = new Vector3(100f, 0f, -100f),
+                title = "A lonely wall in the south-east.", hint1 = "'Why is there a wall in the middle of nowhere, south-east?'", hint2 = "'It cracks if you swing heavy.'" },
+        };
+    }
+
     static SecretData Secret(string region, S s)
     {
         var d = LoadOrCreate<SecretData>($"{Dir}/{s.id}.asset");
@@ -109,6 +142,11 @@ public static class SecretDataBuilder
         switch (s.kind)
         {
             case Kind.Night: d.conditions.Add(new Condition { type = ConditionType.IsNight }); break;
+            case Kind.Dawn: d.conditions.Add(new Condition { type = ConditionType.HourRange, value = 5f, value2 = 6f }); break;
+            case Kind.StormNight:
+                d.conditions.Add(new Condition { type = ConditionType.IsNight });
+                d.conditions.Add(new Condition { type = ConditionType.Weather, values = new List<string> { s.weather.ToString() } });
+                break;
             case Kind.Weather: d.conditions.Add(new Condition { type = ConditionType.Weather, values = new List<string> { s.weather.ToString() } }); break;
             case Kind.Bring: d.conditions.Add(new Condition { type = ConditionType.HasItem, key = s.item, value = s.item == "herb" ? 3 : 1 }); break;
             case Kind.Puzzle: d.foundByFlag = s.id + "_solved"; break;
@@ -155,7 +193,7 @@ public static class SecretDataBuilder
                     pieces.GetArrayElementAtIndex(b).objectReferenceValue = it;
                 }
                 // Ashfall: low, high, middle; elsewhere: high, low, middle (matches the hints).
-                int[] order = s.id.StartsWith("r1_") ? new[] { 0, 2, 1 } : new[] { 2, 0, 1 };
+                int[] order = s.order ?? (s.id.StartsWith("r1_") ? new[] { 0, 2, 1 } : new[] { 2, 0, 1 });
                 SerializedProperty ord = so.FindProperty("order");
                 ord.arraySize = 3;
                 for (int b = 0; b < 3; b++) ord.GetArrayElementAtIndex(b).intValue = order[b];

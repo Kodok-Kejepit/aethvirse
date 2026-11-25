@@ -20,7 +20,7 @@ MonoBehaviour:
   levelMax: 400
   requiredRank: 5
   hidden: 1
-  requiredFlag: journal_r7_throne_full
+  requiredFlag: 
   palette: {r: 0, g: 0, b: 0, a: 1}
   weather:
     entries:
