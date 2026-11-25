@@ -127,7 +127,7 @@ namespace Aethvirse.Player
             InputDirection = MovementMath.CameraRelative(raw, yaw);
             InputMagnitude = InputDirection.magnitude;
             // With the gamepad skill modifier (LB) held, the face buttons cast skills instead; a dialog eats them too.
-            if (_input.SkillModifier.IsPressed() || Dialog.DialogBox.IsOpen) return;
+            if (_input.SkillModifier.IsPressed() || Dialog.DialogBox.IsOpen || Secrets.CipherLock.IsOpen) return;
             if (_input.Jump.WasPressedThisFrame()) _jumpBuffer = movement.inputBuffer;
             if (_input.Dodge.WasPressedThisFrame()) _dodgeBuffer = movement.inputBuffer;
         }

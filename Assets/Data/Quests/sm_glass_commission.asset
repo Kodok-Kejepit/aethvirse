@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_glass_commission
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_glass_commission
+  title: The Unclaimed Commission
+  description: A glasswright finished a bow for a client who never returned.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: secret_s1_glasswood_wall
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 2
+    target: mat_s1_glasswood
+    count: 10
+    text: Gather singing glass
+    stage: 0
+    optional: 0
+  - type: 5
+    target: cipher_s1_glasswood
+    count: 1
+    text: Read the glass from the other side
+    stage: 1
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_glass_tree_bow
+    amount: 1
+    text: 
+  - type: 6
+    key: 
+    amount: 1
+    text: The commission note is signed. The client's name is yours.

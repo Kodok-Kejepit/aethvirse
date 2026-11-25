@@ -27,6 +27,22 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-19 — Sealed missions and cipher locks (branch `p1-16-next`)
+
+### Done
+- **14 sealed missions** (§9.1): never announced. They wake by themselves from hidden triggers — a secret found,
+  a duel won, a lock opened, a page read, even the hour (03:00 with level 80+ starts "ERR: page not found") — and
+  the Codex only says "[ ??? ] A sealed mission has been detected." Each is a 2–4 stage chain across regions and
+  worlds (Something Breathes Below, The Debt of Bread, Names on the Cinder Seat, A Tear That Did Not Fall, The Index
+  of Unwritten Books, Who Swung First, The Courier Who Never Arrived, The Valley's Slow Heartbeat, The Last
+  Rehearsal, Your Name on the Wall, The Fourth Name, ERR: page not found, Measure the Dark, The Unclaimed
+  Commission) and ends in a named unique, a set piece or a rune, often with a Codex line.
+- **14 cipher locks**, one per region, each with a mural somewhere in the town that holds the key: Caesar shifts
+  (three crows looking back = shift 3), mirror alphabets (Atbash), words written backwards, Morse taps and letter
+  numbers. Letter dials work with touch. Opening one pays a reward and feeds the sealed missions.
+- Every found secret now also sets a `secret_<id>` flag (sealed missions start from them).
+- Builder order: … RegionBuilder → SecretDataBuilder → MysteryBuilder.
+
 ## P1-18 — Aerial combat and rival duels (branch `p1-16-next`)
 
 ### Done

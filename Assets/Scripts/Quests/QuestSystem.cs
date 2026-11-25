@@ -108,7 +108,8 @@ namespace Aethvirse.Quests
         {
             QuestData q = Get(id);
             if (q == null || !Log.Start(q, Time.time)) return false;
-            Codex.Notify(q.kind == QuestKind.Daily ? "[ DAILY QUEST ] has arrived." : $"New quest: {q.title}", q.kind == QuestKind.Emergency ? CodexTone.Warning : CodexTone.Quest);
+            if (q.kind == QuestKind.Sealed) Codex.Notify($"[ ??? ]  A sealed mission has been detected.\n{q.title}", CodexTone.Anomaly);
+            else Codex.Notify(q.kind == QuestKind.Daily ? "[ DAILY QUEST ] has arrived." : $"New quest: {q.title}", q.kind == QuestKind.Emergency ? CodexTone.Warning : CodexTone.Quest);
             RefreshCollect(q);
             TryComplete(q);
             SyncStageFlag(q);
@@ -160,7 +161,7 @@ namespace Aethvirse.Quests
                 TryComplete(q);
             }
             if (any) Changed?.Invoke();
-            if (type == ObjectiveType.Flag || type == ObjectiveType.Kill || type == ObjectiveType.Talk) CheckAutoStart();
+            if (type == ObjectiveType.Flag || type == ObjectiveType.Kill || type == ObjectiveType.Talk || type == ObjectiveType.ReachArea) CheckAutoStart();
         }
 
         /// <summary>COLLECT objectives mirror what is in the bag.</summary>
@@ -194,7 +195,7 @@ namespace Aethvirse.Quests
             Log.Complete(q.id);
             SyncStageFlag(q);
             PayRewards(q);
-            Codex.Notify($"Quest complete: {q.title}", CodexTone.Reward);
+            Codex.Notify(q.kind == QuestKind.Sealed ? $"[ SEALED MISSION COMPLETE ]  {q.title}" : $"Quest complete: {q.title}", q.kind == QuestKind.Sealed ? CodexTone.Anomaly : CodexTone.Reward);
             Completed?.Invoke(q);
             if (q.kind == QuestKind.Daily) GameSession.Instance.PenaltyPending = false;
             Changed?.Invoke();
@@ -270,6 +271,8 @@ namespace Aethvirse.Quests
 
         void OnHour(int hour)
         {
+            // Sealed missions can wake at a certain hour.
+            CheckAutoStart();
             if (InPenaltyZone || !GameSession.Instance.WorldRunning) return;
             foreach (QuestLog.State s in Log.active) if (s.id.StartsWith("emergency_")) return;
             if (_rng.NextDouble() >= EmergencyChancePerHour) return;

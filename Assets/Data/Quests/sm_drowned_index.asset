@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_drowned_index
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_drowned_index
+  title: The Index of Unwritten Books
+  description: A catalogue lists books that were never written. One of them is about
+    you.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: cipher_r5_archive
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 0
+    target: drowned_scribe
+    count: 12
+    text: Stop the scribes still writing under water
+    stage: 0
+    optional: 0
+  - type: 3
+    target: secret_r5_archive_wall2
+    count: 1
+    text: Find the shelf behind the lonely wall
+    stage: 1
+    optional: 0
+  - type: 11
+    target: codex_identify_scroll
+    count: 3
+    text: Read three things that were hidden
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 0
+    key: u_drowned_crown
+    amount: 1
+    text: 
+  - type: 6
+    key: 
+    amount: 1
+    text: The index has one more entry now. Its title is your name.

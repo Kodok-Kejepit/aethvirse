@@ -17,7 +17,7 @@ namespace Aethvirse.Interaction
         void Update()
         {
             Current = PickBest();
-            if (Current != null && !Dialog.DialogBox.IsOpen && GameInput.Instance.Interact.WasPressedThisFrame()) Current.Use(gameObject);
+            if (Current != null && !Dialog.DialogBox.IsOpen && !Secrets.CipherLock.IsOpen && GameInput.Instance.Interact.WasPressedThisFrame()) Current.Use(gameObject);
         }
 
         /// <summary>Touch button / UI.</summary>
