@@ -33,7 +33,7 @@ namespace Aethvirse.Endgame
             }
             if (_boss == null) return;
             if (_boss.State == EnemyState.Dead) { End(); return; }
-            int phase = _boss.HealthRatio <= 0.15f ? 3 : _boss.HealthRatio <= 0.4f ? 2 : _boss.HealthRatio <= 0.7f ? 1 : 0;
+            int phase = BossPhases.For(_boss.HealthRatio);
             if (phase > _phase) { _phase = phase; _boss.Enrage(1.2f, 0.75f); Codex.Notify("The world around the throne flickers.", CodexTone.Anomaly); }
         }
 

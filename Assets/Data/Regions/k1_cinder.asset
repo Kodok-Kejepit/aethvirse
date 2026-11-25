@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c21cb8f7ace9e8d8b40fd042816947, type: 3}
+  m_Name: k1_cinder
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.World.RegionData
+  id: k1_cinder
+  displayName: Cinder Reach
+  blurb: The ground still glows where cities burned.
+  scene: K1_Cinder
+  levelMin: 550
+  levelMax: 600
+  requiredRank: 5
+  hidden: 0
+  requiredFlag: galaxy_2_opened
+  palette: {r: 0.45, g: 0.25, b: 0.2, a: 1}
+  weather:
+    entries:
+    - kind: 0
+      weight: 4
+    - kind: 6
+      weight: 1.5
+    - kind: 3
+      weight: 1.5
+    minDuration: 60
+    maxDuration: 240
+  waystones:
+  - id: k1_cinder_gate
+    displayName: "Cinder Reach \u2014 Entry"
+    position: {x: 6, y: 0, z: -100}
+  - id: k1_cinder_town
+    displayName: "Cinder Reach \u2014 Town"
+    position: {x: -50, y: 0, z: -30}
+  - id: k1_cinder_landmark
+    displayName: "Cinder Reach \u2014 Landmark"
+    position: {x: 0, y: 0, z: 55}
+  gateSpots:
+  - {x: 70, y: 0, z: -70}
+  - {x: -80, y: 0, z: 40}
+  - {x: 85, y: 0, z: 70}
+  - {x: -30, y: 0, z: 95}
+  enemies:
+  - magma_crawler
+  - ash_seer
+  neighbours:
+  - k2_hollow_moon

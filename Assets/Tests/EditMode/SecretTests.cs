@@ -35,8 +35,12 @@ namespace Aethvirse.Tests
             {
                 Assert.That(db.InRegion(regions[i].id).Count(), Is.GreaterThanOrEqualTo(5), regions[i].id + ": §7 at least 5 secrets per region");
                 Assert.That(db.PageFor(regions[i].id), Is.Not.Null);
-                if (i > 0) Assert.That(regions[i].requiredFlag, Is.EqualTo(SecretDatabase.PageFullFlag(regions[i - 1].id)));
+                // Same world: the road waits for the previous page. A new world: it waits for its own unlock flag.
+                if (i > 0 && regions[i].neighbours.Contains(regions[i - 1].id))
+                    Assert.That(regions[i].requiredFlag, Is.EqualTo(SecretDatabase.PageFullFlag(regions[i - 1].id)));
+                else if (i > 0) Assert.That(regions[i].requiredFlag, Is.Not.Empty, regions[i].id + ": a later world must be locked");
             }
+            Assert.That(db.secrets.Count, Is.GreaterThanOrEqualTo(120), "§9 target: 120+ secrets");
         }
 
         [Test]

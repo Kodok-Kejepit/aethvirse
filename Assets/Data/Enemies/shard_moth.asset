@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bcd5560031fd9f195b91f7255df69a, type: 3}
+  m_Name: shard_moth
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Enemies.EnemyData
+  id: shard_moth
+  displayName: Shard Moth
+  level: 2
+  maxHealth: 140
+  stats:
+    attack: 16
+    defense: 4
+    critChance: 0.05
+    critDamage: 1.5
+    element: 0
+  poise: 18
+  bodyColor: {r: 0.7, g: 0.9, b: 0.95, a: 1}
+  size: 0.8
+  scaleByLevel: 1
+  tier: 0
+  hpScale: 0.8
+  attackScale: 1.3
+  xpReward: 20
+  goldReward: 5
+  dropsLoot: 1
+  walkSpeed: 1.6
+  chaseSpeed: 6
+  aggroRadius: 12
+  leashRadius: 26
+  patrolRadius: 4
+  attackRange: 9
+  attackWindup: 0.5
+  attackActive: 0.15
+  attackRecovery: 0.6
+  attackCooldown: 1.2
+  attackMultiplier: 1
+  attackStagger: 20
+  attackKnockback: 3
+  attackLaunch: 0
+  attackLungeSpeed: 0
+  attackHitboxSize: {x: 1.8, y: 1.4, z: 1.6}
+  attackHitboxOffset: {x: 0, y: 1, z: 1}
+  telegraphRadius: 1.2800001
+  respawnDelay: 6
+  shots: 3
+  shotSpeed: 17
+  shotSpread: 18
+  keepDistance: 7
+  shotColor: {r: 0.8, g: 0.95, b: 1, a: 1}

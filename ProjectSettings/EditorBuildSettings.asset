@@ -42,6 +42,27 @@ EditorBuildSettings:
     path: Assets/Scenes/Regions/R7_Throne.unity
     guid: 32881749ac4587ee1bd27360146d18e3
   - enabled: 1
+    path: Assets/Scenes/Regions/S1_Glasswood.unity
+    guid: 287e61ebff9e53f13897d42510915adc
+  - enabled: 1
+    path: Assets/Scenes/Regions/S2_Mirrorsea.unity
+    guid: f8ace59cada1024a8ab1ff6fa7545167
+  - enabled: 1
+    path: Assets/Scenes/Regions/S3_Choir.unity
+    guid: f9a5f367764bf22ef83df570d8de15a4
+  - enabled: 1
+    path: Assets/Scenes/Regions/K1_Cinder.unity
+    guid: f5887aa79fa74169ba9dcfff8b2061ba
+  - enabled: 1
+    path: Assets/Scenes/Regions/K2_HollowMoon.unity
+    guid: 2cf7ac6b62c0dc9a583a4cb80c9b30d2
+  - enabled: 1
+    path: Assets/Scenes/Regions/K3_LastCity.unity
+    guid: eec349c3ffaba2ca2a479ce7600c553d
+  - enabled: 1
+    path: Assets/Scenes/Regions/Z1_Seat.unity
+    guid: 75321839a383fe71b85575f2d1a2e56a
+  - enabled: 1
     path: Assets/Scenes/Gate.unity
     guid: c3096d23a75bb8e8db331e8e33cd5ddb
   - enabled: 1

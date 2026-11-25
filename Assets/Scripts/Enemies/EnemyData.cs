@@ -57,5 +57,16 @@ namespace Aethvirse.Enemies
         [Header("Respawn (test arenas)")]
         [Tooltip("Seconds after death until it stands up at home again; 0 = stays dead.")]
         public float respawnDelay = 6f;
+
+        [Header("Ranged (0 shots = melee)")]
+        [Tooltip("Projectiles per attack (spread in a fan). 0 = a melee attack.")]
+        public int shots;
+        public float shotSpeed = 16f;
+        public float shotSpread = 12f;
+        [Tooltip("Ranged enemies back away when the hero comes closer than this.")]
+        public float keepDistance = 6f;
+        public Color shotColor = new Color(1f, 0.4f, 0.3f);
+
+        public bool IsRanged => shots > 0;
     }
 }

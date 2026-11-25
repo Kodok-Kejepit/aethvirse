@@ -52,16 +52,21 @@ namespace Aethvirse.World
             GUI.color = Color.white;
             GUILayout.BeginArea(new Rect(area.x + 20 * s, area.y + 14 * s, w - 40 * s, h - 28 * s));
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Fast Travel", _title);
+            GUILayout.Label(Core.Loc.T("fast_travel"), _title);
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Close", _button, GUILayout.Width(140 * s), GUILayout.Height(44 * s))) Close();
+            if (GUILayout.Button(Core.Loc.T("close"), _button, GUILayout.Width(140 * s), GUILayout.Height(44 * s))) Close();
             GUILayout.EndHorizontal();
             _scroll = GUILayout.BeginScrollView(_scroll);
             GameSession session = GameSession.Instance;
             int rank = AcademyRank.For(session.AcademyPoints);
-            foreach (RegionData r in atlas.AllRegions())
+            foreach (GalaxyInfo g in atlas.galaxies)
+            foreach (PlanetInfo planet in g.planets)
             {
-                if (!WorldAtlas.IsOpen(r, rank, session.Flags)) continue;
+            if (!string.IsNullOrEmpty(planet.unlockFlag) && !session.Flags.Has(planet.unlockFlag)) continue;
+            if (atlas.galaxies.Count > 1 || g.planets.Count > 1) GUILayout.Label($"— {g.displayName} · {planet.displayName} —", _title);
+            foreach (RegionData r in planet.regions)
+            {
+                if (r == null || !WorldAtlas.IsOpen(r, rank, session.Flags)) continue;
                 bool any = false;
                 foreach (WaystoneInfo w2 in r.waystones)
                 {
@@ -73,6 +78,7 @@ namespace Aethvirse.World
                         SceneTravel.Go(r.scene, w2.position + Vector3.forward * 2.5f);
                     }
                 }
+            }
             }
             GUILayout.EndScrollView();
             GUILayout.EndArea();

@@ -27,13 +27,44 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-15 — Elements, statuses, elites (branch `p1-14-beyond`)
+
+### Done
+- **Elemental auras and reactions (§6.1):** an elemental hit leaves its aura for 8 s; a second element triggers the
+  reaction (name pops over the target, the Codex names each one the first time): Melt 2×, Firestorm (spreads fire),
+  Magma (burn + slow), Overload (blast + stun), Blizzard, Permafrost (root + DEF down), Shatter (heavy blow on a
+  frozen target, 2.5×), Superconduct (takes 35 % more), Sandstorm (blind), Thunderstorm (chains to 4), Magnetize
+  (pulls), Eclipse, Corrode, Purge, Erase (Void: % max HP).
+- **Status effects:** Burn / Bleed / Poison / Shock damage over time, Chill stacks (3 = Freeze), Freeze / Stun /
+  Petrify / Root stop the AI, Slow, Blind (half of the blows miss), Corrode, Exposed.
+- **Elites:** 8 % of camp spawns, tougher and named after 1–2 affixes: Berserk, Shielded (8 hits break the shield),
+  Vampiric, Splitter, Teleporter.
+
+## P1-14 — Beyond Aethvirse (branch `p1-14-beyond`)
+
+### Done
+- **Three galaxies, four worlds, 15 regions:** Aethvirse (I–VII + [ ??? ]); **Seren** (Glasswood Expanse, Mirror
+  Shallows, The Silent Choir — Lv 400–550); **Kethra** in the Drowned Stars (Cinder Reach, Hollow Moon, The Last
+  City — Lv 550–700); **The God's Seat** beyond the last sky (Lv 700–800). Each new region is a full graybox scene
+  (town, huts, landmark, camps, waystones, Gate spots, roads, journal secrets).
+- **Star gates:** the last page in [ ??? ] opens Seren; the Conductor (Silent Choir) opens the Drowned Stars; the
+  Warden of Kethra opens the Seat. Every later world has a gate back. Fast travel lists regions per galaxy / world.
+- **World guardians** (phased bosses that set their world's flag) and **the war at the Seat**: allies from every
+  world (Vanguards on your side), three waves of the God's hosts, then the God in four phases calling its hosts
+  again; its fall ends the game (THE END screen).
+- **Ranged enemies:** they keep their distance, telegraph, then fire a dodgeable fan of shots (9 types, e.g. Sand
+  Wraith, Ice Wyvernling, Bell Wraith, Star Archer, Choir Lancer). 13 new enemy types in total.
+- **126 secrets** (9 per region): dawn-only, storm-at-night, a second bell song and a lonely hollow wall join the
+  earlier five kinds. The §9 target of 120+ is met (test-enforced).
+- Test cheat **F11**: every journal page full and every world open.
+
 ## P1-13 — Settings, language, sound (branch `p1-13-settings`)
 
 ### Done
 - **Settings** (Pause → Settings; saved): camera sensitivity, invert Y, camera distance, volume, graphics preset
   Low / Medium / High / Ultra (quality level, shadow distance, LOD bias), FPS limit (VSync / 30 / 60 / 120),
   language English / Bahasa Indonesia.
-- **Localization** table (EN / ID) used by the menus; other UI strings move into it with the Phase 2 UI.
+- **Localization** table (EN / ID): menus, title, status, journal, bag, shops, fast travel and HUD callouts; item, quest and dialog text stay English until the Phase 2 UI.
 - **Placeholder sound** (procedural): swings, hits, dodges, kills, pickups, level-up chime, the Codex ding.
 
 ## P1-12 — Endgame of the first world (branch `p1-12-endgame`)

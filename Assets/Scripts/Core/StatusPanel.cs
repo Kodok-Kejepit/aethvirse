@@ -57,7 +57,7 @@ namespace Aethvirse.Core
         void DrawJobs(float s)
         {
             GUILayout.Space(14 * s);
-            GUILayout.Label("Job: " + (stats.CurrentJob != null ? $"{stats.CurrentJob.displayName} (tier {stats.CurrentJob.tier})" : "none yet"), _title);
+            GUILayout.Label("Job: " + (stats.CurrentJob != null ? $"{stats.CurrentJob.displayName} (tier {stats.CurrentJob.tier})" : Loc.T("none_yet")), _title);
             var reg = Jobs.JobRegistry.Instance;
             if (reg != null)
             {
@@ -65,7 +65,7 @@ namespace Aethvirse.Core
                 if (options.Count == 0)
                 {
                     int next = stats.CurrentJob == null ? 30 : 60;
-                    GUILayout.Label($"Next job change at Lv {next}.", _text);
+                    GUILayout.Label($"{Loc.T("next_job")} {next}.", _text);
                 }
                 foreach (Jobs.JobData j in options)
                 {
@@ -90,7 +90,7 @@ namespace Aethvirse.Core
             }
             if (stats.Shadows.soldiers.Count > 0)
             {
-                GUILayout.Label($"Shadow army ({stats.Shadows.soldiers.Count})", _title);
+                GUILayout.Label($"{Loc.T("shadow_army")} ({stats.Shadows.soldiers.Count})", _title);
                 foreach (Jobs.ShadowArmy.Soldier sol in stats.Shadows.soldiers)
                     GUILayout.Label($"  {sol.enemyType}  Lv {sol.level}  · {Jobs.ShadowArmy.RankNames[sol.rank]} ({sol.xp} xp)", _text);
             }
@@ -104,14 +104,14 @@ namespace Aethvirse.Core
             if (db == null || atlas == null) return;
             var state = Secrets.SecretSystem.Instance.State;
             GUILayout.Space(14 * s);
-            GUILayout.Label("Mystery Journal", _title);
+            GUILayout.Label(Loc.T("journal"), _title);
             foreach (World.RegionData r in atlas.AllRegions())
             {
                 var (found, total) = db.Progress(r.id, state);
                 if (total == 0) continue;
                 bool visited = World.GameSession.Instance.Flags.Has(World.Waystone.Flag(r.id + "_gate")) || found > 0;
                 if (!visited) continue;
-                GUILayout.Label($"{r.displayName} — lines revealed {found}/{total}", _text);
+                GUILayout.Label($"{r.displayName} — {Loc.T("lines_revealed")} {found}/{total}", _text);
                 var page = db.PageFor(r.id);
                 if (page != null) GUILayout.Label("   " + page.synopsis, _text);
                 foreach (Secrets.SecretData sec in db.InRegion(r.id))
@@ -148,9 +148,9 @@ namespace Aethvirse.Core
             GUILayout.BeginHorizontal();
             GUILayout.Label($"{stats.Class.displayName}   Lv {p.level}", _title);
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Close (C)", _button, GUILayout.Width(170 * s), GUILayout.Height(48 * s))) SetOpen(false);
+            if (GUILayout.Button(Loc.T("close") + " (C)", _button, GUILayout.Width(170 * s), GUILayout.Height(48 * s))) SetOpen(false);
             GUILayout.EndHorizontal();
-            GUILayout.Label($"XP {p.xp} / {p.XpToNext}      Stat points: {p.freePoints}      Skill points: {p.skillPoints}", _text);
+            GUILayout.Label($"XP {p.xp} / {p.XpToNext}      {Loc.T("stat_points")}: {p.freePoints}      {Loc.T("skill_points")}: {p.skillPoints}", _text);
             GUILayout.Space(10 * s);
 
             DerivedStats d = stats.Derived;
@@ -178,7 +178,7 @@ namespace Aethvirse.Core
             DrawJournal(s);
 
             GUILayout.Space(14 * s);
-            GUILayout.Label("Skills", _title);
+            GUILayout.Label(Loc.T("skills"), _title);
             foreach (SkillData skill in stats.AllSkills())
             {
                 int level = stats.SkillLevel(skill.id);

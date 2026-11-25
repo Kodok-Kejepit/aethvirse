@@ -23,6 +23,7 @@ namespace Aethvirse.UI
             SaveManager.Saved += OnSaved;
             GameSession.Instance.DayChanged += OnDay;
             GameSession.Instance.WeatherChanged += OnWeather;
+            Combat.Damageable.AnyReaction += OnReaction;
             _ready = true;
         }
 
@@ -35,6 +36,7 @@ namespace Aethvirse.UI
                 _stats.SkillLearned -= OnSkill;
             }
             SaveManager.Saved -= OnSaved;
+            Combat.Damageable.AnyReaction -= OnReaction;
             if (GameSession.Exists)
             {
                 GameSession.Instance.DayChanged -= OnDay;
@@ -55,5 +57,14 @@ namespace Aethvirse.UI
         void OnDay(int day) => Codex.Notify($"Day {day} begins.", CodexTone.Info);
 
         void OnWeather(WeatherKind kind) => Codex.Notify($"Weather: {kind}.", CodexTone.Info);
+
+        /// <summary>First time each reaction happens, the Codex names it.</summary>
+        void OnReaction(Combat.ReactionType r)
+        {
+            string flag = "reaction_seen_" + r;
+            if (GameSession.Instance.Flags.Has(flag)) return;
+            GameSession.Instance.Flags.SetFlag(flag);
+            Codex.Notify($"Reaction discovered: {Combat.Reactions.Name(r)}", CodexTone.System);
+        }
     }
 }

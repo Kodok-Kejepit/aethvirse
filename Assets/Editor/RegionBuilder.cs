@@ -25,7 +25,23 @@ public static class RegionBuilder
         public string[] enemies;
         public WeatherKind[] weather;
         public bool hidden;
+        /// <summary>0 Aethvirse · 1 Seren · 2 Kethra · 3 the Seat.</summary>
+        public int planet;
+        /// <summary>Flag that opens this region (first region of a later world); otherwise the journal lock applies.</summary>
+        public string unlock;
+        /// <summary>The guardian at the end of a world and the flag its fall sets.</summary>
+        public string boss, bossFlag;
     }
+
+    struct PlanetDef { public string id, name, galaxy, galaxyName, unlock, galaxyUnlock; }
+
+    static readonly PlanetDef[] Planets =
+    {
+        new PlanetDef { id = "aethvirse", name = "Aethvirse", galaxy = "home", galaxyName = "The Known Sky" },
+        new PlanetDef { id = "seren", name = "Seren", galaxy = "home", galaxyName = "The Known Sky", unlock = "last_seal_opened" },
+        new PlanetDef { id = "kethra", name = "Kethra", galaxy = "drowned_stars", galaxyName = "The Drowned Stars", unlock = "galaxy_2_opened", galaxyUnlock = "galaxy_2_opened" },
+        new PlanetDef { id = "seat", name = "The Seat", galaxy = "beyond", galaxyName = "Beyond the Last Sky", unlock = "god_war_opened", galaxyUnlock = "god_war_opened" },
+    };
 
     static readonly Def[] Regions =
     {
@@ -45,6 +61,25 @@ public static class RegionBuilder
             blurb = "An empty throne at the end of the known map.", enemies = new[] { "hollow_echo", "gravewarden" }, weather = new[] { WeatherKind.Clear, WeatherKind.Fog, WeatherKind.Storm } },
         new Def { id = "r0_unknown", name = "[ ??? ]", scene = "", min = 350, max = 400, rank = 5, palette = Color.black, hidden = true,
             blurb = "", enemies = new string[0], weather = new[] { WeatherKind.Clear } },
+        // Part 2 — Seren: a world of glass and echoes.
+        new Def { id = "s1_glasswood", name = "Glasswood Expanse", scene = "S1_Glasswood", min = 400, max = 450, rank = 5, palette = new Color(0.55f, 0.75f, 0.8f), planet = 1, unlock = "last_seal_opened",
+            blurb = "Trees of glass. Every step rings.", enemies = new[] { "shard_moth", "glass_golem" }, weather = new[] { WeatherKind.Clear, WeatherKind.Rain, WeatherKind.Fog } },
+        new Def { id = "s2_mirrorsea", name = "Mirror Shallows", scene = "S2_Mirrorsea", min = 450, max = 500, rank = 5, palette = new Color(0.6f, 0.65f, 0.75f), planet = 1,
+            blurb = "Still water that shows a different sky.", enemies = new[] { "tide_shade", "reflection" }, weather = new[] { WeatherKind.Clear, WeatherKind.Fog, WeatherKind.Storm } },
+        new Def { id = "s3_choir", name = "The Silent Choir", scene = "S3_Choir", min = 500, max = 550, rank = 5, palette = new Color(0.5f, 0.5f, 0.6f), planet = 1,
+            blurb = "A cathedral that stopped singing.", enemies = new[] { "bell_wraith", "choir_knight" }, weather = new[] { WeatherKind.Clear, WeatherKind.Fog, WeatherKind.Storm },
+            boss = "the_conductor", bossFlag = "galaxy_2_opened" },
+        // Part 3 — Kethra, in another galaxy: a civilisation the God hunted before.
+        new Def { id = "k1_cinder", name = "Cinder Reach", scene = "K1_Cinder", min = 550, max = 600, rank = 5, palette = new Color(0.45f, 0.25f, 0.2f), planet = 2, unlock = "galaxy_2_opened",
+            blurb = "The ground still glows where cities burned.", enemies = new[] { "magma_crawler", "ash_seer" }, weather = new[] { WeatherKind.Clear, WeatherKind.Ashfall, WeatherKind.Storm } },
+        new Def { id = "k2_hollow_moon", name = "Hollow Moon", scene = "K2_HollowMoon", min = 600, max = 650, rank = 5, palette = new Color(0.55f, 0.55f, 0.5f), planet = 2,
+            blurb = "A moon with its heart carved out.", enemies = new[] { "moon_stalker", "crater_mage" }, weather = new[] { WeatherKind.Clear, WeatherKind.Fog } },
+        new Def { id = "k3_last_city", name = "The Last City", scene = "K3_LastCity", min = 650, max = 700, rank = 5, palette = new Color(0.35f, 0.35f, 0.42f), planet = 2,
+            blurb = "They held out longest here. The walls remember.", enemies = new[] { "hunted_sentinel", "star_archer" }, weather = new[] { WeatherKind.Clear, WeatherKind.Rain, WeatherKind.Storm },
+            boss = "kethra_warden", bossFlag = "god_war_opened" },
+        // Finale — the war at the Seat.
+        new Def { id = "z1_seat", name = "The God's Seat", scene = "Z1_Seat", min = 700, max = 800, rank = 5, palette = new Color(0.85f, 0.8f, 0.6f), planet = 3, unlock = "god_war_opened",
+            blurb = "The place every story was written from.", enemies = new[] { "seraph_husk", "choir_lancer" }, weather = new[] { WeatherKind.Clear, WeatherKind.Storm } },
     };
 
     [MenuItem("AETHVIRSE/Build World (regions)")]
@@ -56,27 +91,25 @@ public static class RegionBuilder
         BuildEnemies();
         var regions = new List<RegionData>();
         foreach (Def d in Regions) regions.Add(RegionAsset(d));
-        for (int i = 0; i < regions.Count - 1; i++)
+        // Roads join neighbouring regions of the same world; worlds are joined by star gates.
+        for (int i = 0; i < regions.Count; i++)
         {
             regions[i].neighbours = new List<string>();
-            if (i > 0) regions[i].neighbours.Add(regions[i - 1].id);
-            if (i < regions.Count - 2) regions[i].neighbours.Add(regions[i + 1].id);
+            if (Regions[i].hidden) continue;
+            for (int j = i - 1; j <= i + 1; j += 2)
+                if (j >= 0 && j < regions.Count && !Regions[j].hidden && Regions[j].planet == Regions[i].planet) regions[i].neighbours.Add(regions[j].id);
         }
         var atlas = LoadOrCreate<WorldAtlas>("Assets/Resources/WorldAtlas.asset");
-        atlas.galaxies = new List<GalaxyInfo>
+        atlas.galaxies = new List<GalaxyInfo>();
+        for (int pi = 0; pi < Planets.Length; pi++)
         {
-            new GalaxyInfo
-            {
-                id = "home", displayName = "The Known Sky",
-                planets = new List<PlanetInfo>
-                {
-                    new PlanetInfo { id = "aethvirse", displayName = "Aethvirse", regions = regions },
-                    // Part 2 / 3 (STORY §6.5): further worlds open after the last seal; regions get added as they are built.
-                    new PlanetInfo { id = "planet_2", displayName = "[ unknown world ]", unlockFlag = "last_seal_opened" },
-                },
-            },
-            new GalaxyInfo { id = "galaxy_2", displayName = "[ unknown galaxy ]", unlockFlag = "galaxy_2_opened" },
-        };
+            PlanetDef pd = Planets[pi];
+            GalaxyInfo g = atlas.galaxies.Find(x => x.id == pd.galaxy);
+            if (g == null) atlas.galaxies.Add(g = new GalaxyInfo { id = pd.galaxy, displayName = pd.galaxyName, unlockFlag = pd.galaxyUnlock ?? "" });
+            var planet = new PlanetInfo { id = pd.id, displayName = pd.name, unlockFlag = pd.unlock ?? "" };
+            for (int i = 0; i < Regions.Length; i++) if (Regions[i].planet == pi) planet.regions.Add(regions[i]);
+            g.planets.Add(planet);
+        }
         EditorUtility.SetDirty(atlas);
         AssetDatabase.SaveAssets();
         for (int i = 0; i < Regions.Length; i++) if (!Regions[i].hidden) BuildScene(Regions[i], regions[i], i);
@@ -118,6 +151,33 @@ public static class RegionBuilder
         catalog.enemies.Add(E("hollow_echo", "Hollow Echo", new Color(0.7f, 0.7f, 0.75f), 1.1f, 1.2f, 1.5f, 5f, 0.5f, 1f, 6f, 0f, 2.2f, 30f));
         catalog.enemies.Add(E("gravewarden", "Gravewarden", new Color(0.25f, 0.22f, 0.2f), 1.7f, 2.4f, 1.6f, 2.8f, 1f, 1.6f, 11f, 6f, 2.8f, 80f));
         catalog.enemies.Add(E("the_unwritten", "The Unwritten", new Color(0.05f, 0.05f, 0.05f), 1.4f, 3f, 1.8f, 5f, 0.5f, 0.9f, 12f, 8f, 3f, 200f));
+        // Ranged in Aethvirse: casters and spitters keep their distance.
+        Ranged(catalog.enemies.Find(x => x.id == "sand_wraith"), 1, 14f, 0f, 7f, new Color(1f, 0.7f, 0.4f));
+        Ranged(catalog.enemies.Find(x => x.id == "ice_wyvernling"), 3, 15f, 14f, 8f, new Color(0.6f, 0.85f, 1f));
+        Ranged(catalog.enemies.Find(x => x.id == "ink_wraith"), 2, 12f, 10f, 7f, new Color(0.15f, 0.15f, 0.3f));
+        // Seren
+        catalog.enemies.Add(Ranged(E("shard_moth", "Shard Moth", new Color(0.7f, 0.9f, 0.95f), 0.8f, 0.8f, 1.3f, 6f, 0.5f, 1.2f, 3f, 0f, 9f, 18f), 3, 17f, 18f, 7f, new Color(0.8f, 0.95f, 1f)));
+        catalog.enemies.Add(E("glass_golem", "Glass Golem", new Color(0.6f, 0.8f, 0.85f), 1.8f, 2.6f, 1.5f, 2.4f, 1.1f, 1.8f, 12f, 5f, 2.8f, 90f));
+        catalog.enemies.Add(E("tide_shade", "Tide Shade", new Color(0.35f, 0.45f, 0.6f), 1.1f, 1.1f, 1.5f, 6.5f, 0.45f, 0.8f, 5f, 0f, 2.2f, 25f));
+        catalog.enemies.Add(Ranged(E("reflection", "Reflection", new Color(0.85f, 0.85f, 0.9f), 1f, 1f, 1.5f, 5f, 0.6f, 1.1f, 4f, 0f, 10f, 30f), 1, 22f, 0f, 9f, Color.white));
+        catalog.enemies.Add(Ranged(E("bell_wraith", "Bell Wraith", new Color(0.75f, 0.7f, 0.45f), 1.1f, 1f, 1.6f, 4.5f, 0.7f, 1.3f, 6f, 0f, 11f, 30f), 5, 13f, 30f, 8f, new Color(1f, 0.9f, 0.5f)));
+        catalog.enemies.Add(E("choir_knight", "Choir Knight", new Color(0.5f, 0.5f, 0.6f), 1.4f, 2f, 1.6f, 3.5f, 0.8f, 1.3f, 9f, 3f, 2.6f, 70f));
+        catalog.enemies.Add(E("the_conductor", "The Conductor", new Color(0.3f, 0.3f, 0.4f), 1.4f, 3f, 1.8f, 4.5f, 0.6f, 1f, 12f, 6f, 3f, 200f));
+        // Kethra
+        catalog.enemies.Add(E("magma_crawler", "Magma Crawler", new Color(0.6f, 0.25f, 0.1f), 1.2f, 1.6f, 1.6f, 5f, 0.6f, 1.1f, 7f, 2f, 2.4f, 45f));
+        catalog.enemies.Add(Ranged(E("ash_seer", "Ash Seer", new Color(0.4f, 0.35f, 0.35f), 1f, 1f, 1.7f, 4f, 0.8f, 1.4f, 5f, 0f, 12f, 28f), 2, 15f, 8f, 9f, new Color(1f, 0.5f, 0.2f)));
+        catalog.enemies.Add(E("moon_stalker", "Moon Stalker", new Color(0.7f, 0.7f, 0.65f), 1f, 1f, 1.7f, 7.5f, 0.4f, 0.7f, 5f, 0f, 2.1f, 25f));
+        catalog.enemies.Add(Ranged(E("crater_mage", "Crater Mage", new Color(0.5f, 0.45f, 0.55f), 1.1f, 1.1f, 1.8f, 4f, 0.9f, 1.5f, 6f, 3f, 12f, 30f), 4, 12f, 24f, 9f, new Color(0.7f, 0.5f, 1f)));
+        catalog.enemies.Add(E("hunted_sentinel", "Hunted Sentinel", new Color(0.35f, 0.35f, 0.45f), 1.6f, 2.4f, 1.8f, 3f, 0.9f, 1.4f, 11f, 4f, 2.8f, 85f));
+        catalog.enemies.Add(Ranged(E("star_archer", "Star Archer", new Color(0.8f, 0.8f, 0.5f), 1f, 1f, 1.9f, 5f, 0.7f, 1.2f, 4f, 0f, 14f, 25f), 1, 26f, 0f, 10f, new Color(1f, 1f, 0.6f)));
+        catalog.enemies.Add(E("kethra_warden", "Warden of Kethra", new Color(0.25f, 0.25f, 0.35f), 1.5f, 3.2f, 1.9f, 4.5f, 0.6f, 1f, 13f, 7f, 3f, 220f));
+        // The Seat
+        catalog.enemies.Add(E("seraph_husk", "Seraph Husk", new Color(0.9f, 0.85f, 0.7f), 1.2f, 1.4f, 2f, 5.5f, 0.55f, 1f, 7f, 2f, 2.4f, 40f));
+        catalog.enemies.Add(Ranged(E("choir_lancer", "Choir Lancer", new Color(0.95f, 0.9f, 0.6f), 1.1f, 1.2f, 2f, 4.5f, 0.75f, 1.3f, 6f, 0f, 13f, 35f), 3, 18f, 12f, 9f, new Color(1f, 0.95f, 0.7f)));
+        catalog.enemies.Add(E("halo_warden", "Halo Warden", new Color(0.8f, 0.75f, 0.5f), 1.7f, 2.6f, 2.1f, 3f, 0.9f, 1.5f, 12f, 5f, 2.8f, 95f));
+        catalog.enemies.Add(E("the_god", "[ ??? ]", new Color(1f, 0.97f, 0.88f), 2f, 4f, 2.4f, 5f, 0.6f, 0.9f, 15f, 9f, 3.4f, 300f));
+        // Allies in the war (they become minions on the hero's side).
+        catalog.enemies.Add(E("vanguard", "Vanguard", new Color(0.3f, 0.55f, 0.9f), 1.1f, 1.5f, 1.4f, 6f, 0.5f, 0.9f, 6f, 0f, 2.2f, 50f));
         EditorUtility.SetDirty(catalog);
     }
 
@@ -146,6 +206,18 @@ public static class RegionBuilder
         return e;
     }
 
+    static EnemyData Ranged(EnemyData e, int shots, float speed, float spread, float keep, Color color)
+    {
+        e.shots = shots;
+        e.shotSpeed = speed;
+        e.shotSpread = spread;
+        e.keepDistance = keep;
+        e.shotColor = color;
+        e.attackLungeSpeed = 0f;
+        EditorUtility.SetDirty(e);
+        return e;
+    }
+
     // --- Regions --------------------------------------------------------------------------------------
 
     static RegionData RegionAsset(Def d)
@@ -159,6 +231,8 @@ public static class RegionBuilder
         r.levelMax = d.max;
         r.requiredRank = d.rank;
         r.hidden = d.hidden;
+        // The journal lock is added by SecretDataBuilder; a later world's first region waits for its own flag.
+        r.requiredFlag = d.unlock ?? "";
         r.palette = d.palette;
         r.enemies = new List<string>(d.enemies);
         r.weather = new WeatherTable { entries = new List<WeatherTable.Entry>() };
@@ -246,6 +320,21 @@ public static class RegionBuilder
             back.AddComponent<Interactable>().Prompt = "Return to the academy";
             AcademyBuilder.SetPortal(back.AddComponent<Portal>(), "Academy", false, null);
         }
+        // Star gates: the first region of a later world leads back to the previous world; a world's guardian opens the next.
+        int pIdx = d.planet;
+        if (pIdx > 0 && !string.IsNullOrEmpty(d.unlock))
+            StarGate(world, new Vector3(-8f, 0f, -112f), LastScene(pIdx - 1), "", "Return to the previous world", stone);
+        if (!string.IsNullOrEmpty(d.boss))
+        {
+            var boss = new GameObject("WorldGuardian").AddComponent<Aethvirse.Endgame.RegionBoss>();
+            boss.transform.position = new Vector3(0f, 0.2f, 58f);
+            var bso = new SerializedObject(boss);
+            bso.FindProperty("bossType").stringValue = d.boss;
+            bso.FindProperty("defeatedFlag").stringValue = d.bossFlag;
+            bso.ApplyModifiedPropertiesWithoutUndo();
+            StarGate(world, new Vector3(0f, 0f, 112f), FirstScene(pIdx + 1), d.bossFlag, "Step through to another world", stone);
+        }
+        if (d.id == "z1_seat") new GameObject("GodWar").AddComponent<Aethvirse.Endgame.GodWar>().transform.position = new Vector3(0f, 0.2f, 40f);
         foreach (string n in region.neighbours)
         {
             bool forward = System.Array.FindIndex(Regions, r => r.id == n) > index;
@@ -317,11 +406,31 @@ public static class RegionBuilder
         GameObject page = PlaygroundBuilder.Primitive(PrimitiveType.Cube, "LastPage", root, new Vector3(0f, 1.2f, 10f), new Vector3(1.2f, 1.6f, 0.1f), PlaygroundBuilder.MakeMaterial("Page", new Color(0.1f, 0.1f, 0.12f)));
         page.AddComponent<Interactable>();
         page.AddComponent<Aethvirse.Endgame.LastSeal>();
+        StarGate(root, new Vector3(12f, 0f, 10f), FirstScene(1), Aethvirse.Endgame.Endings.LastSealFlag, "Step through to another world", PlaygroundBuilder.MakeMaterial("WaystoneMat", new Color(0.4f, 0.8f, 1f)));
         GameObject back = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "WayBack", root, new Vector3(0f, 2f, -26f), new Vector3(3f, 0.1f, 3f), PlaygroundBuilder.MakeMaterial("ExpeditionGate", new Color(0.4f, 0.75f, 1f)));
         back.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
         back.AddComponent<Interactable>().Prompt = "Go back";
         AcademyBuilder.SetPortal(back.AddComponent<Portal>(), "", true, null);
         EditorSceneManager.SaveScene(scene, UnknownPath);
+    }
+
+    static string FirstScene(int planet) { foreach (Def d in Regions) if (d.planet == planet && !d.hidden) return d.scene; return ""; }
+    static string LastScene(int planet) { string s = ""; foreach (Def d in Regions) if (d.planet == planet && !d.hidden) s = d.scene; return s; }
+
+    static void StarGate(Transform parent, Vector3 at, string scene, string flag, string label, Material mat)
+    {
+        GameObject frame = PlaygroundBuilder.Box(parent, "StarGate_" + scene, at + Vector3.up * 2.5f, new Vector3(5f, 5f, 0.5f), mat);
+        GameObject glow = PlaygroundBuilder.Primitive(PrimitiveType.Cylinder, "StarGlow_" + scene, parent, at + new Vector3(0f, 2.5f, -0.4f), new Vector3(3.6f, 0.05f, 3.6f), PlaygroundBuilder.MakeMaterial("StarGlow", new Color(0.9f, 0.85f, 1f)));
+        glow.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        Object.DestroyImmediate(glow.GetComponent<Collider>());
+        frame.AddComponent<Interactable>();
+        var sg = frame.AddComponent<Aethvirse.Endgame.StarGate>();
+        var so = new SerializedObject(sg);
+        so.FindProperty("targetScene").stringValue = scene;
+        so.FindProperty("requiredFlag").stringValue = flag;
+        so.FindProperty("label").stringValue = label;
+        so.FindProperty("glow").objectReferenceValue = glow;
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     static void Walls(Transform parent, Vector3 center, float size, Material mat)

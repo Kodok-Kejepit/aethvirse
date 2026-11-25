@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40bcd5560031fd9f195b91f7255df69a, type: 3}
+  m_Name: glass_golem
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Enemies.EnemyData
+  id: glass_golem
+  displayName: Glass Golem
+  level: 2
+  maxHealth: 140
+  stats:
+    attack: 16
+    defense: 4
+    critChance: 0.05
+    critDamage: 1.5
+    element: 0
+  poise: 90
+  bodyColor: {r: 0.6, g: 0.8, b: 0.85, a: 1}
+  size: 1.8
+  scaleByLevel: 1
+  tier: 0
+  hpScale: 2.6
+  attackScale: 1.5
+  xpReward: 20
+  goldReward: 5
+  dropsLoot: 1
+  walkSpeed: 1.6
+  chaseSpeed: 2.4
+  aggroRadius: 12
+  leashRadius: 26
+  patrolRadius: 4
+  attackRange: 4.0319996
+  attackWindup: 1.1
+  attackActive: 0.15
+  attackRecovery: 0.6
+  attackCooldown: 1.8
+  attackMultiplier: 1
+  attackStagger: 20
+  attackKnockback: 12
+  attackLaunch: 5
+  attackLungeSpeed: 5
+  attackHitboxSize: {x: 2.9159997, y: 2.268, z: 2.5919998}
+  attackHitboxOffset: {x: 0, y: 1, z: 1}
+  telegraphRadius: 2.8799999
+  respawnDelay: 6
+  shots: 0
+  shotSpeed: 16
+  shotSpread: 12
+  keepDistance: 6
+  shotColor: {r: 1, g: 0.4, b: 0.3, a: 1}

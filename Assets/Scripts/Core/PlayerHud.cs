@@ -171,7 +171,7 @@ namespace Aethvirse.Core
             {
                 _center.fontSize = Mathf.RoundToInt(48 * s);
                 _center.normal.textColor = new Color(0.55f, 0.9f, 1f, Mathf.Clamp01(_callout / 0.3f));
-                GUI.Label(new Rect(0, Screen.height * 0.25f, Screen.width, 70 * s), "PERFECT DODGE", _center);
+                GUI.Label(new Rect(0, Screen.height * 0.25f, Screen.width, 70 * s), Loc.T("perfect_dodge"), _center);
             }
         }
 

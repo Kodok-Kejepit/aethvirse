@@ -50,7 +50,9 @@ namespace Aethvirse.Enemies
             float a = (float)_rng.NextDouble() * Mathf.PI * 2f;
             Vector3 at = transform.position + new Vector3(Mathf.Cos(a), 0.1f, Mathf.Sin(a)) * ((float)_rng.NextDouble() * radius);
             Enemy e = catalog.Spawn(types[_rng.Next(types.Count)], at, level);
-            if (e != null) _alive.Add(e);
+            if (e == null) return;
+            if (_rng.NextDouble() < EliteAffixes.Chance) EliteAffixes.Make(e, EliteAffixes.Roll(_rng));
+            _alive.Add(e);
         }
     }
 }

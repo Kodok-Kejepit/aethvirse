@@ -57,7 +57,27 @@ namespace Aethvirse.Enemies
         public EnemyData Data => data;
         public EnemyState State { get; private set; } = EnemyState.Idle;
         public bool IsLockable => State != EnemyState.Dead && isActiveAndEnabled;
-        public string DisplayName => $"{data.displayName}  Lv {Level}";
+        public string DisplayName => $"{EliteAffixes.Prefix(Elite != null ? Elite.Affixes : null)}{data.displayName}  Lv {Level}";
+        /// <summary>Set when this enemy is an elite (affixes).</summary>
+        public EliteAffixes Elite { get; set; }
+        public int CurrentLevel => Level;
+        /// <summary>Damage this enemy dealt (vampiric elites heal from it).</summary>
+        public event System.Action<int> DealtDamage;
+
+        public void Teleport(Vector3 to)
+        {
+            _body.enabled = false;
+            transform.position = to;
+            _body.enabled = true;
+            _velocity = Vector3.zero;
+        }
+
+        /// <summary>Smaller and weaker copy (splitter elites).</summary>
+        public void Shrink(float factor)
+        {
+            visual.localScale *= factor;
+            _damageable.Health.SetMax(Mathf.Max(1, Mathf.RoundToInt(_damageable.Health.maxHealth * factor * 0.5f)), refill: true);
+        }
         /// <summary>Spawned waves remove themselves instead of respawning.</summary>
         public bool RespawnAtHome { get; set; } = true;
         public Vector3 LockPoint => transform.position + Vector3.up * 1f;
@@ -181,6 +201,15 @@ namespace Aethvirse.Enemies
         void Update()
         {
             float dt = Time.deltaTime;
+            // Frozen, stunned, petrified or rooted: the AI waits (the windup does not advance).
+            if (State != EnemyState.Dead && _damageable.Status.Disabled)
+            {
+                ShowTelegraph(0f);
+                Stop(dt);
+                Move(dt);
+                UpdateFlash(dt);
+                return;
+            }
             _stateTime += dt;
             _cooldown = Mathf.Max(_cooldown - dt, 0f);
             _sinceHit += dt;
@@ -225,7 +254,14 @@ namespace Aethvirse.Enemies
                 return;
             }
             float dist = DistanceToTarget();
-            if (dist <= data.attackRange)
+            // Archers and casters keep their distance: step back while cooling down.
+            if (data.IsRanged && dist < data.keepDistance && _cooldown > 0f)
+            {
+                Vector3 away = Flat(transform.position - target.position).normalized;
+                MoveToward(transform.position + away * 3f, data.walkSpeed * 1.4f * _speedMult, dt);
+                Face(target.position, dt);
+            }
+            else if (dist <= data.attackRange)
             {
                 Stop(dt);
                 Face(target.position, dt);
@@ -261,9 +297,17 @@ namespace Aethvirse.Enemies
             else if (_stateTime < activeEnd)
             {
                 ShowTelegraph(0f);
-                _velocity.x = _attackDirection.x * data.attackLungeSpeed;
-                _velocity.z = _attackDirection.z * data.attackLungeSpeed;
-                _hits.Sweep(visual, data.attackHitboxOffset, data.attackHitboxSize, Strike);
+                if (data.IsRanged)
+                {
+                    if (!_fired) { _fired = true; FireShots(target); }
+                    Stop(dt);
+                }
+                else
+                {
+                    _velocity.x = _attackDirection.x * data.attackLungeSpeed;
+                    _velocity.z = _attackDirection.z * data.attackLungeSpeed;
+                    _hits.Sweep(visual, data.attackHitboxOffset, data.attackHitboxSize, Strike);
+                }
             }
             else Stop(dt);
             Move(dt);
@@ -321,6 +365,7 @@ namespace Aethvirse.Enemies
                     break;
                 case EnemyState.Attack:
                     _hits.Begin();
+                    _fired = false;
                     break;
                 case EnemyState.Hurt:
                     if (_lastHit != null)
@@ -338,8 +383,34 @@ namespace Aethvirse.Enemies
 
         // --- Hits -----------------------------------------------------------------------------
 
+        bool _fired;
+
+        /// <summary>Ranged attack: a fan of projectiles aimed where the hero stood at the end of the windup (dodgeable).</summary>
+        void FireShots(Transform target)
+        {
+            Vector3 from = transform.position + Vector3.up * (1f * data.size) + Facing * 0.8f;
+            Vector3 aim = target != null ? (target.position + Vector3.up - from) : Facing;
+            aim.y = Mathf.Clamp(aim.y, -0.3f * aim.magnitude, 0.3f * aim.magnitude);
+            for (int i = 0; i < data.shots; i++)
+            {
+                float yaw = data.shots == 1 ? 0f : Mathf.Lerp(-data.shotSpread, data.shotSpread, i / (float)(data.shots - 1));
+                Vector3 dir = Quaternion.Euler(0f, yaw, 0f) * aim;
+                Projectile.Fire(from, dir, data.shotSpeed, data.attackRange * 1.6f, 0.35f, 0, Team.Enemy, data.shotColor, t =>
+                {
+                    DamageInfo info = DamageCalculator.Resolve(_damageable.Stats, t.Stats, data.attackMultiplier, _damageable.Stats.element, _rng);
+                    info.stagger = data.attackStagger;
+                    info.source = gameObject;
+                    info.hitPosition = t.transform.position;
+                    info.knockback = Flat(t.transform.position - transform.position).normalized * data.attackKnockback;
+                    return info;
+                }, (t, info) => DealtDamage?.Invoke(info.amount));
+            }
+        }
+
         void Strike(Damageable target)
         {
+            // Blinded: half of its blows miss.
+            if (_damageable.Status.Has(StatusType.Blind) && _rng.NextDouble() < 0.5) return;
             DamageInfo info = DamageCalculator.Resolve(_damageable.Stats, target.Stats, data.attackMultiplier,
                 _damageable.Stats.element, _rng);
             info.stagger = data.attackStagger;
@@ -348,7 +419,7 @@ namespace Aethvirse.Enemies
             info.hitPosition = target.transform.position;
             Vector3 push = Flat(target.transform.position - transform.position);
             info.knockback = push.normalized * data.attackKnockback;
-            target.Receive(info);
+            if (target.Receive(info)) DealtDamage?.Invoke(info.amount);
         }
 
         void OnDamaged(DamageInfo info)
@@ -397,6 +468,7 @@ namespace Aethvirse.Enemies
             visual.rotation = _homeRotation;
             _velocity = Vector3.zero;
             _poise = 0f;
+            _damageable.Status.ClearAll();
             _damageable.Health.Reset();
             if (healthBar != null) healthBar.gameObject.SetActive(true);
             SetVisible(true);
@@ -414,7 +486,7 @@ namespace Aethvirse.Enemies
         void MoveToward(Vector3 point, float speed, float dt)
         {
             Vector3 to = Flat(point - transform.position);
-            Vector3 desired = to.magnitude > 0.2f ? to.normalized * speed : Vector3.zero;
+            Vector3 desired = to.magnitude > 0.2f ? to.normalized * speed * _damageable.Status.SpeedFactor : Vector3.zero;
             _velocity = MovementMath.ApproachHorizontal(_velocity, desired, MoveRate, dt);
             Face(point, dt);
         }
