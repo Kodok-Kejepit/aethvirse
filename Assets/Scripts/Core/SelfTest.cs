@@ -124,9 +124,42 @@ namespace Aethvirse.Core
             }
         }
 
+        static bool Only(string part)
+        {
+            string[] args = System.Environment.GetCommandLineArgs();
+            int i = System.Array.IndexOf(args, "-only");
+            return i < 0 || i + 1 >= args.Length || args[i + 1] == part;
+        }
+
+        /// <summary>Where the camera and the player are, and what the scene holds (for blank-screen bugs).</summary>
+        void Probe(string label)
+        {
+            Camera cam = Camera.main;
+            Transform p = PlayerTarget.Current;
+            int renderers = FindObjectsByType<Renderer>(FindObjectsSortMode.None).Length;
+            Note($"{label}: camera {(cam != null ? cam.transform.position.ToString("0.0") + " fwd " + cam.transform.forward.ToString("0.00") + " near " + cam.nearClipPlane + " far " + cam.farClipPlane + " enabled " + cam.enabled : "none")} | player {(p != null ? p.position.ToString("0.0") : "none")} | renderers {renderers} | fog {RenderSettings.fog} {RenderSettings.fogDensity:0.000}");
+        }
+
         IEnumerator Run()
         {
             yield return Wait(4f);
+            if (!Only("all"))
+            {
+                yield return NewGame("vanguard");
+                _step = "gate_only";
+                Gates.GateSession.BeginTrial("guardian", 1, 60, new[] { "ash_hound", "ember_husk" });
+                Save.SceneTravel.Go("Gate", null, rememberReturn: true);
+                for (int k = 0; k < 4; k++)
+                {
+                    yield return Wait(1.5f);
+                    Probe($"t{k}");
+                    yield return Shot($"gate_{k}");
+                }
+                _log.AppendLine("done");
+                Flush();
+                Application.Quit();
+                yield break;
+            }
             _step = "title";
             yield return Shot("00_title");
 
@@ -256,6 +289,7 @@ namespace Aethvirse.Core
             yield return Wait(5f);
             Immortal();
             Note($"in {SceneManager.GetActiveScene().name}, enemies {FindObjectsByType<Enemies.Enemy>(FindObjectsSortMode.None).Length}");
+            Probe("gate");
             yield return Shot("06_gate");
             Gates.GateSession.End();
 
