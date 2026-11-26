@@ -189,7 +189,7 @@ namespace Aethvirse.Gates
             if (r.kind == RoomKind.Boss)
             {
                 _boss = cat.Spawn(_types[_rng.Next(_types.Length)], r.Center + Vector3.forward * 6f, _level + 2, 60f);
-                if (_boss != null) _boss.MakeBoss(8f + _gate.rank * 2f, 1.6f, 1.7f);
+                if (_boss != null) { _boss.MakeBoss(8f + _gate.rank * 2f, 1.6f, 1.7f); Endgame.BossArena.Begin(_boss); }
                 Codex.Notify("[ BOSS ] The master of this Gate wakes.", CodexTone.Warning);
                 return;
             }

@@ -53,5 +53,15 @@ namespace Aethvirse.Tests
 
         [TestCase(1f, 0), TestCase(0.7f, 1), TestCase(0.5f, 1), TestCase(0.4f, 2), TestCase(0.1f, 3)]
         public void BossPhases_ByHealth(float ratio, int phase) => Assert.That(BossPhases.For(ratio), Is.EqualTo(phase));
+
+        [Test]
+        public void BossArena_HazardsGrowWithThePhase()
+        {
+            Assert.That(BossArena.Hazard(0).stones, Is.EqualTo(0));
+            Assert.That(BossArena.Hazard(1).stones, Is.EqualTo(0));
+            Assert.That(BossArena.Hazard(2).stones, Is.GreaterThan(0));
+            Assert.That(BossArena.Hazard(3).stones, Is.GreaterThan(BossArena.Hazard(2).stones));
+            Assert.That(BossArena.Hazard(3).every, Is.LessThan(BossArena.Hazard(2).every));
+        }
     }
 }
