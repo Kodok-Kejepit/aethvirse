@@ -66,5 +66,15 @@ namespace Aethvirse.Tests
                         Assert.That(secrets.Get(c.key.Substring(7)), Is.Not.Null, q.id + " start → " + c.key);
             }
         }
+
+        [Test]
+        public void EveryHiddenJob_HasASealedMissionThatOpensIt()
+        {
+            var jobs = AssetDatabase.LoadAssetAtPath<Jobs.JobRegistry>("Assets/Resources/JobRegistry.asset");
+            var db = AssetDatabase.LoadAssetAtPath<QuestDatabase>("Assets/Resources/QuestDatabase.asset");
+            foreach (Jobs.JobData j in jobs.jobs.Where(j => !string.IsNullOrEmpty(j.requiredFlag)))
+                Assert.That(db.quests.Any(q => q.rewards.Any(r => r.type == RewardType.Flag && r.key == j.requiredFlag)), Is.True,
+                    j.id + ": nothing in the game sets " + j.requiredFlag);
+        }
     }
 }
