@@ -117,6 +117,8 @@ namespace Aethvirse.Items
             }
             var sets = GearSetDatabase.Instance;
             if (sets != null) total += sets.Bonus(stat, SetCounts());
+            // The worn title (achievements).
+            total += Core.Achievements.TitleBonus(stat);
             return total;
         }
 

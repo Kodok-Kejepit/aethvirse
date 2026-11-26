@@ -339,6 +339,7 @@ namespace Aethvirse.Player
         {
             if (Now - _dodgeStartedAt > perfectDodgeWindow) return;
             _counterTimer = counterWindow;
+            Core.Achievements.Count("perfect_dodges", 1);
             TimeFx.SlowMotion(perfectDodgeTimeScale, perfectDodgeSlowMo);
             PerfectDodge?.Invoke();
         }

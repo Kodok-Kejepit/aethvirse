@@ -501,7 +501,14 @@ namespace Aethvirse.Enemies
             var inv = Items.PlayerInventory.Current;
             if (inv == null || !data.dropsLoot || _noLoot) return;
             Vector3 at = transform.position;
-            if (_gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = _gold });
+            // The combo flame pays: more gold, and from Blaze up a second loot roll.
+            var flame = PlayerStats.Current != null ? PlayerStats.Current.GetComponent<PlayerCombat>() : null;
+            ComboRank heat = flame != null ? flame.Tracker.Rank(Time.unscaledTime) : ComboRank.None;
+            int gold = Mathf.RoundToInt(_gold * ComboTracker.Bonus(heat));
+            if (gold > 0) Items.WorldPickup.Spawn(at, new Items.ItemStack { itemId = "gold", count = gold });
+            if (heat >= ComboRank.Blaze)
+                foreach (Items.ItemStack extra in Items.ItemActions.RollDrops(Level, data.tier, inv.Database, inv.Rules, _rng))
+                    Items.WorldPickup.Spawn(at + Vector3.right * 0.6f, extra);
             // Each region's own crafting material.
             World.RegionData region = World.RegionController.Current;
             if (region != null && _rng.NextDouble() < 0.12 && inv.Database.Get("mat_" + region.id) != null)

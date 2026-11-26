@@ -46,6 +46,8 @@ namespace Aethvirse.Core
             { "rune", ("Rune", "Rune") }, { "socket", ("Socket", "Pasang") }, { "unsocket", ("Remove", "Lepas") },
             { "stash", ("Stash", "Gudang") }, { "sockets", ("Sockets", "Soket") }, { "enchant", ("Enchant", "Enchant") },
             { "reforge", ("Reforge", "Tempa ulang") }, { "reforged", ("Reforged", "Ditempa ulang") },
+            { "titles", ("Titles & achievements", "Title & pencapaian") }, { "worn", ("Worn title", "Title dipakai") },
+            { "wear", ("Wear", "Pakai") }, { "show_all", ("Show all", "Tampilkan semua") }, { "hide_locked", ("Hide locked", "Sembunyikan terkunci") },
             { "fast_travel", ("Fast Travel", "Perjalanan Cepat") },
             { "perfect_dodge", ("PERFECT DODGE", "HINDARAN SEMPURNA") },
         };
