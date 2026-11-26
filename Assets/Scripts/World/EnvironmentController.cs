@@ -14,6 +14,8 @@ namespace Aethvirse.World
         [SerializeField] Color daySky = new Color(0.55f, 0.62f, 0.75f);
         [SerializeField] Color nightSky = new Color(0.08f, 0.1f, 0.2f);
         [SerializeField] float smoothing = 1.5f;
+        const float SunExposure = 0.72f;
+        const float AmbientExposure = 0.8f;
 
         float _fogTarget;
 
@@ -27,8 +29,10 @@ namespace Aethvirse.World
                 sun.transform.rotation = Quaternion.Euler(f * 360f - 90f, -30f, 0f);
                 float daylight = Mathf.Clamp01(Mathf.Sin(f * Mathf.PI * 2f - Mathf.PI * 0.5f) * 1.5f + 0.4f);
                 float weatherDim = s.Weather.current == WeatherKind.Storm ? 0.45f : s.Weather.IsWet || s.Weather.current == WeatherKind.Fog ? 0.7f : 1f;
-                sun.intensity = Mathf.Lerp(nightIntensity, dayIntensity, daylight) * weatherDim;
-                RenderSettings.ambientSkyColor = Color.Lerp(nightSky, daySky, daylight) * Mathf.Lerp(0.7f, 1f, weatherDim);
+                // Without tonemapping, a full noon sun plus sky ambient blew light surfaces out to white (seen in the
+                // self-test screenshots); exposure keeps them readable. Real lighting comes with Phase 2.
+                sun.intensity = Mathf.Lerp(nightIntensity, dayIntensity, daylight) * weatherDim * SunExposure;
+                RenderSettings.ambientSkyColor = Color.Lerp(nightSky, daySky, daylight) * Mathf.Lerp(0.7f, 1f, weatherDim) * AmbientExposure;
             }
             _fogTarget = s.Weather.current switch
             {
