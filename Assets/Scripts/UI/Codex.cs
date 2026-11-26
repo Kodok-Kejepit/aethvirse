@@ -67,7 +67,16 @@ namespace Aethvirse.UI
         void Update()
         {
             float dt = Time.unscaledDeltaTime;
-            while (_queue.Count > 0 && _cards.Count < MaxCards)
+            // PC: under the quest tracker (top right). Touch: top centre (the corner belongs to the buttons).
+            bool touch = Input.Touch.TouchControls.IsActive;
+            Vector2 anchor = touch ? new Vector2(0.5f, 1f) : new Vector2(1f, 1f);
+            if (_stack.anchorMin != anchor)
+            {
+                _stack.anchorMin = _stack.anchorMax = anchor;
+                _stack.pivot = anchor;
+            }
+            _stack.anchoredPosition = touch ? new Vector2(230f, -200f) : new Vector2(-24f, -280f);
+            while (_queue.Count > 0 && _cards.Count < (touch ? 2 : MaxCards))
             {
                 var (text, tone) = _queue.Dequeue();
                 Show(text, tone);
@@ -98,6 +107,7 @@ namespace Aethvirse.UI
             rect.pivot = new Vector2(1f, 1f);
             rect.sizeDelta = new Vector2(460f, 84f);
             go.GetComponent<Image>().color = new Color(0.03f, 0.1f, 0.2f, 0.88f);
+            go.GetComponent<Image>().raycastTarget = false;
 
             var bar = new GameObject("Accent", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
             bar.SetParent(rect, false);
@@ -107,7 +117,9 @@ namespace Aethvirse.UI
             bar.pivot = new Vector2(0f, 0.5f);
             bar.GetComponent<Image>().color = ToneColor(tone);
 
+            bar.GetComponent<Image>().raycastTarget = false;
             var label = new GameObject("Text", typeof(RectTransform), typeof(Text)).GetComponent<Text>();
+            label.raycastTarget = false;
             label.rectTransform.SetParent(rect, false);
             label.rectTransform.anchorMin = Vector2.zero;
             label.rectTransform.anchorMax = Vector2.one;

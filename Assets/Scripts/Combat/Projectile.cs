@@ -29,9 +29,8 @@ namespace Aethvirse.Combat
         public static Projectile Fire(Vector3 from, Vector3 direction, float speed, float range, float radius, int pierce, Team team,
             Color color, Func<Damageable, DamageInfo> damage, Action<Damageable, DamageInfo> onHit = null, Transform homing = null)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            var go = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Sphere);
             go.name = "Projectile";
-            Destroy(go.GetComponent<Collider>());
             go.transform.position = from;
             go.transform.localScale = new Vector3(radius * 1.2f, radius * 1.2f, radius * 3f);
             go.transform.rotation = Quaternion.LookRotation(direction.normalized);

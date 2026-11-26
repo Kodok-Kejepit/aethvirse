@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_umbra_page
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_umbra_page
+  title: The Umbra Page
+  description: One page of the Codex is written in shadow. Only the dead can read
+    it to you.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: job_necromancer
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 12
+    target: necromancer_4
+    count: 15
+    text: Raise fifteen echoes
+    stage: 0
+    optional: 0
+  - type: 0
+    target: the_unwritten
+    count: 1
+    text: Silence the thing on the empty throne
+    stage: 1
+    optional: 0
+  - type: 5
+    target: last_seal_opened
+    count: 1
+    text: Read the last page of this world
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 3
+    key: codex_umbra_read
+    amount: 1
+    text: 
+  - type: 6
+    key: 
+    amount: 1
+    text: '[ HIDDEN JOB ]  Every shadow knows your name now. (Shadow Sovereign can
+      be chosen.)'

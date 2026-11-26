@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec148ce05cbd79a92a0bd6a94731fce0, type: 3}
+  m_Name: sm_echo_king
+  m_EditorClassIdentifier: Aethvirse::Aethvirse.Quests.QuestData
+  id: sm_echo_king
+  title: The King of Echoes
+  description: After you beat yourself in the ring, your footsteps started arriving
+    twice.
+  kind: 6
+  autoStart: 1
+  startConditions:
+  - type: 0
+    key: duel_rival_echo_won
+    values: []
+    value: 0
+    value2: 0
+    negate: 0
+  - type: 6
+    key: 
+    values: []
+    value: 30
+    value2: 0
+    negate: 0
+  timeLimit: 0
+  academyPoints: 0
+  objectives:
+  - type: 3
+    target: secret_r1_small_gate
+    count: 1
+    text: Go back to where the small gate opened
+    stage: 0
+    optional: 0
+  - type: 0
+    target: hollow_echo
+    count: 40
+    text: Answer forty echoes
+    stage: 1
+    optional: 0
+  - type: 5
+    target: region_r0_unknown_found
+    count: 1
+    text: Follow your own footsteps where there is no map
+    stage: 2
+    optional: 0
+  rewards:
+  - type: 3
+    key: echo_king_answered
+    amount: 1
+    text: 
+  - type: 6
+    key: 
+    amount: 1
+    text: '[ HIDDEN JOB ]  The echo kneels. It was always you. (Echo Warden can be
+      chosen.)'

@@ -178,6 +178,7 @@ namespace Aethvirse.Core
 
             DrawJobs(s);
             DrawJournal(s);
+            DrawTitles(s);
 
             GUILayout.Space(14 * s);
             GUILayout.Label(Loc.T("skills"), _title);
@@ -237,6 +238,38 @@ namespace Aethvirse.Core
             }
             if (on != null && GUILayout.Button(Loc.T("unsocket"), _button, GUILayout.Width(150 * s), GUILayout.Height(38 * s))) stats.SocketRune(skill.id, "");
             GUILayout.EndHorizontal();
+        }
+
+        bool _showAll;
+
+        /// <summary>Achievements and titles: wear one unlocked title for its small bonus.</summary>
+        void DrawTitles(float s)
+        {
+            int unlocked = 0;
+            foreach (Achievements.Def d in Achievements.All) if (Achievements.Unlocked(d)) unlocked++;
+            GUILayout.Space(14 * s);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"{Loc.T("titles")}  ({unlocked}/{Achievements.All.Length})", _title);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(_showAll ? Loc.T("hide_locked") : Loc.T("show_all"), _button, GUILayout.Width(260 * s), GUILayout.Height(38 * s))) _showAll = !_showAll;
+            GUILayout.EndHorizontal();
+            string worn = Achievements.TitleName;
+            GUILayout.Label($"{Loc.T("worn")}: {(worn.Length > 0 ? worn : "—")}", _text);
+            for (int i = 0; i < Achievements.All.Length; i++)
+            {
+                Achievements.Def d = Achievements.All[i];
+                bool on = Achievements.Unlocked(d);
+                if (!on && !_showAll) continue;
+                GUILayout.BeginHorizontal();
+                GUI.color = on ? Color.white : new Color(1f, 1f, 1f, 0.4f);
+                string bonus = Items.StatKeys.IsPercent(d.stat) ? $"+{d.value * 100f:0.#}%" : $"+{d.value:0}";
+                GUILayout.Label($"{(on ? d.name : "???")} — {(on ? d.desc : d.desc)}   [{d.title}: {d.stat.ToUpperInvariant()} {bonus}]", _text, GUILayout.Width(900 * s));
+                GUI.color = Color.white;
+                GUI.enabled = on && Achievements.Equipped != i;
+                if (GUILayout.Button(Loc.T("wear"), _button, GUILayout.Width(120 * s), GUILayout.Height(36 * s))) Achievements.Equip(i);
+                GUI.enabled = true;
+                GUILayout.EndHorizontal();
+            }
         }
     }
 }

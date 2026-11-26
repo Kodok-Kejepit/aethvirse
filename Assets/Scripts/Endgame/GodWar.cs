@@ -66,7 +66,7 @@ namespace Aethvirse.Endgame
                     if (++_wave < WaveLines.Length) { StartWave(); return; }
                     _step = Step.God;
                     _god = EnemyCatalog.Instance.Spawn(godType, transform.position + Vector3.forward * 12f, Level, 80f, false);
-                    if (_god != null) _god.MakeBoss(120f, 2.6f, 3f);
+                    if (_god != null) { _god.MakeBoss(120f, 2.6f, 3f); BossArena.Begin(_god); }
                     Codex.Notify("[ ??? ]  It has come down.", CodexTone.Anomaly);
                     break;
                 case Step.God:

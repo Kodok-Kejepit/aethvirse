@@ -185,11 +185,42 @@ namespace Aethvirse.Player
                 SetState(PlayerState.Dodge);
                 return;
             }
+            // Ledge: pushing into a low wall while airborne pulls you up onto it.
+            if (HasMoveInput && TryClimbLedge()) return;
             ApplyHorizontal(_carriedSpeed, dt, movement.airControl);
             ApplyGravity(dt);
+            // Glide: hold jump while falling (costs stamina).
+            IsGliding = _velocity.y < 0f && _input.Jump.IsPressed() && stamina.TrySpend(GlideStaminaPerSecond * dt);
+            if (IsGliding) _velocity.y = Mathf.Max(_velocity.y, -GlideFallSpeed);
             FaceDirection(InputDirection, dt);
             Move(dt);
-            if (Grounded && _velocity.y <= 0f) SetState(HasMoveInput ? PlayerState.Move : PlayerState.Idle);
+            if (Grounded && _velocity.y <= 0f) { IsGliding = false; SetState(HasMoveInput ? PlayerState.Move : PlayerState.Idle); }
+        }
+
+        public const float GlideFallSpeed = 2.6f;
+        const float GlideStaminaPerSecond = 9f;
+        const float LedgeMin = 0.45f, LedgeMax = 2.2f;
+        public bool IsGliding { get; private set; }
+
+        /// <summary>Is there a ledge in front, between <see cref="LedgeMin"/> and <see cref="LedgeMax"/> above the feet, with room to stand?</summary>
+        bool TryClimbLedge()
+        {
+            Vector3 dir = InputDirection;
+            Vector3 feet = transform.position;
+            const QueryTriggerInteraction ignore = QueryTriggerInteraction.Ignore;
+            if (!Physics.Raycast(feet + Vector3.up * 0.9f, dir, out RaycastHit wall, _body.radius + 0.5f, ~0, ignore)) return false;
+            if (wall.collider.GetComponentInParent<Damageable>() != null || Vector3.Dot(wall.normal, -dir) < 0.6f) return false;
+            Vector3 probe = wall.point + dir * 0.45f + Vector3.up * (LedgeMax + 0.4f);
+            if (!Physics.Raycast(probe, Vector3.down, out RaycastHit top, LedgeMax + 0.6f, ~0, ignore)) return false;
+            float rise = top.point.y - feet.y;
+            if (rise < LedgeMin || rise > LedgeMax || top.normal.y < 0.7f) return false;
+            Vector3 stand = top.point + Vector3.up * 0.05f;
+            if (Physics.CheckCapsule(stand + Vector3.up * (_body.radius + 0.1f), stand + Vector3.up * (_body.height - _body.radius), _body.radius * 0.9f, ~0, ignore)) return false;
+            Teleport(stand);
+            _velocity = Vector3.zero;
+            IsGliding = false;
+            SetState(PlayerState.Idle);
+            return true;
         }
 
         void UpdateDodge(float dt)

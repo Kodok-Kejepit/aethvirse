@@ -46,3 +46,9 @@ heavy = orb / lance / fan) · bow (Marksman: light = arrows that curve to the lo
 ## Map (P1-20)
 
 - **M** (keyboard) or the **Map** touch button: region map. The minimap is always on (top left).
+
+## Movement (P1-23)
+
+- **Glide:** hold Jump while falling (uses stamina).
+- **Ledge climb:** while in the air, push toward a wall up to about 2 m high.
+- **Rebind keys:** Pause → Settings → Controls (Esc cancels a change).

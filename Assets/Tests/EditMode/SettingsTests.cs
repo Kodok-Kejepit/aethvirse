@@ -23,5 +23,17 @@ namespace Aethvirse.Tests
             Assert.That(Loc.T("journal"), Is.EqualTo("Jurnal Misteri"));
             Assert.That(Loc.T("fast_travel"), Is.EqualTo("Perjalanan Cepat"));
         }
+
+        [Test]
+        public void Difficulty_ScalesMonstersAndRewards()
+        {
+            var easy = GameSettings.DifficultyScale(0);
+            var normal = GameSettings.DifficultyScale(1);
+            var nightmare = GameSettings.DifficultyScale(3);
+            Assert.That(normal, Is.EqualTo((1f, 1f, 1f)));
+            Assert.That(easy.hp, Is.LessThan(1f));
+            Assert.That(nightmare.atk, Is.GreaterThan(1.5f));
+            Assert.That(nightmare.xp, Is.GreaterThan(normal.xp), "harder pays more");
+        }
     }
 }

@@ -27,6 +27,36 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
 - Packages: URP 17.3, Input System 1.20, Cinemachine 3.1 (see DECISIONS.md).
 - CI runs the EditMode tests before building.
 
+## P1-23 — Bug sweep and the last Phase 1 systems (branch `p1-23-sweep`)
+
+### Verified by the in-build sweep (`AETHVIRSE -selftest <dir>`, optional `-only gate`)
+- Four classes levelled up with every class skill cast; nine job lines (incl. Summoner → Necromancer → Shadow
+  Sovereign with summons and the shadow army) with every job skill; all 24 secret skills; reactions and freeze /
+  shatter; every one of the 329 items equipped or used; gems, enchants, reforge and a rune; mystery boxes; save →
+  load (level, job, secret skills kept); every region scene, [ ??? ], the Gate, the penalty zone; the duel ring,
+  chests and a cipher lock. **0 errors / exceptions.** Screenshots reviewed.
+- Found and fixed by looking at the screenshots: the Gate exit portal stood where the camera is (the whole screen
+  was the portal's colour); noon light blew light surfaces out to white; **everything created at runtime
+  (projectiles, traps, boss hazard marks, rival marks, pickups, secret shimmers, Gate portals) rendered magenta in
+  builds** (CreatePrimitive's default material only gets URP's in the editor — now a URP runtime material, guarded by
+  a test); Codex notifications covered the quest tracker; on touch the corner buttons covered time and quests and the
+  combat buttons stayed active under open panels; the boss bar sat under the debug panel.
+- Touch layout checked with `-touch-ui` screenshots.
+- Placeholder **music**: a procedural pad per region (key and mode per place), crossfading on region change.
+
+### Added
+- **Achievements and titles** (33): kills, bosses, mimics, chests, reactions, perfect dodges, combos, skills,
+  secrets, ciphers, sealed missions, duels, Gates, levels, jobs, regions walked, gold. Each unlocks a title; wear one
+  (Status → Titles) for a small bonus.
+- **The combo flame pays**: more gold, and from Blaze up a second loot roll (the XP bonus was already there).
+- **Hidden jobs are reachable**: three sealed missions open the Necromancer, the Shadow Sovereign and the Echo
+  Warden (nothing set their flags before; a test now checks every hidden job).
+- **Bosses**: slow-motion name card, big health bar with title and phase marks, telegraphed falling stones from
+  phase 2, faster with adds in phase 3 — for world guardians, the throne, the God and Gate bosses.
+- **Difficulty** Easy / Normal / Hard / Nightmare (monster HP and damage, XP) and **keyboard rebinding**
+  (Pause → Settings → Controls; saved).
+- **Glide** (hold jump while falling, uses stamina) and **ledge climbing** (push into a low wall in the air).
+
 ## P1-22 — Display fix and visual self-test (branch `p1-22-display-fix`)
 
 ### Fixed (found by running the build and looking at screenshots)

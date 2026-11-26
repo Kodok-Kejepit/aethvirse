@@ -41,6 +41,7 @@ namespace Aethvirse.Items
         void Open()
         {
             GameSession.Instance.Flags.SetFlag(Flag);
+            Core.Achievements.Count("chests", 1);
             var inv = PlayerInventory.Current;
             if (IsMimic(chestId, GameSession.Instance.Clock.Day) && Enemies.EnemyCatalog.Instance != null)
             {

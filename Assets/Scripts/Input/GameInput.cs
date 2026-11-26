@@ -114,7 +114,32 @@ namespace Aethvirse.Input
             InventoryPanel = Player.AddAction("InventoryPanel", InputActionType.Button, "<Keyboard>/i");
             Map = Player.AddAction("Map", InputActionType.Button, "<Keyboard>/m");
 
+            // Keys the player changed in Settings → Controls.
+            string saved = UnityEngine.PlayerPrefs.GetString(BindingsKey, "");
+            if (!string.IsNullOrEmpty(saved))
+            {
+                try { Player.LoadBindingOverridesFromJson(saved); }
+                catch (System.Exception) { UnityEngine.PlayerPrefs.DeleteKey(BindingsKey); }
+            }
             Player.Enable();
+        }
+
+        const string BindingsKey = "bindings";
+
+        public void SaveBindings() => UnityEngine.PlayerPrefs.SetString(BindingsKey, Player.SaveBindingOverridesAsJson());
+
+        public void ResetBindings()
+        {
+            Player.RemoveAllBindingOverrides();
+            UnityEngine.PlayerPrefs.DeleteKey(BindingsKey);
+        }
+
+        /// <summary>Index of an action's first keyboard binding (-1 if none).</summary>
+        public static int KeyboardBinding(InputAction a)
+        {
+            for (int i = 0; i < a.bindings.Count; i++)
+                if (!a.bindings[i].isComposite && !a.bindings[i].isPartOfComposite && a.bindings[i].path.StartsWith("<Keyboard>")) return i;
+            return -1;
         }
     }
 }

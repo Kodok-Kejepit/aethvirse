@@ -24,5 +24,18 @@ namespace Aethvirse.Tests
                 }
             }
         }
+
+        [Test]
+        public void RuntimePrimitives_UseTheUrpMaterial()
+        {
+            // CreatePrimitive's default material renders magenta in a URP player build (seen in self-test screenshots).
+            foreach (string file in System.IO.Directory.GetFiles("Assets/Scripts", "*.cs", System.IO.SearchOption.AllDirectories))
+            {
+                string text = System.IO.File.ReadAllText(file);
+                if (!text.Contains("GameObject.CreatePrimitive(") || file.EndsWith("RuntimeMat.cs")) continue;
+                Assert.That(text.Contains("sharedMaterial"), Is.True, file + ": use Core.RuntimeMat.Primitive or set a URP material");
+            }
+            Assert.That(UnityEngine.Resources.Load<UnityEngine.Material>("RuntimeLit"), Is.Not.Null, "Resources/RuntimeLit.mat");
+        }
     }
 }

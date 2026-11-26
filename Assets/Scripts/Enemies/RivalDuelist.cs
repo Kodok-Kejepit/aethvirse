@@ -168,8 +168,7 @@ namespace Aethvirse.Enemies
 
         GameObject Mark(Vector3 at, Vector3 size, Quaternion rot)
         {
-            var go = GameObject.CreatePrimitive(size.x == size.z ? PrimitiveType.Cylinder : PrimitiveType.Cube);
-            Destroy(go.GetComponent<Collider>());
+            var go = Aethvirse.Core.RuntimeMat.Primitive(size.x == size.z ? PrimitiveType.Cylinder : PrimitiveType.Cube);
             go.transform.SetPositionAndRotation(new Vector3(at.x, 0.04f, at.z), rot);
             go.transform.localScale = size;
             var block = new MaterialPropertyBlock();

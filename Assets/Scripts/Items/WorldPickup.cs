@@ -20,9 +20,8 @@ namespace Aethvirse.Items
         {
             PlayerInventory inv = PlayerInventory.Current;
             if (inv == null || stack == null) return;
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var go = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Cube);
             go.name = "Pickup_" + stack.itemId;
-            Destroy(go.GetComponent<Collider>());
             go.transform.position = position + Vector3.up * 0.6f;
             ItemData item = inv.Database.Get(stack.itemId);
             Rarity rarity = stack.itemId == "gold" ? Rarity.Legendary : item != null ? ItemStats.RarityOf(stack, item) : Rarity.Common;

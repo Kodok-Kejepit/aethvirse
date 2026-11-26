@@ -31,6 +31,7 @@ namespace Aethvirse.Endgame
                 _boss = EnemyCatalog.Instance.Spawn(bossType, transform.position, r != null ? r.levelMax : 100, 60f, true);
                 if (_boss == null) return;
                 _boss.MakeBoss(hpMultiplier, 2f, 2f);
+                BossArena.Begin(_boss);
                 Codex.Notify(wakeLine, CodexTone.Anomaly);
                 return;
             }

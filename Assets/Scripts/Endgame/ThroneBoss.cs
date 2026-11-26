@@ -28,7 +28,7 @@ namespace Aethvirse.Endgame
             {
                 RegionData r = RegionController.Current;
                 _boss = EnemyCatalog.Instance.Spawn(bossType, transform.position, r != null ? r.levelMax : 350, 60f, true);
-                if (_boss != null) _boss.MakeBoss(60f, 2.5f, 2.2f);
+                if (_boss != null) { _boss.MakeBoss(60f, 2.5f, 2.2f); BossArena.Begin(_boss); }
                 Codex.Notify("[ ??? ]  The throne is not empty.", CodexTone.Anomaly);
             }
             if (_boss == null) return;
