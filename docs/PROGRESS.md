@@ -36,7 +36,13 @@ The Godot prototype (`../aethvirse/docs/PROGRESS.md`) is the reference for what 
   load (level, job, secret skills kept); every region scene, [ ??? ], the Gate, the penalty zone; the duel ring,
   chests and a cipher lock. **0 errors / exceptions.** Screenshots reviewed.
 - Found and fixed by looking at the screenshots: the Gate exit portal stood where the camera is (the whole screen
-  was the portal's colour); noon light blew light surfaces out to white.
+  was the portal's colour); noon light blew light surfaces out to white; **everything created at runtime
+  (projectiles, traps, boss hazard marks, rival marks, pickups, secret shimmers, Gate portals) rendered magenta in
+  builds** (CreatePrimitive's default material only gets URP's in the editor — now a URP runtime material, guarded by
+  a test); Codex notifications covered the quest tracker; on touch the corner buttons covered time and quests and the
+  combat buttons stayed active under open panels; the boss bar sat under the debug panel.
+- Touch layout checked with `-touch-ui` screenshots.
+- Placeholder **music**: a procedural pad per region (key and mode per place), crossfading on region change.
 
 ### Added
 - **Achievements and titles** (33): kills, bosses, mimics, chests, reactions, perfect dodges, combos, skills,
