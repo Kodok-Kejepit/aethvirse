@@ -135,6 +135,10 @@ namespace Aethvirse.Enemies
                 _xp = r.xp;
                 _gold = r.gold;
             }
+            var diff = Core.GameSettings.DifficultyScale(Core.GameSettings.Difficulty);
+            maxHp = Mathf.Max(1, Mathf.RoundToInt(maxHp * diff.hp));
+            stats.attack *= diff.atk;
+            _xp = Mathf.RoundToInt(_xp * diff.xp);
             _damageable.Configure(maxHp, stats, side: Team.Enemy);
         }
 

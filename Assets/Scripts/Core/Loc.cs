@@ -48,6 +48,7 @@ namespace Aethvirse.Core
             { "reforge", ("Reforge", "Tempa ulang") }, { "reforged", ("Reforged", "Ditempa ulang") },
             { "titles", ("Titles & achievements", "Title & pencapaian") }, { "worn", ("Worn title", "Title dipakai") },
             { "wear", ("Wear", "Pakai") }, { "show_all", ("Show all", "Tampilkan semua") }, { "hide_locked", ("Hide locked", "Sembunyikan terkunci") },
+            { "difficulty", ("Difficulty", "Tingkat kesulitan") }, { "controls", ("Controls", "Kontrol") }, { "reset_keys", ("Reset keys", "Atur ulang tombol") },
             { "fast_travel", ("Fast Travel", "Perjalanan Cepat") },
             { "perfect_dodge", ("PERFECT DODGE", "HINDARAN SEMPURNA") },
         };

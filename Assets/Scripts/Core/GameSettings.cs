@@ -15,6 +15,14 @@ namespace Aethvirse.Core
         public static int FpsCap { get => PlayerPrefs.GetInt("fps", Application.isMobilePlatform ? 60 : 0); set { PlayerPrefs.SetInt("fps", value); Apply(); } }
         /// <summary>PC: windowed instead of fullscreen (the screenshot tool uses it too).</summary>
         public static bool Windowed { get => PlayerPrefs.GetInt("windowed", 0) == 1 || System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-windowed") >= 0; set { PlayerPrefs.SetInt("windowed", value ? 1 : 0); Changed?.Invoke(); } }
+        /// <summary>0 Easy · 1 Normal · 2 Hard · 3 Nightmare (§15). Applies to monsters that appear from now on.</summary>
+        public static int Difficulty { get => PlayerPrefs.GetInt("difficulty", 1); set { PlayerPrefs.SetInt("difficulty", Mathf.Clamp(value, 0, 3)); Changed?.Invoke(); } }
+        public static readonly string[] DifficultyNames = { "Easy", "Normal", "Hard", "Nightmare" };
+        /// <summary>(monster HP, monster damage, XP) by difficulty (pure; tested).</summary>
+        public static (float hp, float atk, float xp) DifficultyScale(int d) => d switch
+        {
+            0 => (0.7f, 0.6f, 0.9f), 2 => (1.4f, 1.35f, 1.2f), 3 => (2f, 1.8f, 1.5f), _ => (1f, 1f, 1f),
+        };
         public static string Language { get => PlayerPrefs.GetString("lang", Application.systemLanguage == SystemLanguage.Indonesian ? "id" : "en"); set { PlayerPrefs.SetString("lang", value); Changed?.Invoke(); } }
 
         public static event System.Action Changed;
