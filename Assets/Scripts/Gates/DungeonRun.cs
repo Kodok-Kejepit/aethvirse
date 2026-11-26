@@ -46,7 +46,10 @@ namespace Aethvirse.Gates
             BuildGeometry();
             Transform player = PlayerTarget.Current;
             if (player != null) player.GetComponent<PlayerController>().Teleport(_layout.Start.Center + Vector3.up * 0.2f);
-            _exit = Portal("Exit", _layout.Start.Center + new Vector3(0f, 2f, -4f), "Leave the Gate");
+            // To the side of the start, facing in: behind the hero it sat right where the camera is (the whole
+            // screen showed the portal's colour — found by the self-test).
+            _exit = Portal("Exit", _layout.Start.Center + new Vector3(5f, 1.6f, 0f), "Leave the Gate");
+            _exit.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
             if (_gate.red) _exit.SetActive(false);
             Codex.Notify($"Rank {WorldGates.RankNames[_gate.rank]} Gate · {_layout.rooms.Count} rooms · {_layout.shape}", CodexTone.System);
         }
