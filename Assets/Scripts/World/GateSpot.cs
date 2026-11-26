@@ -25,9 +25,8 @@ namespace Aethvirse.World
 
         void Awake()
         {
-            _portal = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            _portal = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Cylinder);
             _portal.name = "GatePortal";
-            Destroy(_portal.GetComponent<Collider>());
             _portal.transform.SetParent(transform, false);
             _portal.transform.localPosition = Vector3.up * 2.5f;
             _portal.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);

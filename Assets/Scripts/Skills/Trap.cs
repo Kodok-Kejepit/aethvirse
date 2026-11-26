@@ -19,9 +19,8 @@ namespace Aethvirse.Skills
 
         public static void Place(Vector3 at, float radius, float lifetime, Color color, Func<Damageable, DamageInfo> damage, Action<Damageable, DamageInfo> onHit)
         {
-            var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            var go = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Cylinder);
             go.name = "Trap";
-            Destroy(go.GetComponent<Collider>());
             go.transform.position = at + Vector3.up * 0.03f;
             go.transform.localScale = new Vector3(radius * 2f, 0.02f, radius * 2f);
             var block = new MaterialPropertyBlock();

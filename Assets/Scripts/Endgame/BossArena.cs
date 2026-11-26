@@ -86,8 +86,7 @@ namespace Aethvirse.Endgame
         IEnumerator Stone(Vector3 at)
         {
             at.y = 0.05f;
-            var mark = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            Destroy(mark.GetComponent<Collider>());
+            var mark = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Cylinder);
             mark.transform.position = at;
             mark.transform.localScale = new Vector3(3.2f, 0.02f, 3.2f);
             var block = new MaterialPropertyBlock();
@@ -95,8 +94,7 @@ namespace Aethvirse.Endgame
             mark.GetComponent<Renderer>().SetPropertyBlock(block);
             yield return new WaitForSeconds(1.1f);
             Destroy(mark);
-            var rock = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            Destroy(rock.GetComponent<Collider>());
+            var rock = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Cube);
             rock.transform.position = at + Vector3.up * 0.6f;
             rock.transform.localScale = Vector3.one * 1.4f;
             rock.transform.rotation = Random.rotation;
@@ -137,7 +135,7 @@ namespace Aethvirse.Endgame
                 GUI.color = Color.white;
             }
             // Health bar.
-            float w = Screen.width * 0.5f, x = (Screen.width - w) * 0.5f, y = 70 * s;
+            float w = Screen.width * 0.5f, x = (Screen.width - w) * 0.5f, y = Core.DebugOverlay.Shown ? 176f : 70 * s;
             _small.fontSize = Mathf.RoundToInt(22 * s);
             GUI.Label(new Rect(x, y - 32 * s, w, 30 * s), $"{_name}  —  {_title}", _small);
             GUI.color = new Color(0f, 0f, 0f, 0.7f);

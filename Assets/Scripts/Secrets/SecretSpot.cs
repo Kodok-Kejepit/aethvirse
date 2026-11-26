@@ -22,8 +22,7 @@ namespace Aethvirse.Secrets
 
         void Start()
         {
-            _shimmer = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            Destroy(_shimmer.GetComponent<Collider>());
+            _shimmer = Aethvirse.Core.RuntimeMat.Primitive(PrimitiveType.Sphere);
             _shimmer.transform.SetParent(transform, false);
             _shimmer.transform.localPosition = Vector3.up;
             _shimmer.transform.localScale = Vector3.one * 0.3f;
