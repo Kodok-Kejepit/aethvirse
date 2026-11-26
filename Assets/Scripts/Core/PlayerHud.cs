@@ -128,7 +128,9 @@ namespace Aethvirse.Core
             // Top right: day, time, weather.
             World.GameSession session = World.GameSession.Instance;
             _small.alignment = TextAnchor.MiddleRight;
-            GUI.Label(new Rect(Screen.width - 420 * s, 12 * s, 400 * s, 28 * s),
+            // Touch: the M / I / II / C / L buttons own the top-right corner, so time and quests sit below them.
+            bool touch = Aethvirse.Input.Touch.TouchControls.IsActive;
+            GUI.Label(new Rect(Screen.width - 420 * s, (touch ? 150 : 12) * s, 400 * s, 28 * s),
                 $"Day {session.Clock.Day}  ·  {session.Clock.Format()}  ·  {session.Weather.current}", _small);
             _small.alignment = TextAnchor.MiddleLeft;
 
@@ -227,12 +229,12 @@ namespace Aethvirse.Core
         void DrawQuestTracker(float s)
         {
             Quests.QuestSystem qs = Quests.QuestSystem.Instance;
-            float y = 48 * s, w = 460 * s, x = Screen.width - w - 20 * s;
+            float y = (Aethvirse.Input.Touch.TouchControls.IsActive ? 186 : 48) * s, w = 460 * s, x = Screen.width - w - 20 * s;
             int shown = 0;
             _small.alignment = TextAnchor.UpperLeft;
             foreach (Quests.QuestData q in qs.ActiveQuests())
             {
-                if (shown++ >= 3) break;
+                if (shown++ >= (Aethvirse.Input.Touch.TouchControls.IsActive ? 2 : 3)) break;
                 Quests.QuestObjective o = qs.Log.Current(q, out int index);
                 string progress = o != null && o.count > 1 ? $"  {qs.Log.Progress(q.id, index)}/{o.count}" : "";
                 QuestLog_Timer(q, qs, out string timer);
