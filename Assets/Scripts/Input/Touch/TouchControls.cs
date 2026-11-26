@@ -44,6 +44,24 @@ namespace Aethvirse.Input.Touch
         void OnEnable() => IsActive = true;
         void OnDisable() => IsActive = false;
 
+        CanvasGroup _group;
+
+        /// <summary>While a panel (status, bag, map, pause, dialog, travel, a lock) is open, the combat buttons hide and
+        /// stop taking taps, so a tap meant for the panel never swings the sword.</summary>
+        void Update()
+        {
+            if (_group == null)
+            {
+                _group = gameObject.GetComponent<CanvasGroup>();
+                if (_group == null) _group = gameObject.AddComponent<CanvasGroup>();
+            }
+            bool panel = Core.StatusPanel.IsOpen || UI.InventoryPanel.IsOpen || UI.PauseMenu.IsOpen || UI.MapView.IsOpen
+                || Dialog.DialogBox.IsOpen || World.FastTravelMenu.IsOpen || Secrets.CipherLock.IsOpen;
+            _group.alpha = panel ? 0f : 1f;
+            _group.blocksRaycasts = !panel;
+            _group.interactable = !panel;
+        }
+
         void Build(PlayerCameraRig rig)
         {
             EnsureEventSystem();
