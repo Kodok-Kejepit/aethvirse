@@ -223,6 +223,41 @@ namespace Aethvirse.Core
                 Note($"status disabled {d.Status.Disabled}");
             }
 
+            _step = "boss_arena";
+            {
+                Transform pt = PlayerTarget.Current;
+                var boss = Enemies.EnemyCatalog.Instance.Spawn("the_conductor", pt.position + pt.forward * 8f, 60, 30f, false);
+                boss.RespawnAtHome = false;
+                boss.MakeBoss(40f, 0.2f, 2f);
+                Endgame.BossArena.Begin(boss);
+                yield return Wait(3f);
+                yield return Shot("03b_boss_intro");
+                var bd = boss.GetComponent<Damageable>();
+                bd.Health.SetCurrent(Mathf.RoundToInt(bd.Health.maxHealth * 0.1f));
+                yield return Wait(7f);
+                yield return Shot("03c_boss_phase3");
+                Note($"boss phase {Endgame.BossPhases.For(boss.HealthRatio)}, stones/adds ran");
+                bd.Health.SetCurrent(1);
+                bd.Receive(new DamageInfo { amount = 5 });
+                yield return Wait(1f);
+            }
+
+            _step = "achievements";
+            {
+                int unlocked = 0;
+                foreach (Achievements.Def d in Achievements.All) if (Achievements.Unlocked(d)) unlocked++;
+                Note($"achievements unlocked {unlocked}, kills {GameSession.Instance.Flags.Counter("kills")}, reactions {GameSession.Instance.Flags.Counter("reactions")}");
+                for (int i = 0; i < Achievements.All.Length; i++) if (Achievements.Unlocked(Achievements.All[i])) { Achievements.Equip(i); break; }
+                Note($"title worn: {Achievements.TitleName}");
+                int before = GameSettings.Difficulty;
+                GameSettings.Difficulty = 3;
+                var hard = Enemies.EnemyCatalog.Instance.Spawn("ash_hound", PlayerTarget.Current.position + Vector3.right * 6f, 5, 0f, false);
+                GameSettings.Difficulty = 1;
+                var normal = Enemies.EnemyCatalog.Instance.Spawn("ash_hound", PlayerTarget.Current.position + Vector3.left * 6f, 5, 0f, false);
+                Note($"nightmare hp {hard.GetComponent<Damageable>().Health.maxHealth} vs normal {normal.GetComponent<Damageable>().Health.maxHealth}");
+                GameSettings.Difficulty = before;
+            }
+
             _step = "items";
             {
                 PlayerInventory inv = PlayerInventory.Current;
